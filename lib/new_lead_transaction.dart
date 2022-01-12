@@ -771,7 +771,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
 
                         //print(json.encode(newLeadTransactionSend));
                         if (response.toLowerCase().trim() == 'success') {
-                          Navigator.of(context).pushNamed('/summery');
+                          Navigator.of(context)
+                              .pushReplacementNamed('/summery');
                         } else {
                           setState(
                             () {

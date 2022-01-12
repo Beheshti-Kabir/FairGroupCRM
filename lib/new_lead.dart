@@ -879,7 +879,8 @@ class _NewLeadState extends State<NewLead> {
                         var response = await createAlbum(new_lead_values);
 
                         if (response.toLowerCase().trim() == 'success') {
-                          Navigator.of(context).pushNamed('/summery');
+                          Navigator.of(context)
+                              .pushReplacementNamed('/summery');
                         } else {
                           setState(
                             () {
