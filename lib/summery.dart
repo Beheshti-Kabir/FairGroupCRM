@@ -6,6 +6,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_prac/New_Lead.dart';
+import 'package:login_prac/constants.dart';
+import 'package:login_prac/main.dart';
 import 'package:login_prac/new_lead_transaction.dart';
 
 class SummeryPage extends StatefulWidget {
@@ -19,6 +21,7 @@ class SummeryPage extends StatefulWidget {
         '/newlead': (BuildContext context) => new NewLead(),
         '/newleadtransaction': (BuildContext context) =>
             new NewLeadTransaction(),
+        '/logInPage': (BuildContext context) => new MyHomePage(),
       },
     );
   }
@@ -51,8 +54,15 @@ class _SummeryPageState extends State<SummeryPage> {
       //print("lead=" + json.decode(response.body)['totalLead']);
       // result['leadInfo'];
     });
-    response = await http
-        .get(Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getSummary'));
+    response = await http.post(
+        Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getSummary'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'userID': Constants.employeeId,
+        }));
 
     setState(() {
       if (response.statusCode == 200) {
@@ -213,6 +223,38 @@ class _SummeryPageState extends State<SummeryPage> {
                 ]),
               ]),
             ],
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+            child: Stack(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Constants.employeeId = '';
+                    Navigator.of(context).pushReplacementNamed('/logInPage');
+                  },
+                  child: Container(
+                    height: 40.0,
+                    width: 170.0,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(20.0),
+                      shadowColor: Colors.blueAccent,
+                      color: Colors.blue[800],
+                      elevation: 7.0,
+                      child: Center(
+                        child: Text(
+                          'Log Out',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           //if (isLoading)
           //Text("Data is loading...", style: TextStyle(fontSize: 40.0))

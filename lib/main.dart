@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/api_service.dart';
+import 'package:login_prac/constants.dart';
 import 'package:login_prac/itemdetails.dart';
 import 'package:login_prac/new_lead_transaction.dart';
 import 'controller.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/newlead': (BuildContext context) => NewLead(),
         '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
         '/itemdetails': (BuildContext context) => ItemDetails(),
+        '/logInPage': (BuildContext context) => MyHomePage(),
       },
       home: MyHomePage(),
     );
@@ -173,7 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     var response = await ApiService.login(model);
                     print(response.accessToken);
                     if (response.result.toLowerCase().trim() == 'success') {
-                      Navigator.of(context).pushNamed('/summery');
+                      Constants.employeeId = _employIDController.text;
+                      Navigator.of(context).pushReplacementNamed('/summery');
                     } else {
                       Fluttertoast.showToast(
                           msg: "Wrong UserID or Password",

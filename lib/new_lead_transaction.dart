@@ -10,6 +10,7 @@ import 'dart:ffi';
 
 //import 'package:flutter/src/material/dropdown.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:login_prac/constants.dart';
 import 'package:login_prac/todo_new_lead_transaction.dart';
 
 class CustomPicker extends CommonPickerModel {
@@ -112,6 +113,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
 
   bool _leadNoValidate = false;
   bool _meetDateVaidate = false;
+  bool _employIDValidate = false;
   bool _salesPersonValidate = false;
   bool _personNameValidate = false;
   bool _personContactValidate = false;
@@ -132,7 +134,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   List<String> stepNoList = [''];
   List<String> sales_person = [''];
   List<String> leadNoList = [''];
-
+  late List<String> leadNoControllerMiddle;
   var meet_date = '';
   var execution_date = '';
   var followUp_date = '';
@@ -154,8 +156,15 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   @override
   getLeadData() async {
     print("inside getData");
-    final response = await http.get(
-        Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getLeadData'));
+    final response = await http.post(
+        Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getLeadData'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'userID': Constants.employeeId,
+        }));
 
     salesPersonJSON = json.decode(response.body)['salesPersonList'];
     todoJSON = json.decode(response.body)['todoList'];
@@ -218,6 +227,13 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
       } else {
         _personContactValidate = false;
       }
+      if (Constants.employeeId == '' ||
+          Constants.employeeId == null ||
+          Constants.employeeId.isEmpty) {
+        _employIDValidate = true;
+      } else {
+        _employIDValidate = false;
+      }
       // if (meetDate == null || meet_date.isEmpty) {
       //   _meetDateVaidate = true;
       // } else {
@@ -232,7 +248,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     if (!_leadNoValidate &&
         !_personNameValidate &&
         !_personContactValidate &&
-        !_salesPersonValidate) {
+        !_salesPersonValidate &&
+        !_employIDValidate) {
       return true;
     } else {
       return false;
@@ -262,6 +279,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
           'stepNo': stepNo,
           'lattitute': lat,
           'longitute': long,
+          'userID': Constants.employeeId,
         }
             // ),}
 
@@ -364,6 +382,15 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                       )),
                       onSuggestionSelected: (String val) {
                         this._leadNoController.text = val;
+                        leadNoControllerMiddle =
+                            _leadNoController.text.split('-');
+                        setState(() {
+                          _personNameController.text =
+                              leadNoControllerMiddle[1];
+                          _personContactController.text =
+                              leadNoControllerMiddle[2];
+                        });
+                        print(_leadNoController.text);
                       },
                       getImmediateSuggestions: true,
                       hideSuggestionsOnKeyboardHide: false,
@@ -740,7 +767,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                             _salesPersonController.text.split(' ');
                         String _salesPersonControllerFinal =
                             salesPersonControllerMiddle[0];
-                        List<String> leadNoControllerMiddle =
+                        leadNoControllerMiddle =
                             _leadNoController.text.split('-');
                         String _leadNoControllerFinal =
                             leadNoControllerMiddle[0];

@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:login_prac/constants.dart';
 import 'package:login_prac/itemdetails.dart';
 import 'package:login_prac/todo.dart';
 
@@ -102,8 +103,15 @@ class _NewLeadState extends State<NewLead> {
 
   getData() async {
     print("inside getData");
-    final response = await http
-        .get(Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getData'));
+    final response = await http.post(
+        Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getData'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'userID': Constants.employeeId,
+        }));
 
     salesPersonJSON = json.decode(response.body)['salesPersonList'];
     leadSourceJSON = json.decode(response.body)['leadSourceList'];
@@ -192,6 +200,7 @@ class _NewLeadState extends State<NewLead> {
   bool _customerContactValidate = false;
   bool _customerAddressValidate = false;
   bool _customerNameValidate = false;
+  bool _employIDValidate = false;
   bool isLoad = true;
 
   Future<String> createAlbum(New_lead_json new_lead_values) async {
@@ -245,6 +254,7 @@ class _NewLeadState extends State<NewLead> {
     String customerContact = _customerContactController.text;
     String customerName = _customerNameController.text;
     String customerAddress = _customerAddressController.text;
+
     setState(() {
       if (customerContact == null || customerContact.isEmpty) {
         _customerContactValidate = true;
@@ -261,10 +271,18 @@ class _NewLeadState extends State<NewLead> {
       } else {
         _customerNameValidate = false;
       }
+      if (Constants.employeeId == '' ||
+          Constants.employeeId == null ||
+          Constants.employeeId.isEmpty) {
+        _employIDValidate = true;
+      } else {
+        _employIDValidate = false;
+      }
     });
     if (!_customerContactValidate &&
         !_customerAddressValidate &&
-        !_customerNameValidate) {
+        !_customerNameValidate &&
+        !_employIDValidate) {
       return true;
     } else {
       return false;
@@ -868,8 +886,7 @@ class _NewLeadState extends State<NewLead> {
                             companyName: _companyNameController.text,
                             longitude: long,
                             lattitude: lat,
-                            projectDescription:
-                                "_projectDescriptionController.text",
+                            userID: Constants.employeeId,
                             leadSource: _leadSourceControllerFinal,
                             remark: _remarkController.text,
                             leadDate: leadDate,

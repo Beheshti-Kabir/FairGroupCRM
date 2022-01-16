@@ -1,4 +1,4 @@
-/// new_lead : {"leadNo":"","customerName":"","customerContact":"","customerAddress":"","customerEmail":"","customerDOB":"","companyName":"","longitude":"","lattitude":"","projectDescription":"","leadSource":"","remark":"","leadDate":"","_salesPerson":"","_outlet":"","itemDetails":[{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]}
+/// new_lead : {"leadNo":"","customerName":"","customerContact":"","customerAddress":"","customerEmail":"","customerDOB":"","companyName":"","longitude":"","lattitude":"","userID":"","leadSource":"","remark":"","leadDate":"","_salesPerson":"","_outlet":"","itemDetails":[{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]}
 
 // class NewLeadJson {
 //   NewLeadJson({
@@ -32,7 +32,7 @@
 /// companyName : ""
 /// longitude : ""
 /// lattitude : ""
-/// projectDescription : ""
+/// userID : ""
 /// leadSource : ""
 /// remark : ""
 /// leadDate : ""
@@ -51,7 +51,7 @@ class New_lead_json {
       String? companyName,
       String? longitude,
       String? lattitude,
-      String? projectDescription,
+      String? userID,
       String? leadSource,
       String? remark,
       String? leadDate,
@@ -67,7 +67,7 @@ class New_lead_json {
     _companyName = companyName;
     _longitude = longitude;
     _lattitude = lattitude;
-    _projectDescription = projectDescription;
+    _userID = userID;
     _leadSource = leadSource;
     _remark = remark;
     _leadDate = leadDate;
@@ -86,7 +86,7 @@ class New_lead_json {
     _companyName = json['companyName'];
     _longitude = json['longitude'];
     _lattitude = json['lattitude'];
-    _projectDescription = json['projectDescription'];
+    _userID = json['userID'];
     _leadSource = json['leadSource'];
     _remark = json['remark'];
     _leadDate = json['leadDate'];
@@ -108,7 +108,7 @@ class New_lead_json {
   String? _companyName;
   String? _longitude;
   String? _lattitude;
-  String? _projectDescription;
+  String? _userID;
   String? _leadSource;
   String? _remark;
   String? _leadDate;
@@ -125,7 +125,7 @@ class New_lead_json {
   String? get companyName => _companyName;
   String? get longitude => _longitude;
   String? get lattitude => _lattitude;
-  String? get projectDescription => _projectDescription;
+  String? get userID => _userID;
   String? get leadSource => _leadSource;
   String? get remark => _remark;
   String? get leadDate => _leadDate;
@@ -144,7 +144,7 @@ class New_lead_json {
     map['companyName'] = _companyName;
     map['longitude'] = _longitude;
     map['lattitude'] = _lattitude;
-    map['projectDescription'] = _projectDescription;
+    map['userID'] = _userID;
     map['leadSource'] = _leadSource;
     map['remark'] = _remark;
     map['leadDate'] = _leadDate;
