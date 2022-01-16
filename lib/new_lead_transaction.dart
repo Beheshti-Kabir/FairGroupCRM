@@ -157,7 +157,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   getLeadData() async {
     print("inside getData");
     final response = await http.post(
-        Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getLeadData'),
+        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getLeadData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -259,7 +259,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   Future<String> createAlbum() async {
     var response = await http.post(
         Uri.parse(
-            'http://10.100.17.127:8090/rbd/leadInfoApi/saveLeadTransaction'),
+            'http://202.84.44.234:9085/rbd/leadInfoApi/saveLeadTransaction'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'

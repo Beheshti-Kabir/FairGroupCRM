@@ -38,6 +38,7 @@ class _SummeryPageState extends State<SummeryPage> {
   late var totalLead = '';
   late var totalCancel = '';
   late var totalInProgress = '';
+  late var totalNoAnswer = '';
 
   @override
   initState() {
@@ -55,7 +56,7 @@ class _SummeryPageState extends State<SummeryPage> {
       // result['leadInfo'];
     });
     response = await http.post(
-        Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getSummary'),
+        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getSummary'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -78,6 +79,7 @@ class _SummeryPageState extends State<SummeryPage> {
           json.decode(response.body)['totalInProgress'].toString();
       totalFollowUp = json.decode(response.body)['totalFollowup'].toString();
       totalCancel = json.decode(response.body)['totalCancel'].toString();
+      totalNoAnswer = json.decode(response.body)['totalNoAnswer'].toString();
     });
   }
 
@@ -177,7 +179,7 @@ class _SummeryPageState extends State<SummeryPage> {
                   Text('Total No-Answer', style: TextStyle(fontSize: 20.0))
                 ]),
                 Column(children: [
-                  Text(totalFollowUp, style: TextStyle(fontSize: 20.0))
+                  Text(totalNoAnswer, style: TextStyle(fontSize: 20.0))
                 ]),
               ]),
               TableRow(children: [
@@ -231,7 +233,11 @@ class _SummeryPageState extends State<SummeryPage> {
                 GestureDetector(
                   onTap: () {
                     Constants.employeeId = '';
-                    Navigator.of(context).pushReplacementNamed('/logInPage');
+                    //Navigator.of(context).pushReplacementNamed('/logInPage');
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => new MyHomePage()),
+                        (Route<dynamic> route) => false);
                   },
                   child: Container(
                     height: 40.0,
