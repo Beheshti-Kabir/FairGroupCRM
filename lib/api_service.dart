@@ -5,14 +5,14 @@ import 'package:login_prac/controller.dart';
 
 class ApiService {
   static Future<LogInResponse> login(LogInRequest controllerRequest) async {
-    String url = "http://202.84.44.234:9085/rbd/LeadInfoApi/apiLogin";
+    String url = "http://202.84.44.234:9085/rbd/leadInfoApi/apiLogin";
 
     final response = await http.post(Uri.parse(url),
         body: json.encode(controllerRequest.ToJson()));
     if ((response.statusCode == 200)) {
       return LogInResponse.fromJson(json.decode(response.body));
     } else {
-      return LogInResponse(result: 'lsdfjkdsf', accessToken: '');
+      return LogInResponse(result: 'Server Error', accessToken: '');
       //  throw Exception("Failed to load Data");
     }
   }

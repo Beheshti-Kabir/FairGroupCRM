@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/constants.dart';
+import 'package:login_prac/lists.dart';
 import 'package:login_prac/main.dart';
 import 'package:login_prac/new_lead_transaction.dart';
 
@@ -21,6 +23,7 @@ class SummeryPage extends StatefulWidget {
         '/newlead': (BuildContext context) => new NewLead(),
         '/newleadtransaction': (BuildContext context) =>
             new NewLeadTransaction(),
+        '/listsPage': (BuildContext context) => new ListsPage(),
         '/logInPage': (BuildContext context) => new MyHomePage(),
       },
     );
@@ -176,7 +179,21 @@ class _SummeryPageState extends State<SummeryPage> {
               ]),
               TableRow(children: [
                 Column(children: [
-                  Text('Total No-Answer', style: TextStyle(fontSize: 20.0))
+                  GestureDetector(
+                      onTap: () async {
+                        Fluttertoast.showToast(
+                            msg: "Loading..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.pushNamed(context, '/listsPage',
+                            arguments: 'NO-ANSWER');
+                      },
+                      child: Text('Total No Answer',
+                          style: TextStyle(fontSize: 20.0)))
                 ]),
                 Column(children: [
                   Text(totalNoAnswer, style: TextStyle(fontSize: 20.0))
@@ -184,7 +201,21 @@ class _SummeryPageState extends State<SummeryPage> {
               ]),
               TableRow(children: [
                 Column(children: [
-                  Text('Total In-progress', style: TextStyle(fontSize: 20.0))
+                  GestureDetector(
+                      onTap: () async {
+                        Fluttertoast.showToast(
+                            msg: "Loading..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.pushNamed(context, '/listsPage',
+                            arguments: 'IN-PROGRESS');
+                      },
+                      child: Text('Total In-Progress',
+                          style: TextStyle(fontSize: 20.0)))
                 ]),
                 Column(children: [
                   Text(totalInProgress, style: TextStyle(fontSize: 20.0))
@@ -192,9 +223,22 @@ class _SummeryPageState extends State<SummeryPage> {
               ]),
               TableRow(children: [
                 Column(children: [
-                  Text('Total Product not available',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20.0))
+                  GestureDetector(
+                      onTap: () async {
+                        Fluttertoast.showToast(
+                            msg: "Loading..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.pushNamed(context, '/listsPage',
+                            arguments: 'PRODUCT-NOT-AVAILABLE');
+                      },
+                      child: Text('Total Product Not Available',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20.0)))
                 ]),
                 Column(children: [
                   Text(totalPna, style: TextStyle(fontSize: 20.0))
@@ -202,7 +246,21 @@ class _SummeryPageState extends State<SummeryPage> {
               ]),
               TableRow(children: [
                 Column(children: [
-                  Text('Total FollowUp', style: TextStyle(fontSize: 20.0))
+                  GestureDetector(
+                      onTap: () async {
+                        Fluttertoast.showToast(
+                            msg: "Loading..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.pushNamed(context, '/listsPage',
+                            arguments: 'FOLLOW-UP');
+                      },
+                      child: Text('Total Follow Up',
+                          style: TextStyle(fontSize: 20.0)))
                 ]),
                 Column(children: [
                   Text(totalFollowUp, style: TextStyle(fontSize: 20.0))
@@ -210,7 +268,21 @@ class _SummeryPageState extends State<SummeryPage> {
               ]),
               TableRow(children: [
                 Column(children: [
-                  Text('Total Cancel', style: TextStyle(fontSize: 20.0))
+                  GestureDetector(
+                      onTap: () async {
+                        Fluttertoast.showToast(
+                            msg: "Loading..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.pushNamed(context, '/listsPage',
+                            arguments: 'CANCEL');
+                      },
+                      child: Text('Total Cancel',
+                          style: TextStyle(fontSize: 20.0)))
                 ]),
                 Column(children: [
                   Text(totalCancel, style: TextStyle(fontSize: 20.0))
@@ -218,7 +290,21 @@ class _SummeryPageState extends State<SummeryPage> {
               ]),
               TableRow(children: [
                 Column(children: [
-                  Text('Total Invoice', style: TextStyle(fontSize: 20.0))
+                  GestureDetector(
+                      onTap: () async {
+                        Fluttertoast.showToast(
+                            msg: "Loading..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.pushNamed(context, '/listsPage',
+                            arguments: 'INVOICED');
+                      },
+                      child: Text('Total Invoiced',
+                          style: TextStyle(fontSize: 20.0)))
                 ]),
                 Column(children: [
                   Text(totalInvoice, style: TextStyle(fontSize: 20.0))
