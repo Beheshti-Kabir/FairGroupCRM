@@ -50,7 +50,7 @@ class _ListsPageState extends State<ListsPage> {
     print('init');
   }
 
-  getSummary() async {
+  getStepType() async {
     // setState(() {
     //   isLoading = true;
     //   print("isLoading");
@@ -71,7 +71,7 @@ class _ListsPageState extends State<ListsPage> {
           'userID': Constants.employeeId,
           'stepType': stepType,
         }));
-    print("getSummary");
+    print("getStepType");
     print(json.decode(response.body).toString());
     statusValue = jsonDecode(response.body)['leadList'];
     print(statusValue.length);
@@ -101,14 +101,15 @@ class _ListsPageState extends State<ListsPage> {
     stepType = argument;
 
     if (!gotData) {
-      getSummary();
+      getStepType();
       gotData = true;
     }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Last 5 " + stepType + " LEAD"),
+        title: Text(
+            "LAST " + statusValue.length.toString() + " " + stepType + " LEAD"),
       ),
       body: statusValue.isNotEmpty
           ? SingleChildScrollView(
