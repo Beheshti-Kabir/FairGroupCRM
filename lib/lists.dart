@@ -74,7 +74,7 @@ class _ListsPageState extends State<ListsPage> {
     print("getStepType");
     print(json.decode(response.body).toString());
     statusValue = jsonDecode(response.body)['leadList'];
-    print(statusValue.length);
+    print(statusValue.toString());
     //print("done something =" + statusValue[index]['contactNo'].toString());
     // print(response.statuscode);
     setState(() {
@@ -147,7 +147,7 @@ class _ListsPageState extends State<ListsPage> {
                               children: [
                                 TableRow(children: [
                                   Column(children: [
-                                    Text('Customer Name: ',
+                                    Text('Customer Name',
                                         style: TextStyle(fontSize: 20.0))
                                   ]),
                                   Column(children: [
@@ -236,6 +236,17 @@ class _ListsPageState extends State<ListsPage> {
                                         style: TextStyle(fontSize: 20.0))
                                   ]),
                                 ]),
+                                TableRow(children: [
+                                  Column(children: [
+                                    Text('Created By',
+                                        style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                  Column(children: [
+                                    Text(statusValue[index]['createdBy'].toString(),
+                                        style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                ]),
+                                
                               ],
                             ),
                           ),

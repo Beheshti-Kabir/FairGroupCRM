@@ -20,13 +20,13 @@ class _ItemDetailsState extends State<ItemDetails> {
   @override
   initState() {
     super.initState();
-    getProduct();
+    //getProduct();
   }
 
   getProduct() async {
     print("inside getData");
     final response = await http
-        .get(Uri.parse('http://10.100.17.127:8090/rbd/leadInfoApi/getData'));
+        .get(Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getData'));
 
     produtcListJSON = json.decode(response.body)['productList'];
 
