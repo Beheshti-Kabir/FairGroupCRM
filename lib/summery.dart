@@ -136,7 +136,7 @@ class _SummeryPageState extends State<SummeryPage> {
                       onTap: () {
                         Navigator.of(context).pushNamed('/newleadtransaction');
                       },
-                      child: Container(
+                      child: SizedBox(
                         height: 40.0,
                         width: 170.0,
                         child: Material(
@@ -162,24 +162,60 @@ class _SummeryPageState extends State<SummeryPage> {
             ],
           ),
           SizedBox(height: 90.0),
-          // if (!isLoading)
-          Table(
-            defaultColumnWidth: FixedColumnWidth(180.0),
-            border: TableBorder.all(
-                color: Colors.blueAccent, style: BorderStyle.solid, width: 2),
-            // ignore: prefer_const_literals_to_create_immutables
-            children: [
-              TableRow(children: [
-                Column(children: [
-                  Text('Total Lead', style: TextStyle(fontSize: 20.0))
-                ]),
-                Column(children: [
-                  Text(totalLead, style: TextStyle(fontSize: 20.0))
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [
-                  GestureDetector(
+          Column(
+            
+            
+            children: <Widget>[
+               Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
+                child: Stack(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () async {
+                        Fluttertoast.showToast(
+                            msg: "Loading..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.pushNamed(context, '/listsPage',
+                            arguments: 'TOTAL');
+                      },
+                      child: SizedBox(
+                        height: 60.0,
+                        width: 170.0,
+                        child: Material(
+                          //borderRadius: BorderRadius.(20.0),
+                          shadowColor: Color.fromARGB(255, 65, 133, 250),
+                          color: Colors.white,
+                          elevation: 7.0,
+                          child: Center(
+                            child: Text(
+                              'Total Lead\n'+totalLead,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Stack(
+                  children: <Widget>[
+                    GestureDetector(
                       onTap: () async {
                         Fluttertoast.showToast(
                             msg: "Loading..",
@@ -192,16 +228,42 @@ class _SummeryPageState extends State<SummeryPage> {
                         Navigator.pushNamed(context, '/listsPage',
                             arguments: 'NO-ANSWER');
                       },
-                      child: Text('Total No Answer',
-                          style: TextStyle(fontSize: 20.0)))
-                ]),
-                Column(children: [
-                  Text(totalNoAnswer, style: TextStyle(fontSize: 20.0))
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [
-                  GestureDetector(
+                      child: SizedBox(
+                        height: 60.0,
+                        width: 170.0,
+                        child: Material(
+                          //borderRadius: BorderRadius.(20.0),
+                          shadowColor: Color.fromARGB(255, 65, 133, 250),
+                          color: Colors.white,
+                          elevation: 7.0,
+                          child: Center(
+                            child: Text(
+                              'Total No Answer\n'+totalNoAnswer,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+            ],),
+            SizedBox(height: 20.0,),
+            Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
+                child: Stack(
+                  children: <Widget>[
+                    GestureDetector(
                       onTap: () async {
                         Fluttertoast.showToast(
                             msg: "Loading..",
@@ -214,16 +276,36 @@ class _SummeryPageState extends State<SummeryPage> {
                         Navigator.pushNamed(context, '/listsPage',
                             arguments: 'IN-PROGRESS');
                       },
-                      child: Text('Total In-Progress',
-                          style: TextStyle(fontSize: 20.0)))
-                ]),
-                Column(children: [
-                  Text(totalInProgress, style: TextStyle(fontSize: 20.0))
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [
-                  GestureDetector(
+                      child: SizedBox(
+                        height: 60.0,
+                        width: 170.0,
+                        child: Material(
+                          //borderRadius: BorderRadius.(20.0),
+                          shadowColor: Color.fromARGB(255, 65, 133, 250),
+                          color: Colors.white,
+                          elevation: 7.0,
+                          child: Center(
+                            child: Text(
+                              'Total In-Progress\n'+totalInProgress,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Stack(
+                  children: <Widget>[
+                    GestureDetector(
                       onTap: () async {
                         Fluttertoast.showToast(
                             msg: "Loading..",
@@ -236,17 +318,42 @@ class _SummeryPageState extends State<SummeryPage> {
                         Navigator.pushNamed(context, '/listsPage',
                             arguments: 'PRODUCT-NOT-AVAILABLE');
                       },
-                      child: Text('Total Product Not Available',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20.0)))
-                ]),
-                Column(children: [
-                  Text(totalPna, style: TextStyle(fontSize: 20.0))
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [
-                  GestureDetector(
+                      child: SizedBox(
+                        height: 60.0,
+                        width: 170.0,
+                        child: Material(
+                          //borderRadius: BorderRadius.(20.0),
+                          shadowColor: Color.fromARGB(255, 65, 133, 250),
+                          color: Colors.white,
+                          elevation: 7.0,
+                          child: Center(
+                            child: Text(
+                              'Total Product Not Available\n'+totalPna,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+            ],),
+            SizedBox(height: 20.0,),
+            Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
+                child: Stack(
+                  children: <Widget>[
+                    GestureDetector(
                       onTap: () async {
                         Fluttertoast.showToast(
                             msg: "Loading..",
@@ -259,16 +366,36 @@ class _SummeryPageState extends State<SummeryPage> {
                         Navigator.pushNamed(context, '/listsPage',
                             arguments: 'FOLLOW-UP');
                       },
-                      child: Text('Total Follow Up',
-                          style: TextStyle(fontSize: 20.0)))
-                ]),
-                Column(children: [
-                  Text(totalFollowUp, style: TextStyle(fontSize: 20.0))
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [
-                  GestureDetector(
+                      child: SizedBox(
+                        height: 60.0,
+                        width: 170.0,
+                        child: Material(
+                          //borderRadius: BorderRadius.(20.0),
+                          shadowColor: Color.fromARGB(255, 65, 133, 250),
+                          color: Colors.white,
+                          elevation: 7.0,
+                          child: Center(
+                            child: Text(
+                              'Total Follow Up\n'+totalFollowUp,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Stack(
+                  children: <Widget>[
+                    GestureDetector(
                       onTap: () async {
                         Fluttertoast.showToast(
                             msg: "Loading..",
@@ -281,16 +408,42 @@ class _SummeryPageState extends State<SummeryPage> {
                         Navigator.pushNamed(context, '/listsPage',
                             arguments: 'CANCEL');
                       },
-                      child: Text('Total Cancel',
-                          style: TextStyle(fontSize: 20.0)))
-                ]),
-                Column(children: [
-                  Text(totalCancel, style: TextStyle(fontSize: 20.0))
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [
-                  GestureDetector(
+                      child: SizedBox(
+                        height: 60.0,
+                        width: 170.0,
+                        child: Material(
+                          //borderRadius: BorderRadius.(20.0),
+                          shadowColor: Color.fromARGB(255, 65, 133, 250),
+                          color: Colors.white,
+                          elevation: 7.0,
+                          child: Center(
+                            child: Text(
+                              'Total Cancel\n'+totalCancel,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+            ],),
+            SizedBox(height: 20.0,),
+            Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
+                child: Stack(
+                  children: <Widget>[
+                    GestureDetector(
                       onTap: () async {
                         Fluttertoast.showToast(
                             msg: "Loading..",
@@ -303,15 +456,202 @@ class _SummeryPageState extends State<SummeryPage> {
                         Navigator.pushNamed(context, '/listsPage',
                             arguments: 'INVOICED');
                       },
-                      child: Text('Total Invoiced',
-                          style: TextStyle(fontSize: 20.0)))
-                ]),
-                Column(children: [
-                  Text(totalInvoice, style: TextStyle(fontSize: 20.0))
-                ]),
-              ]),
-            ],
+                      child: SizedBox(
+                        height: 60.0,
+                        width: 170.0,
+                        child: Material(
+                          //borderRadius: BorderRadius.(20.0),
+                          shadowColor: Color.fromARGB(255, 65, 133, 250),
+                          color: Colors.white,
+                          elevation: 7.0,
+                          child: Center(
+                            child: Text(
+                              'Total Invoiced\n'+totalInvoice,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              
+            ],),
+            ]
+
+            
           ),
+          // Table(
+          //   defaultColumnWidth: FixedColumnWidth(180.0),
+          //   border: TableBorder.all(
+          //       color: Colors.blueAccent, style: BorderStyle.solid, width: 2),
+          //   // ignore: prefer_const_literals_to_create_immutables
+          //   children: [
+          //     TableRow(children: [
+          //       Column(children: [
+          //         GestureDetector(
+          //             onTap: () async {
+          //               Fluttertoast.showToast(
+          //                   msg: "Loading..",
+          //                   toastLength: Toast.LENGTH_SHORT,
+          //                   gravity: ToastGravity.TOP,
+          //                   timeInSecForIosWeb: 1,
+          //                   backgroundColor: Colors.red,
+          //                   textColor: Colors.white,
+          //                   fontSize: 16.0);
+          //               Navigator.pushNamed(context, '/listsPage',
+          //                   arguments: 'TOTAL');
+          //             },
+          //             child: Text('Total Lead',
+          //                 style: TextStyle(fontSize: 20.0)))
+          //       ]),
+          //       Column(children: [
+          //         Text(totalLead, style: TextStyle(fontSize: 20.0))
+          //       ]),
+          //     ]),
+          //     TableRow(children: [
+          //       Column(children: [
+          //         GestureDetector(
+          //             onTap: () async {
+          //               Fluttertoast.showToast(
+          //                   msg: "Loading..",
+          //                   toastLength: Toast.LENGTH_SHORT,
+          //                   gravity: ToastGravity.TOP,
+          //                   timeInSecForIosWeb: 1,
+          //                   backgroundColor: Colors.red,
+          //                   textColor: Colors.white,
+          //                   fontSize: 16.0);
+          //               Navigator.pushNamed(context, '/listsPage',
+          //                   arguments: 'NO-ANSWER');
+          //             },
+          //             child: Text('Total No Answer',
+          //                 style: TextStyle(fontSize: 20.0)))
+          //       ]),
+          //       Column(children: [
+          //         Text(totalNoAnswer, style: TextStyle(fontSize: 20.0))
+          //       ]),
+          //     ]),
+          //     TableRow(children: [
+          //       Column(children: [
+          //         GestureDetector(
+          //             onTap: () async {
+          //               Fluttertoast.showToast(
+          //                   msg: "Loading..",
+          //                   toastLength: Toast.LENGTH_SHORT,
+          //                   gravity: ToastGravity.TOP,
+          //                   timeInSecForIosWeb: 1,
+          //                   backgroundColor: Colors.red,
+          //                   textColor: Colors.white,
+          //                   fontSize: 16.0);
+          //               Navigator.pushNamed(context, '/listsPage',
+          //                   arguments: 'IN-PROGRESS');
+          //             },
+          //             child: Text('Total In-Progress',
+          //                 style: TextStyle(fontSize: 20.0)))
+          //       ]),
+          //       Column(children: [
+          //         Text(totalInProgress, style: TextStyle(fontSize: 20.0))
+          //       ]),
+          //     ]),
+          //     TableRow(children: [
+          //       Column(children: [
+          //         GestureDetector(
+          //             onTap: () async {
+          //               Fluttertoast.showToast(
+          //                   msg: "Loading..",
+          //                   toastLength: Toast.LENGTH_SHORT,
+          //                   gravity: ToastGravity.TOP,
+          //                   timeInSecForIosWeb: 1,
+          //                   backgroundColor: Colors.red,
+          //                   textColor: Colors.white,
+          //                   fontSize: 16.0);
+          //               Navigator.pushNamed(context, '/listsPage',
+          //                   arguments: 'PRODUCT-NOT-AVAILABLE');
+          //             },
+          //             child: Text('Total Product Not Available',
+          //                 textAlign: TextAlign.center,
+          //                 style: TextStyle(fontSize: 20.0)))
+          //       ]),
+          //       Column(children: [
+          //         Text(totalPna, style: TextStyle(fontSize: 20.0))
+          //       ]),
+          //     ]),
+          //     TableRow(children: [
+          //       Column(children: [
+          //         GestureDetector(
+          //             onTap: () async {
+          //               Fluttertoast.showToast(
+          //                   msg: "Loading..",
+          //                   toastLength: Toast.LENGTH_SHORT,
+          //                   gravity: ToastGravity.TOP,
+          //                   timeInSecForIosWeb: 1,
+          //                   backgroundColor: Colors.red,
+          //                   textColor: Colors.white,
+          //                   fontSize: 16.0);
+          //               Navigator.pushNamed(context, '/listsPage',
+          //                   arguments: 'FOLLOW-UP');
+          //             },
+          //             child: Text('Total Follow Up',
+          //                 style: TextStyle(fontSize: 20.0)))
+          //       ]),
+          //       Column(children: [
+          //         Text(totalFollowUp, style: TextStyle(fontSize: 20.0))
+          //       ]),
+          //     ]),
+          //     TableRow(children: [
+          //       Column(children: [
+          //         GestureDetector(
+          //             onTap: () async {
+          //               Fluttertoast.showToast(
+          //                   msg: "Loading..",
+          //                   toastLength: Toast.LENGTH_SHORT,
+          //                   gravity: ToastGravity.TOP,
+          //                   timeInSecForIosWeb: 1,
+          //                   backgroundColor: Colors.red,
+          //                   textColor: Colors.white,
+          //                   fontSize: 16.0);
+          //               Navigator.pushNamed(context, '/listsPage',
+          //                   arguments: 'CANCEL');
+          //             },
+          //             child: Text('Total Cancel',
+          //                 style: TextStyle(fontSize: 20.0)))
+          //       ]),
+          //       Column(children: [
+          //         Text(totalCancel, style: TextStyle(fontSize: 20.0))
+          //       ]),
+          //     ]),
+          //     TableRow(children: [
+          //       Column(children: [
+          //         GestureDetector(
+          //             onTap: () async {
+          //               Fluttertoast.showToast(
+          //                   msg: "Loading..",
+          //                   toastLength: Toast.LENGTH_SHORT,
+          //                   gravity: ToastGravity.TOP,
+          //                   timeInSecForIosWeb: 1,
+          //                   backgroundColor: Colors.red,
+          //                   textColor: Colors.white,
+          //                   fontSize: 16.0);
+          //               Navigator.pushNamed(context, '/listsPage',
+          //                   arguments: 'INVOICED');
+          //             },
+          //             child: Text('Total Invoiced',
+          //                 style: TextStyle(fontSize: 20.0)))
+          //       ]),
+          //       Column(children: [
+          //         Text(totalInvoice, style: TextStyle(fontSize: 20.0))
+          //       ]),
+          //     ]),
+          //   ],
+          // ),
           Container(
             padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
             child: Stack(

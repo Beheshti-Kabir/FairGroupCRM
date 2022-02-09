@@ -689,6 +689,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                         )),
+                        
                         onSuggestionSelected: (String val) {
                           this._salesPersonController.text = val;
                         },

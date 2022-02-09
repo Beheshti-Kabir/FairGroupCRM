@@ -59,7 +59,6 @@ class _ListsPageState extends State<ListsPage> {
     //   //print("lead=" + json.decode(response.body)['totalLead']);
     //   // result['leadInfo'];
     // });
-    print("getSuuummary");
 
     response = await http.post(
         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getDataByStatus'),
@@ -71,10 +70,15 @@ class _ListsPageState extends State<ListsPage> {
           'userID': Constants.employeeId,
           'stepType': stepType,
         }));
-    print("getStepType");
-    print(json.decode(response.body).toString());
+    //print("getStepType");
+    //print(json.decode(response.body).toString());
+    //var model = LeadListModel.fromJson();
     statusValue = jsonDecode(response.body)['leadList'];
-    print(statusValue.toString());
+    //print("\ntype"+statusValue[index].toString());
+    print(statusValue[0]['customerName'].toString());
+    //print(
+    //    "\n2nd" +  dex]['leadProducts'][0]['LeadProduct'].toString());
+
     //print("done something =" + statusValue[index]['contactNo'].toString());
     // print(response.statuscode);
     setState(() {
@@ -144,7 +148,8 @@ class _ListsPageState extends State<ListsPage> {
                                   style: BorderStyle.solid,
                                   width: 2),
                               // ignore: prefer_const_literals_to_create_immutables
-                              children: [
+                              children:
+                               [
                                 TableRow(children: [
                                   Column(children: [
                                     Text('Customer Name',
@@ -189,7 +194,7 @@ class _ListsPageState extends State<ListsPage> {
                                   ]),
                                   Column(children: [
                                     Text(
-                                        statusValue[index]['customerDob']
+                                        statusValue[index]['dob']
                                             .toString()
                                             .split("T")[0],
                                         textAlign: TextAlign.center,
@@ -203,12 +208,12 @@ class _ListsPageState extends State<ListsPage> {
                                   ]),
                                   Column(children: [
                                     Text(
-                                        statusValue[index]['created']
+                                        statusValue[index]['leadCreateTime']
                                                 .toString()
                                                 .split("Z")[0]
                                                 .split("T")[0] +
                                             "\n at \n" +
-                                            statusValue[index]['created']
+                                            statusValue[index]['leadCreateTime']
                                                 .toString()
                                                 .split("Z")[0]
                                                 .split("T")[1],
@@ -242,11 +247,25 @@ class _ListsPageState extends State<ListsPage> {
                                         style: TextStyle(fontSize: 20.0))
                                   ]),
                                   Column(children: [
-                                    Text(statusValue[index]['createdBy'].toString(),
+                                    Text(
+                                        statusValue[index]['createdBy']
+                                            .toString(),
                                         style: TextStyle(fontSize: 20.0))
                                   ]),
                                 ]),
-                                
+                                TableRow(children: [
+                                  Column(children: [
+                                    Text('Products',
+                                        style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                  Column(children: [
+                                    Text(
+                                        statusValue[index]['productName']
+                                            .toString().substring(1,statusValue[index]['productName']
+                                            .toString().length-1),
+                                        style: TextStyle(fontSize: 20.0))
+                                  ]),
+                                ]),
                               ],
                             ),
                           ),

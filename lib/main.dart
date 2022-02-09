@@ -160,15 +160,26 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
-                    Fluttertoast.showToast(
+                    bool isValid = formValidator();
+                    isValid == true
+                    ?Fluttertoast.showToast(
+                        
                         msg: "Loging In..",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.TOP,
                         timeInSecForIosWeb: 1,
                         backgroundColor: Colors.red,
                         textColor: Colors.white,
+                        fontSize: 16.0)
+                    :Fluttertoast.showToast(
+                        
+                        msg: "Field Missing",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
                         fontSize: 16.0);
-                    bool isValid = formValidator();
                     print(_employIDController.text);
                     print(_passwordController.text);
                     if (isValid) {
