@@ -104,7 +104,8 @@ class _NewLeadState extends State<NewLead> {
   getData() async {
     print("inside getData");
     final response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getData'),
+        //Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getData'),
+        Uri.parse('http://10.100.18.51:8090/rbd/leadInfoApi/getData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -873,7 +874,7 @@ class _NewLeadState extends State<NewLead> {
                         String _salesPersonControllerFinal =
                             salesPersonControllerMiddle[0];
                         List<String> leadSourceControllerMiddle =
-                            _leadNoController.text.split('Code:');
+                            _leadNoController.text.split('& Code:');
                         String _leadSourceControllerFinal =
                             leadSourceControllerMiddle[0];
                         var new_lead_values = New_lead_json(

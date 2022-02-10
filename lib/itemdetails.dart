@@ -358,7 +358,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     },
                     child: Container(
                       height: 30.0,
-                      width: 60.0,
+                      width: 80.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
                         shadowColor: Colors.lightBlueAccent,

@@ -61,7 +61,8 @@ class _ListsPageState extends State<ListsPage> {
     // });
 
     response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getDataByStatus'),
+        // Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getDataByStatus'),
+        Uri.parse('http://10.100.18.51:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -132,7 +133,7 @@ class _ListsPageState extends State<ListsPage> {
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(left: 4.0),
                           child: Container(
                             padding: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
@@ -148,66 +149,72 @@ class _ListsPageState extends State<ListsPage> {
                                   style: BorderStyle.solid,
                                   width: 2),
                               // ignore: prefer_const_literals_to_create_immutables
-                              children:
-                               [
+                              children: [
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Customer Name',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Customer Name',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
                                         statusValue[index]['customerName']
                                             .toString(),
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Customer Number',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Customer Number',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
                                         statusValue[index]['contactNo']
                                             .toString(),
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Customer Address',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4.0),
+                                      child: Text('Customer Address',
+                                          style: TextStyle(fontSize: 20.0))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
                                         statusValue[index]['address']
                                             .toString(),
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Customer DOB',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Customer DOB',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
                                         statusValue[index]['dob']
                                             .toString()
                                             .split("T")[0],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Lead Create Time',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Lead Create Time',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
                                         statusValue[index]['leadCreateTime']
                                                 .toString()
                                                 .split("Z")[0]
@@ -217,59 +224,77 @@ class _ListsPageState extends State<ListsPage> {
                                                 .toString()
                                                 .split("Z")[0]
                                                 .split("T")[1],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Customer Mail',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(statusValue[index]['email'].toString(),
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Customer Mail',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['email'].toString(),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Step Type',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(stepType,
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Step Type',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['stepType']
+                                            .toString(),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Created By',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Created By',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
                                         statusValue[index]['createdBy']
                                             .toString(),
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                                 TableRow(children: [
-                                  Column(children: [
-                                    Text('Products',
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
-                                  Column(children: [
-                                    Text(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Products',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
                                         statusValue[index]['productName']
-                                            .toString().substring(1,statusValue[index]['productName']
-                                            .toString().length-1),
-                                        style: TextStyle(fontSize: 20.0))
-                                  ]),
+                                            .toString()
+                                            .substring(
+                                                1,
+                                                statusValue[index]
+                                                            ['productName']
+                                                        .toString()
+                                                        .length -
+                                                    1),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                 ]),
                               ],
                             ),
+                            
                           ),
                         );
+                        
                       },
                     ),
 
@@ -307,6 +332,9 @@ class _ListsPageState extends State<ListsPage> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 20.0,
+                    )
                     //if (isLoading)
                     //Text("Data is loading...", style: TextStyle(fontSize: 40.0))
                   ],

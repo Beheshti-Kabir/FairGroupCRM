@@ -109,7 +109,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   //final _stepNoControler = TextEditingController();
 
   final _todoController = TextEditingController();
-  final _stepController = TextEditingController();
+  late final _stepController = TextEditingController();
 
   bool _leadNoValidate = false;
   bool _meetDateVaidate = false;
@@ -157,7 +157,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   getLeadData() async {
     print("inside getData");
     final response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getLeadData'),
+        // Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getLeadData'),
+        Uri.parse('http://10.100.18.51:8090/rbd/leadInfoApi/getLeadData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -672,7 +673,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
             ),
             //SizedBox(height: 15.0),
             Container(
-                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -707,40 +708,88 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         ),
                       ),
                     ])),
+            // Container(
+            //     padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         TypeAheadFormField(
+            //           suggestionsCallback: (pattern) => stepNoList.where(
+            //             (item) => item.toLowerCase().contains(
+            //                   pattern.toLowerCase(),
+            //                 ),
+            //           ),
+            //           itemBuilder: (_, String item) => ListTile(
+            //               title: Text(
+            //             item,
+            //             overflow: TextOverflow.ellipsis,
+            //             maxLines: 2,
+            //           )),
+            //           onSuggestionSelected: (String val) {
+            //             this._stepController.text = val;
+            //           },
+            //           getImmediateSuggestions: true,
+            //           hideSuggestionsOnKeyboardHide: false,
+            //           hideOnEmpty: false,
+            //           noItemsFoundBuilder: (context) => Padding(
+            //             padding: const EdgeInsets.all(8.0),
+            //             child: Text('No Suggestion'),
+            //           ),
+            //           textFieldConfiguration: TextFieldConfiguration(
+            //             decoration: InputDecoration(
+            //                 hintText: 'Type', labelText: 'Step No'),
+            //             controller: this._stepController,
+            //           ),
+            //         )
+            //       ],
+            //     )),
+            
             Container(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TypeAheadFormField(
-                      suggestionsCallback: (pattern) => stepNoList.where(
-                        (item) => item.toLowerCase().contains(
-                              pattern.toLowerCase(),
-                            ),
-                      ),
-                      itemBuilder: (_, String item) => ListTile(
-                          title: Text(
-                        item,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      )),
-                      onSuggestionSelected: (String val) {
-                        this._stepController.text = val;
-                      },
-                      getImmediateSuggestions: true,
-                      hideSuggestionsOnKeyboardHide: false,
-                      hideOnEmpty: false,
-                      noItemsFoundBuilder: (context) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('No Suggestion'),
-                      ),
-                      textFieldConfiguration: TextFieldConfiguration(
-                        decoration: InputDecoration(
-                            hintText: 'Type', labelText: 'Step No'),
-                        controller: this._stepController,
-                      ),
-                    )
+                    Text("Step Type",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Row(
+                      // ignore: pre
+                      //fer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          value: _stepController.text,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: icnSize,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.blue),
+                          underline: Container(
+                            height: 2,
+                            color: dropColor,
+                          ),
+                          onChanged: (String? newValue_stepType) {
+                            setState(() {
+                              _stepController.text = newValue_stepType!;
+                            });
+                          },
+                          items: stepNoList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                      ],
+                    ),
+                    
                   ],
                 )),
             SizedBox(height: 20.0),
@@ -840,7 +889,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                 ),
               ),
             ),
-            SizedBox(height: 15.0),
+            SizedBox(height: 100.0),
           ],
         ),
       ),
