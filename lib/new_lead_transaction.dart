@@ -157,8 +157,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   getLeadData() async {
     print("inside getData");
     final response = await http.post(
-        // Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getLeadData'),
-        Uri.parse('http://10.100.18.51:8090/rbd/leadInfoApi/getLeadData'),
+         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getLeadData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'

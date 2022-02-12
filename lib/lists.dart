@@ -61,8 +61,7 @@ class _ListsPageState extends State<ListsPage> {
     // });
 
     response = await http.post(
-        // Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getDataByStatus'),
-        Uri.parse('http://10.100.18.51:8090/rbd/leadInfoApi/getDataByStatus'),
+        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -133,7 +132,7 @@ class _ListsPageState extends State<ListsPage> {
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
+                          padding: const EdgeInsets.only(left: 4.0,bottom: 10.0,right: 4.0),
                           child: Container(
                             padding: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
@@ -293,6 +292,7 @@ class _ListsPageState extends State<ListsPage> {
                             ),
                             
                           ),
+                          
                         );
                         
                       },

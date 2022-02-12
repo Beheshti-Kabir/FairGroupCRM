@@ -59,8 +59,7 @@ class _SummeryPageState extends State<SummeryPage> {
       // result['leadInfo'];
     });
     response = await http.post(
-        //Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getSummary'),
-        Uri.parse('http://10.100.18.51:8090/rbd/leadInfoApi/getSummary'),
+        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getSummary'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -97,67 +96,74 @@ class _SummeryPageState extends State<SummeryPage> {
         children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.fromLTRB(25.0, 20.0, 0.0, 0.0),
-                child: Stack(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/newlead');
-                      },
-                      child: Container(
-                        height: 40.0,
-                        width: 110.0,
-                        child: Material(
-                          borderRadius: BorderRadius.circular(20.0),
-                          shadowColor: Colors.blueAccent,
-                          color: Colors.blue[800],
-                          elevation: 7.0,
-                          child: Center(
-                            child: Text(
-                              'New Lead',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+              Expanded(
+                flex:1,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(25.0, 20.0, 0.0, 0.0),
+                  child:
+
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/newlead');
+                        },
+                        child: Container(
+                          height: 40.0,
+                          //width: 110.0,
+                          child: Material(
+                            borderRadius: BorderRadius.circular(20.0),
+                            shadowColor: Colors.blueAccent,
+                            color: Colors.blue[800],
+                            elevation: 7.0,
+                            child: Center(
+                              child: Text(
+                                'New Lead',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+
+
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(35.0, 20.0, 0.0, 0.0),
-                child: Stack(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/newleadtransaction');
-                      },
-                      child: SizedBox(
-                        height: 40.0,
-                        width: 170.0,
-                        child: Material(
-                          borderRadius: BorderRadius.circular(20.0),
-                          shadowColor: Colors.blueAccent,
-                          color: Colors.blue[800],
-                          elevation: 7.0,
-                          child: Center(
-                            child: Text(
-                              'New Lead Transacsion',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+              Expanded(
+                flex:1,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+                  child: Stack(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/newleadtransaction');
+                        },
+                        child: SizedBox(
+                          height: 40.0,
+                          //width: 170.0,
+                          child: Material(
+                            borderRadius: BorderRadius.circular(20.0),
+                            shadowColor: Colors.blueAccent,
+                            color: Colors.blue[800],
+                            elevation: 7.0,
+                            child: Center(
+                              child: Text(
+                                'New Lead Transacsion',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -167,108 +173,61 @@ class _SummeryPageState extends State<SummeryPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
-                  child: Stack(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () async {
-                          
-                          Fluttertoast.showToast(
-                              msg: "Loading..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                              totalLead=="0"
-                              ? Fluttertoast.showToast(
-                              msg: "No Data",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0)
-                          :Navigator.pushNamed(context, '/listsPage',
-                              arguments: 'TOTAL');
-                        },
-                        child: SizedBox(
-                          height: 60.0,
-                          width: 170.0,
-                          child: Material(
-                            //borderRadius: BorderRadius.(20.0),
-                            shadowColor: Color.fromARGB(255, 65, 133, 250),
-                            color: Colors.white,
-                            elevation: 7.0,
-                            child: Center(
-                              child: Text(
-                                'Total Lead\n' + totalLead,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                Expanded(
+                  flex:1,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                    child: Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+
+                            Fluttertoast.showToast(
+                                msg: "Loading..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                                totalLead=="0"
+                                ? Fluttertoast.showToast(
+                                msg: "No Data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0)
+                            :Navigator.pushNamed(context, '/listsPage',
+                                arguments: 'TOTAL');
+                          },
+                          child: SizedBox(
+                            height: 60.0,
+                            //width: 170.0,
+                            child: Material(
+                              //borderRadius: BorderRadius.(20.0),
+                              shadowColor: Color.fromARGB(255, 65, 133, 250),
+                              color: Colors.white,
+                              elevation: 7.0,
+                              child: Center(
+                                child: Text(
+                                  'Total Lead\n' + totalLead,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: Stack(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () async {
-                          Fluttertoast.showToast(
-                              msg: "Loading..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                              totalInProgress == "0"
-                              ? Fluttertoast.showToast(
-                              msg: "No Data",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0)
-                          :Navigator.pushNamed(context, '/listsPage',
-                              arguments: 'IN-PROGRESS');
-                        },
-                        child: SizedBox(
-                          height: 60.0,
-                          width: 170.0,
-                          child: Material(
-                            //borderRadius: BorderRadius.(20.0),
-                            shadowColor: Color.fromARGB(255, 65, 133, 250),
-                            color: Colors.white,
-                            elevation: 7.0,
-                            child: Center(
-                              child: Text(
-                                'Total New Lead\n' + totalInProgress,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
             ),
             SizedBox(
               height: 20.0,
@@ -276,107 +235,114 @@ class _SummeryPageState extends State<SummeryPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
-                  child: Stack(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () async {
-                          Fluttertoast.showToast(
-                              msg: "Loading..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                          totalNoAnswer == "0"
-                              ? Fluttertoast.showToast(
-                                  msg: "No Data",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.TOP,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0)
-                              : Navigator.pushNamed(context, '/listsPage',
-                                  arguments: 'NO-ANSWER');
-                        },
-                        child: SizedBox(
-                          height: 60.0,
-                          width: 170.0,
-                          child: Material(
-                            //borderRadius: BorderRadius.(20.0),
-                            shadowColor: Color.fromARGB(255, 65, 133, 250),
-                            color: Colors.white,
-                            elevation: 7.0,
-                            child: Center(
-                              child: Text(
-                                'Total No Answer\n' + totalNoAnswer,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                Expanded(
+                  flex:1,
+                  child: Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            Fluttertoast.showToast(
+                                msg: "Loading..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            totalInProgress == "0"
+                                ? Fluttertoast.showToast(
+                                msg: "No Data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0)
+                                :Navigator.pushNamed(context, '/listsPage',
+                                arguments: 'IN-PROGRESS');
+                          },
+                          child: SizedBox(
+                            height: 60.0,
+                            //width: 170.0,
+                            child: Material(
+                              //borderRadius: BorderRadius.(20.0),
+                              shadowColor: Color.fromARGB(255, 65, 133, 250),
+                              color: Colors.white,
+                              elevation: 7.0,
+                              child: Center(
+                                child: Text(
+                                  'Total New Lead\n' + totalInProgress,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: Stack(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () async {
-                          Fluttertoast.showToast(
-                              msg: "Loading..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                              totalPna == "0"
-                              ? Fluttertoast.showToast(
-                              msg: "No Data",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0)
-                          :Navigator.pushNamed(context, '/listsPage',
-                              arguments: 'PRODUCT-NOT-AVAILABLE');
-                        },
-                        child: SizedBox(
-                          height: 60.0,
-                          width: 170.0,
-                          child: Material(
-                            //borderRadius: BorderRadius.(20.0),
-                            shadowColor: Color.fromARGB(255, 65, 133, 250),
-                            color: Colors.white,
-                            elevation: 7.0,
-                            child: Center(
-                              child: Text(
-                                'Total Product Not Available\n' + totalPna,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+
+                Expanded(
+                  flex:1,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0.0),
+                    child: Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            Fluttertoast.showToast(
+                                msg: "Loading..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            totalNoAnswer == "0"
+                                ? Fluttertoast.showToast(
+                                    msg: "No Data",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0)
+                                : Navigator.pushNamed(context, '/listsPage',
+                                    arguments: 'NO-ANSWER');
+                          },
+                          child: SizedBox(
+                            height: 60.0,
+                            //width: 170.0,
+                            child: Material(
+                              //borderRadius: BorderRadius.(20.0),
+                              shadowColor: Color.fromARGB(255, 65, 133, 250),
+                              color: Colors.white,
+                              elevation: 7.0,
+                              child: Center(
+                                child: Text(
+                                  'Total No Answer\n' + totalNoAnswer,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ],
+                ],
             ),
             SizedBox(
               height: 20.0,
@@ -384,108 +350,115 @@ class _SummeryPageState extends State<SummeryPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                
-                Container(
-                  padding: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
-                  child: Stack(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () async {
-                          Fluttertoast.showToast(
-                              msg: "Loading..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                              totalFollowUp == "0"
-                              ? Fluttertoast.showToast(
-                              msg: "No Data",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0)
-                          :Navigator.pushNamed(context, '/listsPage',
-                              arguments: 'FOLLOW-UP');
-                        },
-                        child: SizedBox(
-                          height: 60.0,
-                          width: 170.0,
-                          child: Material(
-                            //borderRadius: BorderRadius.(20.0),
-                            shadowColor: Color.fromARGB(255, 65, 133, 250),
-                            color: Colors.white,
-                            elevation: 7.0,
-                            child: Center(
-                              child: Text(
-                                'Total Follow Up\n' + totalFollowUp,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                Expanded(
+                  flex:1,
+                  child: Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            Fluttertoast.showToast(
+                                msg: "Loading..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            totalPna == "0"
+                                ? Fluttertoast.showToast(
+                                msg: "No Data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0)
+                                :Navigator.pushNamed(context, '/listsPage',
+                                arguments: 'PRODUCT-NOT-AVAILABLE');
+                          },
+                          child: SizedBox(
+                            height: 60.0,
+                            //width: 170.0,
+                            child: Material(
+                              //borderRadius: BorderRadius.(20.0),
+                              shadowColor: Color.fromARGB(255, 65, 133, 250),
+                              color: Colors.white,
+                              elevation: 7.0,
+                              child: Center(
+                                child: Text(
+                                  'Total Product Not Available\n' + totalPna,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: Stack(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () async {
-                          Fluttertoast.showToast(
-                              msg: "Loading..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                              totalCancel == "0"
-                              ? Fluttertoast.showToast(
-                              msg: "No Data",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0)
-                          :Navigator.pushNamed(context, '/listsPage',
-                              arguments: 'CANCEL');
-                        },
-                        child: SizedBox(
-                          height: 60.0,
-                          width: 170.0,
-                          child: Material(
-                            //borderRadius: BorderRadius.(20.0),
-                            shadowColor: Color.fromARGB(255, 65, 133, 250),
-                            color: Colors.white,
-                            elevation: 7.0,
-                            child: Center(
-                              child: Text(
-                                'Total Cancel\n' + totalCancel,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+
+
+                Expanded(
+                  flex:1,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0.0),
+                    child: Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            Fluttertoast.showToast(
+                                msg: "Loading..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                                totalFollowUp == "0"
+                                ? Fluttertoast.showToast(
+                                msg: "No Data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0)
+                            :Navigator.pushNamed(context, '/listsPage',
+                                arguments: 'FOLLOW-UP');
+                          },
+                          child: SizedBox(
+                            height: 60.0,
+                            //width: 170.0,
+                            child: Material(
+                              //borderRadius: BorderRadius.(20.0),
+                              shadowColor: Color.fromARGB(255, 65, 133, 250),
+                              color: Colors.white,
+                              elevation: 7.0,
+                              child: Center(
+                                child: Text(
+                                  'Total Follow Up\n' + totalFollowUp,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ],
+                ],
             ),
             SizedBox(
               height: 20.0,
@@ -493,54 +466,112 @@ class _SummeryPageState extends State<SummeryPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
-                  child: Stack(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () async {
-                          Fluttertoast.showToast(
-                              msg: "Loading..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                              totalInvoice == "0"
-                              ? Fluttertoast.showToast(
-                              msg: "No Data",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0)
-                          :Navigator.pushNamed(context, '/listsPage',
-                              arguments: 'INVOICED');
-                        },
-                        child: SizedBox(
-                          height: 60.0,
-                          width: 170.0,
-                          child: Material(
-                            //borderRadius: BorderRadius.(20.0),
-                            shadowColor: Color.fromARGB(255, 65, 133, 250),
-                            color: Colors.white,
-                            elevation: 7.0,
-                            child: Center(
-                              child: Text(
-                                'Total Invoiced\n' + totalInvoice,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                Expanded(
+                  flex:1,
+                  child: Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            Fluttertoast.showToast(
+                                msg: "Loading..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            totalCancel == "0"
+                                ? Fluttertoast.showToast(
+                                msg: "No Data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0)
+                                :Navigator.pushNamed(context, '/listsPage',
+                                arguments: 'CANCEL');
+                          },
+                          child: SizedBox(
+                            height: 60.0,
+                            //width: 170.0,
+                            child: Material(
+                              //borderRadius: BorderRadius.(20.0),
+                              shadowColor: Color.fromARGB(255, 65, 133, 250),
+                              color: Colors.white,
+                              elevation: 7.0,
+                              child: Center(
+                                child: Text(
+                                  'Total Cancel\n' + totalCancel,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ),
+                ),
+
+                Expanded(
+                  flex: 1,
+
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0.0),
+                    child: Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            Fluttertoast.showToast(
+                                msg: "Loading..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                                totalInvoice == "0"
+                                ? Fluttertoast.showToast(
+                                msg: "No Data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0)
+                            :Navigator.pushNamed(context, '/listsPage',
+                                arguments: 'INVOICED');
+                          },
+                          child: SizedBox(
+                            height: 60.0,
+                            //width: 170.0,
+                            child: Material(
+                              //borderRadius: BorderRadius.(20.0),
+                              shadowColor: Color.fromARGB(255, 65, 133, 250),
+                              color: Colors.white,
+                              elevation: 7.0,
+                              child: Center(
+                                child: Text(
+                                  'Total Invoiced\n' + totalInvoice,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

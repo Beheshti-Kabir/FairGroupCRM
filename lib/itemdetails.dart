@@ -370,6 +370,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                             style:
                                 TextStyle(color: Colors.white, fontSize: 10.0),
                           ),
+                          
                         ),
                       ),
                     ),
