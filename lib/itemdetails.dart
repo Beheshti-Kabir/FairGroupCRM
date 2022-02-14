@@ -265,6 +265,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
+                    keyboardType: TextInputType.number,
                   )
                 ],
               ),
@@ -295,6 +296,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                 children: <Widget>[
                   TextField(
                     controller: _unitPriceController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Unit Price',
                       labelStyle: TextStyle(

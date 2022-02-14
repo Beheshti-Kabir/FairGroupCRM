@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/api_service.dart';
+import 'package:login_prac/changePassword.dart';
 import 'package:login_prac/constants.dart';
 import 'package:login_prac/itemdetails.dart';
 import 'package:login_prac/lists.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/itemdetails': (BuildContext context) => ItemDetails(),
         '/logInPage': (BuildContext context) => MyHomePage(),
         '/listsPage': (BuildContext context) => ListsPage(),
+        '/changePasswordPage': (BuildContext context) => ChangePasswordPage(),
       },
       home: MyHomePage(),
     );
@@ -71,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,8 +237,44 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 300.0,
+            // SizedBox(
+            //   height: 300.0,
+            // )
+            Container(
+              padding: EdgeInsets.only(top: 20.0),
+              child: GestureDetector(
+                          onTap: () async {
+                            Fluttertoast.showToast(
+                                msg: "Loading..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            Navigator.pushNamed(context, '/changePasswordPage');
+                          },
+                          child: SizedBox(
+                            height: 60.0,
+                            //width: 170.0,
+                            child: Material(
+                              //borderRadius: BorderRadius.(20.0),
+                              //shadowColor: Color.fromARGB(255, 65, 133, 250),
+                              //color: Colors.white,
+                              
+                              child: Center(
+                                child: Text(
+                                  'Change Password',
+                                  style: TextStyle(
+                                    color: Colors.blue[800],
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
             )
           ],
         ),

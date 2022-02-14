@@ -412,45 +412,52 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                   ],
                 )),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
-                  TextField(
-                    controller: _personNameController,
-                    decoration: InputDecoration(
-                      errorText:
-                          _personNameValidate ? 'Value Can\'t Be Empty' : null,
-                      labelText: 'Person Name*',
-                      labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                    ),
-                  )
+                  // TextField(
+                  //   controller: _personNameController,
+                  //   decoration: InputDecoration(
+                  //     errorText:
+                  //         _personNameValidate ? 'Value Can\'t Be Empty' : null,
+                  //     labelText: 'Person Name*',
+                  //     labelStyle: TextStyle(
+                  //         fontWeight: FontWeight.bold, color: Colors.grey),
+                  //     focusedBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(color: Colors.blue),
+                  //     ),
+                  //   ),
+                  // )
+                  Text("Customer Name: "+ _personNameController.text
+                  ,style: TextStyle(  color: Colors.grey,fontSize: 20.0),),
+
                 ],
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
-                  TextField(
-                    controller: _personContactController,
-                    decoration: InputDecoration(
-                      errorText: _personContactValidate
-                          ? 'Value Can\'t Be Empty'
-                          : null,
-                      labelText: 'Person Contact*',
-                      labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                    ),
-                  )
+                  // TextField(
+                  //   controller: _personContactController,
+                  //   decoration: InputDecoration(
+                  //     errorText: _personContactValidate
+                  //         ? 'Value Can\'t Be Empty'
+                  //         : null,
+                  //     labelText: 'Person Contact*',
+                  //     labelStyle: TextStyle(
+                  //         fontWeight: FontWeight.bold, color: Colors.grey),
+                  //     focusedBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(color: Colors.blue),
+                  //     ),
+                  //   ),
+                  // )
+                  Text("Customer Contact: "+ _personContactController.text
+                  ,style: TextStyle(  color: Colors.grey,
+                  fontSize: 20.0),),
+
                 ],
               ),
             ),
