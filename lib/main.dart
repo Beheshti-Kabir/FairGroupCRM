@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'dart:ui';
+import 'package:footer/footer_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:flutter/material.dart';
+import 'package:footer/footer.dart';
 import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/api_service.dart';
 import 'package:login_prac/changePassword.dart';
@@ -46,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final _passwordController = TextEditingController();
   bool _employIDValidate = false;
   bool _passwordValidate = false;
+  String version = Constants.version;
   //logInValidator(){}
 
   bool formValidator() {
@@ -75,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
+        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -275,7 +279,23 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
-            )
+            ),
+        //     FooterView(children: <Widget>[], footer: new Footer(
+        //   child: Padding(
+        //     padding: new EdgeInsets.all(10.0),
+        //     child: Text('Version 1.0.6\nDeveloped By Fair Group, IT Software Team'),
+        //   ),
+        // ),
+        // //flex: 1,
+        // )
+        Container(
+          alignment: Alignment.bottomRight,
+          padding: EdgeInsets.only(top: 50.0,right: 10.0),
+          child: Text('Version $version\nDeveloped By Fair Group,\nIT Software Team',
+                textAlign: TextAlign.right,
+                style: TextStyle(color: Colors.grey),),
+        )
+
           ],
         ),
       ),
