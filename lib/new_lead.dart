@@ -199,6 +199,8 @@ class _NewLeadState extends State<NewLead> {
   bool _leadNoValidate = false;
   bool _customerContactValidate = false;
   bool _customerAddressValidate = false;
+  bool _customerEmailValidate = false;
+  bool _customerComapnyValidate = false;
   bool _customerNameValidate = false;
   bool _employIDValidate = false;
   bool isLoad = true;
@@ -254,12 +256,25 @@ class _NewLeadState extends State<NewLead> {
     String customerContact = _customerContactController.text;
     String customerName = _customerNameController.text;
     String customerAddress = _customerAddressController.text;
+    String customerEmail = _customerEmailController.text;
+    String customerCompany = _companyNameController.text;
+    
 
     setState(() {
       if (customerContact == null || customerContact.isEmpty) {
         _customerContactValidate = true;
       } else {
         _customerContactValidate = false;
+      }
+      if (customerCompany == null || customerCompany.isEmpty) {
+        _customerContactValidate = true;
+      } else {
+        _customerContactValidate = false;
+      }
+      if (customerCompany == null || customerCompany.isEmpty) {
+        _customerComapnyValidate = true;
+      } else {
+        _customerEmailValidate = false;
       }
       if (customerAddress == null || customerAddress.isEmpty) {
         _customerAddressValidate = true;
@@ -281,6 +296,8 @@ class _NewLeadState extends State<NewLead> {
     });
     if (!_customerContactValidate &&
         !_customerAddressValidate &&
+        !_customerComapnyValidate &&
+        !_customerEmailValidate &&
         !_customerNameValidate &&
         !_employIDValidate) {
       return true;
@@ -407,6 +424,7 @@ class _NewLeadState extends State<NewLead> {
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
+                    keyboardType: TextInputType.number,
                   )
                 ],
               ),
@@ -419,7 +437,10 @@ class _NewLeadState extends State<NewLead> {
                   TextField(
                     controller: _customerEmailController,
                     decoration: InputDecoration(
-                      labelText: 'Customer Email',
+                      errorText: _customerEmailValidate
+                          ? 'Value Can\'t Be Empty'
+                          : null,
+                      labelText: 'Customer Email*',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
                       focusedBorder: UnderlineInputBorder(
@@ -483,7 +504,7 @@ class _NewLeadState extends State<NewLead> {
                   }, currentTime: DateTime.now());
                 },
                 child: Text(
-                  "Customer DOB*: $customerDOB",
+                  "Customer DOB: $customerDOB",
                   style: TextStyle(
                       fontSize: 17,
                       color: Colors.grey,
@@ -502,7 +523,10 @@ class _NewLeadState extends State<NewLead> {
                   TextField(
                     controller: _companyNameController,
                     decoration: InputDecoration(
-                      labelText: 'Company Name',
+                      errorText: _customerComapnyValidate
+                          ? 'Value Can\'t Be Empty'
+                          : null,
+                      labelText: 'Company Name*',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
                       focusedBorder: UnderlineInputBorder(

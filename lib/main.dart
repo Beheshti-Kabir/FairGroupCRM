@@ -195,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       var response = await ApiService.login(model);
                       print(response.result);
                       if (response.result.toLowerCase().trim() == 'success') {
-                        Constants.employeeId = _employIDController.text;
+                        Constants.employeeId = _employIDController.text.trim();
                         Navigator.of(context).pushReplacementNamed('/summery');
                       } else if (response.result.toLowerCase().trim() ==
                           'fail') {
