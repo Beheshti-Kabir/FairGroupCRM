@@ -292,11 +292,7 @@ class _NewLeadState extends State<NewLead> {
       } else {
         _customerContactValidate = false;
       }
-      if (customerCompany == null || customerCompany.isEmpty) {
-        _customerContactValidate = true;
-      } else {
-        _customerContactValidate = false;
-      }
+      
       if (customerCompany == null || customerCompany.isEmpty) {
         _customerComapnyValidate = true;
       } else {
@@ -312,6 +308,12 @@ class _NewLeadState extends State<NewLead> {
       } else {
         _customerNameValidate = false;
       }
+      if (customerEmail == null || customerEmail.isEmpty) {
+        _customerEmailValidate = true;
+      } else {
+        _customerEmailValidate = false;
+      }
+      
       if (Constants.employeeId == '' ||
           Constants.employeeId == null ||
           Constants.employeeId.isEmpty) {
