@@ -105,6 +105,7 @@ class _NewLeadState extends State<NewLead> {
     print("inside getData");
     final response = await http.post(
         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getData'),
+        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -116,10 +117,27 @@ class _NewLeadState extends State<NewLead> {
     salesPersonJSON = json.decode(response.body)['salesPersonList'];
     leadSourceJSON = json.decode(response.body)['leadSourceList'];
     outletJSON = json.decode(response.body)['storeList'];
-
+    professionJSON = json.decode(response.body)['professionList'];
+    paymentMethodJSON = json.decode(response.body)['payModeList'];
     salesPersonNumber = salesPersonJSON.length;
-    outletNumber = outletJSON.length;
+    //outletNumber = outletJSON.length;
     leadSourceNumber = leadSourceJSON.length;
+
+    //print(professionJSON.toString());
+
+    professionNumber = professionJSON.length;
+    for (var i = 0; i < professionNumber; i++) {
+      String professionMiddle = professionJSON[i]['name'].toString();
+      professionList.insert(0, professionMiddle);
+    }
+
+    print(professionList);
+    paymentMethodNumber = paymentMethodJSON.length;
+    for (var i = 0; i < paymentMethodNumber; i++) {
+      String paymentMiddle = paymentMethodJSON[i]['name'].toString();
+      paymentMethodList.insert(0, paymentMiddle);
+    }
+    print(paymentMethodList);
 
     // print(salesPersonJSON[4]['empCode'].toString() +
     //     ' ' +
@@ -173,6 +191,8 @@ class _NewLeadState extends State<NewLead> {
   final _remarkController = TextEditingController();
   final _salesPersonController = TextEditingController();
   final _outletController = TextEditingController();
+  late final _professionController = TextEditingController();
+  late final _paymentMethodController = TextEditingController();
 
   String leadNo = '';
   String customerContact = '';
@@ -190,9 +210,15 @@ class _NewLeadState extends State<NewLead> {
   late var salesPersonJSON;
   late var leadSourceJSON;
   late var outletJSON;
+  late var professionJSON;
+  late var paymentMethodJSON;
   late var salesPersonNumber;
   late var outletNumber;
   late var leadSourceNumber;
+  late var professionNumber;
+  late var paymentMethodNumber;
+  List<String> professionList = [''];
+  List<String> paymentMethodList = [''];
 
   String _leadSourceController = '';
 
@@ -209,6 +235,7 @@ class _NewLeadState extends State<NewLead> {
     print('json value=' + new_lead_values.toJson().toString());
     var response = await http.post(
         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/saveLeadInfo'),
+       //Uri.parse('http://10.100.18.167/rbd/leadInfoApi/saveLeadInfo'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -258,7 +285,6 @@ class _NewLeadState extends State<NewLead> {
     String customerAddress = _customerAddressController.text;
     String customerEmail = _customerEmailController.text;
     String customerCompany = _companyNameController.text;
-    
 
     setState(() {
       if (customerContact == null || customerContact.isEmpty) {
@@ -343,47 +369,47 @@ class _NewLeadState extends State<NewLead> {
             SizedBox(
               height: 15.0,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
-              child: TextButton(
-                onPressed: () {
-                  DatePicker.showDatePicker(context, showTitleActions: true,
-                      //     onChanged: (date) {
-                      //   print('change $date in time zone ' +
-                      //       date.timeZoneOffset.inHours.toString());
-                      // },
-                      onConfirm: (date) {
-                    print('confirm $date');
-                    leadDate = date.toString();
+            // Container(
+            //   padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
+            //   child: TextButton(
+            //     onPressed: () {
+            //       DatePicker.showDatePicker(context, showTitleActions: true,
+            //           //     onChanged: (date) {
+            //           //   print('change $date in time zone ' +
+            //           //       date.timeZoneOffset.inHours.toString());
+            //           // },
+            //           onConfirm: (date) {
+            //         print('confirm $date');
+            //         leadDate = date.toString();
 
-                    var lead_date_day = date.day.toInt() < 10
-                        ? '0' + date.day.toString()
-                        : date.day.toString();
-                    var lead_date_month = date.month.toInt() < 10
-                        ? '0' + date.month.toString()
-                        : date.month.toString();
+            //         var lead_date_day = date.day.toInt() < 10
+            //             ? '0' + date.day.toString()
+            //             : date.day.toString();
+            //         var lead_date_month = date.month.toInt() < 10
+            //             ? '0' + date.month.toString()
+            //             : date.month.toString();
 
-                    setState(() {
-                      leadDate = date.year.toString() +
-                          '-' +
-                          lead_date_month.toString() +
-                          '-' +
-                          lead_date_day.toString();
-                    });
-                  }, currentTime: DateTime.now());
-                },
-                child: Text(
-                  "Lead Date* : $leadDate",
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            // SizedBox(
-            //   height: 10.0,
+            //         setState(() {
+            //           leadDate = date.year.toString() +
+            //               '-' +
+            //               lead_date_month.toString() +
+            //               '-' +
+            //               lead_date_day.toString();
+            //         });
+            //       }, currentTime: DateTime.now());
+            //     },
+            //     child: Text(
+            //       "Lead Date* : $leadDate",
+            //       style: TextStyle(
+            //           fontSize: 17,
+            //           color: Colors.grey,
+            //           fontWeight: FontWeight.bold),
+            //     ),
+            //   ),
             // ),
+            // // SizedBox(
+            // //   height: 10.0,
+            // // ),
             Container(
               padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
@@ -537,6 +563,99 @@ class _NewLeadState extends State<NewLead> {
                 ],
               ),
             ),
+            Container(
+                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Profession",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Row(
+                      // ignore: pre
+                      //fer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          value: _professionController.text,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: icnSize,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.blue),
+                          underline: Container(
+                            height: 2,
+                            color: dropColor,
+                          ),
+                          onChanged: (String? newValue_stepType) {
+                            setState(() {
+                              _professionController.text = newValue_stepType!;
+                            });
+                          },
+                          items: professionList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+            Container(
+                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Payment Method",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Row(
+                      // ignore: pre
+                      //fer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          value: _paymentMethodController.text,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: icnSize,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.blue),
+                          underline: Container(
+                            height: 2,
+                            color: dropColor,
+                          ),
+                          onChanged: (String? newValue_payment) {
+                            setState(() {
+                              _paymentMethodController.text = newValue_payment!;
+                            });
+                          },
+                          items: paymentMethodList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+
             // Container(
             //   padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
             //   child: Column(
@@ -661,7 +780,11 @@ class _NewLeadState extends State<NewLead> {
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
                         decoration: InputDecoration(
-                            hintText: 'Type', labelText: 'Lead Source'),
+                            hintText: 'Type',
+                            labelText: 'Lead Source',
+                            labelStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold)),
                         controller: this._leadNoController,
                       ),
                     )
@@ -743,7 +866,11 @@ class _NewLeadState extends State<NewLead> {
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
                         decoration: InputDecoration(
-                            hintText: 'Type', labelText: 'Sales Person'),
+                            hintText: 'Type',
+                            labelText: 'Sales Person',
+                            labelStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold)),
                         controller: this._salesPersonController,
                       ),
                     )
@@ -901,7 +1028,7 @@ class _NewLeadState extends State<NewLead> {
                         String _leadSourceControllerFinal =
                             leadSourceControllerMiddle[0];
                         var new_lead_values = New_lead_json(
-                            leadNo: "_leadNoController.text",
+                            profession: _professionController.toString(),
                             customerName: _customerNameController.text,
                             customerContact: _customerContactController.text,
                             customerAddress: _customerAddressController.text,
@@ -913,9 +1040,9 @@ class _NewLeadState extends State<NewLead> {
                             userID: Constants.employeeId,
                             leadSource: _leadSourceControllerFinal,
                             remark: _remarkController.text,
-                            leadDate: leadDate,
+                            leadDate: 'leadDate',
                             salesPerson: _salesPersonControllerFinal,
-                            outlet: "_outletController.toString()",
+                            paymentMethod: _paymentMethodController.toString(),
                             itemDetails: detailsTable);
                         var response = await createAlbum(new_lead_values);
 

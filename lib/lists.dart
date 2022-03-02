@@ -75,7 +75,8 @@ class _ListsPageState extends State<ListsPage> {
     //var model = LeadListModel.fromJson();
     statusValue = jsonDecode(response.body)['leadList'];
     //print("\ntype"+statusValue[index].toString());
-    print(statusValue[0]['customerName'].toString());
+    print(statusValue[2]['leadCreateTime'].toString());
+    print(statusValue[2].toString());
     //print(
     //    "\n2nd" +  dex]['leadProducts'][0]['LeadProduct'].toString());
 
@@ -132,7 +133,8 @@ class _ListsPageState extends State<ListsPage> {
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                          padding: const EdgeInsets.only(left: 4.0,bottom: 10.0,right: 4.0),
+                          padding: const EdgeInsets.only(
+                              left: 4.0, bottom: 10.0, right: 4.0),
                           child: Container(
                             padding: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
@@ -216,13 +218,11 @@ class _ListsPageState extends State<ListsPage> {
                                     child: Text(
                                         statusValue[index]['leadCreateTime']
                                                 .toString()
-                                                .split("Z")[0]
-                                                .split("T")[0] +
+                                                .split(" ")[0] +
                                             "\n at \n" +
                                             statusValue[index]['leadCreateTime']
                                                 .toString()
-                                                .split("Z")[0]
-                                                .split("T")[1],
+                                                .split(" ")[1],
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),
@@ -290,11 +290,8 @@ class _ListsPageState extends State<ListsPage> {
                                 ]),
                               ],
                             ),
-                            
                           ),
-                          
                         );
-                        
                       },
                     ),
 

@@ -34,6 +34,13 @@ class MyApp extends StatelessWidget {
         '/changePasswordPage': (BuildContext context) => ChangePasswordPage(),
       },
       home: MyHomePage(),
+      builder: (context,widget){
+              /// Always Constant font size though change system font size
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: widget!,
+              );
+            }
     );
   }
 }

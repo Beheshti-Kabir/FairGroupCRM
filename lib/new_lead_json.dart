@@ -1,4 +1,4 @@
-/// new_lead : {"leadNo":"","customerName":"","customerContact":"","customerAddress":"","customerEmail":"","customerDOB":"","companyName":"","longitude":"","lattitude":"","userID":"","leadSource":"","remark":"","leadDate":"","_salesPerson":"","_outlet":"","itemDetails":[{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]}
+/// new_lead : {"profession":"","customerName":"","customerContact":"","customerAddress":"","customerEmail":"","customerDOB":"","companyName":"","longitude":"","lattitude":"","userID":"","leadSource":"","remark":"","leadDate":"","_salesPerson":"","_paymentMethod":"","itemDetails":[{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]}
 
 // class NewLeadJson {
 //   NewLeadJson({
@@ -23,7 +23,7 @@
 //
 // }
 
-/// leadNo : ""
+/// profession : ""
 /// customerName : ""
 /// customerContact : ""
 /// customerAddress : ""
@@ -37,12 +37,12 @@
 /// remark : ""
 /// leadDate : ""
 /// _salesPerson : ""
-/// _outlet : ""
+/// _paymentMethod : ""
 /// itemDetails : [{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]
 
 class New_lead_json {
   New_lead_json(
-      {String? leadNo,
+      {String? profession,
       String? customerName,
       String? customerContact,
       String? customerAddress,
@@ -56,9 +56,9 @@ class New_lead_json {
       String? remark,
       String? leadDate,
       String? salesPerson,
-      String? outlet,
+      String? paymentMethod,
       List<Todo>? itemDetails}) {
-    _leadNo = leadNo;
+    _profession = profession;
     _customerName = customerName;
     _customerContact = customerContact;
     _customerAddress = customerAddress;
@@ -72,12 +72,12 @@ class New_lead_json {
     _remark = remark;
     _leadDate = leadDate;
     _salesPerson = salesPerson;
-    _outlet = outlet;
+    _paymentMethod = paymentMethod;
     _itemDetails = itemDetails;
   }
 
   New_lead_json.fromJson(dynamic json) {
-    _leadNo = json['leadNo'];
+    _profession = json['profession'];
     _customerName = json['customerName'];
     _customerContact = json['customerContact'];
     _customerAddress = json['customerAddress'];
@@ -91,7 +91,7 @@ class New_lead_json {
     _remark = json['remark'];
     _leadDate = json['leadDate'];
     _salesPerson = json['salesPerson'];
-    _outlet = json['outlet'];
+    _paymentMethod = json['paymentMethod'];
     if (json['itemDetails'] != null) {
       _itemDetails = [];
       json['itemDetails'].forEach((v) {
@@ -99,7 +99,7 @@ class New_lead_json {
       });
     }
   }
-  String? _leadNo;
+  String? _profession;
   String? _customerName;
   String? _customerContact;
   String? _customerAddress;
@@ -113,10 +113,10 @@ class New_lead_json {
   String? _remark;
   String? _leadDate;
   String? _salesPerson;
-  String? _outlet;
+  String? _paymentMethod;
   List<Todo>? _itemDetails;
 
-  String? get leadNo => _leadNo;
+  String? get profession => _profession;
   String? get customerName => _customerName;
   String? get customerContact => _customerContact;
   String? get customerAddress => _customerAddress;
@@ -130,12 +130,12 @@ class New_lead_json {
   String? get remark => _remark;
   String? get leadDate => _leadDate;
   String? get salesPerson => _salesPerson;
-  String? get outlet => _outlet;
+  String? get paymentMethod => _paymentMethod;
   List<Todo>? get itemDetails => _itemDetails;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['leadNo'] = _leadNo;
+    map['profession'] = _profession;
     map['customerName'] = _customerName;
     map['customerContact'] = _customerContact;
     map['customerAddress'] = _customerAddress;
@@ -149,7 +149,7 @@ class New_lead_json {
     map['remark'] = _remark;
     map['leadDate'] = _leadDate;
     map['_salesPerson'] = _salesPerson;
-    map['_outlet'] = _outlet;
+    map['_paymentMethod'] = _paymentMethod;
     if (_itemDetails != null) {
       map['itemDetails'] = _itemDetails?.map((v) => v.toJson()).toList();
     }

@@ -405,7 +405,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                                 ? 'Value Can\'t Be Empty'
                                 : null,
                             hintText: 'Type',
-                            labelText: 'Lead No*'),
+                            labelText: 'Lead No*',labelStyle: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold)),
                         controller: this._leadNoController,
                       ),
                     )
@@ -491,7 +491,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         ),
                         textFieldConfiguration: TextFieldConfiguration(
                           decoration: InputDecoration(
-                              hintText: 'Type', labelText: 'Todo'),
+                              hintText: 'Type', labelText: 'Todo',labelStyle: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold)),
                           controller: this._todoController,
                         ),
                       ),
@@ -709,7 +709,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         ),
                         textFieldConfiguration: TextFieldConfiguration(
                           decoration: InputDecoration(
-                              hintText: 'Type', labelText: 'Sales Person'),
+                              hintText: 'Type', labelText: 'Sales Person',labelStyle: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold)),
                           controller: this._salesPersonController,
                         ),
                       ),
@@ -786,7 +786,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(value,style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),
                             );
                           }).toList(),
                         ),
