@@ -62,6 +62,7 @@ class _ListsPageState extends State<ListsPage> {
 
     response = await http.post(
         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getDataByStatus'),
+        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -75,8 +76,7 @@ class _ListsPageState extends State<ListsPage> {
     //var model = LeadListModel.fromJson();
     statusValue = jsonDecode(response.body)['leadList'];
     //print("\ntype"+statusValue[index].toString());
-    print(statusValue[2]['leadCreateTime'].toString());
-    print(statusValue[2].toString());
+    
     //print(
     //    "\n2nd" +  dex]['leadProducts'][0]['LeadProduct'].toString());
 
@@ -104,6 +104,7 @@ class _ListsPageState extends State<ListsPage> {
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)?.settings.arguments as String;
     stepType = argument;
+    print(stepType);
 
     if (!gotData) {
       getStepType();

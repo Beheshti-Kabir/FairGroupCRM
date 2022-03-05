@@ -235,7 +235,7 @@ class _NewLeadState extends State<NewLead> {
     print('json value=' + new_lead_values.toJson().toString());
     var response = await http.post(
         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/saveLeadInfo'),
-       //Uri.parse('http://10.100.18.167/rbd/leadInfoApi/saveLeadInfo'),
+        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadInfo'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -292,7 +292,7 @@ class _NewLeadState extends State<NewLead> {
       } else {
         _customerContactValidate = false;
       }
-      
+
       if (customerCompany == null || customerCompany.isEmpty) {
         _customerComapnyValidate = true;
       } else {
@@ -313,7 +313,7 @@ class _NewLeadState extends State<NewLead> {
       } else {
         _customerEmailValidate = false;
       }
-      
+
       if (Constants.employeeId == '' ||
           Constants.employeeId == null ||
           Constants.employeeId.isEmpty) {
@@ -600,7 +600,12 @@ class _NewLeadState extends State<NewLead> {
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value,style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             );
                           }).toList(),
                         ),
@@ -646,7 +651,12 @@ class _NewLeadState extends State<NewLead> {
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value,style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             );
                           }).toList(),
                         ),
@@ -995,6 +1005,7 @@ class _NewLeadState extends State<NewLead> {
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
+                   
                     if (isLoad) {
                       bool isValid = formValidator();
                       if (isValid) {
@@ -1030,7 +1041,7 @@ class _NewLeadState extends State<NewLead> {
                         String _leadSourceControllerFinal =
                             leadSourceControllerMiddle[0];
                         var new_lead_values = New_lead_json(
-                            profession: _professionController.toString(),
+                            profession: _professionController.text,
                             customerName: _customerNameController.text,
                             customerContact: _customerContactController.text,
                             customerAddress: _customerAddressController.text,
@@ -1044,7 +1055,7 @@ class _NewLeadState extends State<NewLead> {
                             remark: _remarkController.text,
                             leadDate: 'leadDate',
                             salesPerson: _salesPersonControllerFinal,
-                            paymentMethod: _paymentMethodController.toString(),
+                            paymentMethod: _paymentMethodController.text,
                             itemDetails: detailsTable);
                         var response = await createAlbum(new_lead_values);
 
@@ -1103,3 +1114,15 @@ class _NewLeadState extends State<NewLead> {
     );
   }
 }
+
+
+  
+
+
+
+
+
+
+
+
+
