@@ -676,7 +676,6 @@ class _NewLeadState extends State<NewLead> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     TypeAheadFormField(
                       suggestionsCallback: (pattern) => professionList.where(
                         (item) => item.toLowerCase().contains(
@@ -706,7 +705,6 @@ class _NewLeadState extends State<NewLead> {
                         controller: this._professionController,
                       ),
                     )
-
                   ],
                 )),
 
@@ -716,7 +714,6 @@ class _NewLeadState extends State<NewLead> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     TypeAheadFormField(
                       suggestionsCallback: (pattern) => paymentMethodList.where(
                         (item) => item.toLowerCase().contains(
@@ -1086,7 +1083,6 @@ class _NewLeadState extends State<NewLead> {
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
-
                     if (detailsTable.length == 0) {
                       Fluttertoast.showToast(
                           msg: "Product Missing!!\nADD ITEM DETAILS",
@@ -1206,15 +1202,3 @@ class _NewLeadState extends State<NewLead> {
     );
   }
 }
-
-
-  
-
-
-
-
-
-
-
-
-

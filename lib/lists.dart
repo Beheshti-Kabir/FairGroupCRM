@@ -196,13 +196,13 @@ class _ListsPageState extends State<ListsPage> {
                                 TableRow(children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text('Customer DOB',
+                                    child: Text('Company name',
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
                                     child: Text(
-                                        statusValue[index]['dob']
+                                        statusValue[index]['companyName']
                                             .toString()
                                             .split("T")[0],
                                         style: TextStyle(fontSize: 20.0)),

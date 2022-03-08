@@ -157,7 +157,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   getLeadData() async {
     print("inside getData");
     final response = await http.post(
-         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getLeadData'),
+        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getLeadData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -260,6 +260,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     var response = await http.post(
         Uri.parse(
             'http://202.84.44.234:9085/rbd/leadInfoApi/saveLeadTransaction'),
+        //'http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadTransaction'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -405,7 +406,10 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                                 ? 'Value Can\'t Be Empty'
                                 : null,
                             hintText: 'Type',
-                            labelText: 'Lead No*',labelStyle: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold)),
+                            labelText: 'Lead No*',
+                            labelStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold)),
                         controller: this._leadNoController,
                       ),
                     )
@@ -429,9 +433,10 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                   //     ),
                   //   ),
                   // )
-                  Text("Customer Name: "+ _personNameController.text
-                  ,style: TextStyle(  color: Colors.grey,fontSize: 20.0),),
-
+                  Text(
+                    "Customer Name: " + _personNameController.text,
+                    style: TextStyle(color: Colors.grey, fontSize: 20.0),
+                  ),
                 ],
               ),
             ),
@@ -454,10 +459,10 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                   //     ),
                   //   ),
                   // )
-                  Text("Customer Contact: "+ _personContactController.text
-                  ,style: TextStyle(  color: Colors.grey,
-                  fontSize: 20.0),),
-
+                  Text(
+                    "Customer Contact: " + _personContactController.text,
+                    style: TextStyle(color: Colors.grey, fontSize: 20.0),
+                  ),
                 ],
               ),
             ),
@@ -491,7 +496,11 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         ),
                         textFieldConfiguration: TextFieldConfiguration(
                           decoration: InputDecoration(
-                              hintText: 'Type', labelText: 'Todo',labelStyle: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold)),
+                              hintText: 'Type',
+                              labelText: 'Todo',
+                              labelStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold)),
                           controller: this._todoController,
                         ),
                       ),
@@ -522,7 +531,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
               padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
               child: TextButton(
                 onPressed: () {
-                  DatePicker.showDateTimePicker(context, showTitleActions: true,
+                  DatePicker.showTimePicker(context, showTitleActions: true,
                       //     onChanged: (date) {
                       //   print('change $date in time zone ' +
                       //       date.timeZoneOffset.inHours.toString());
@@ -696,7 +705,6 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                         )),
-                        
                         onSuggestionSelected: (String val) {
                           this._salesPersonController.text = val;
                         },
@@ -709,7 +717,11 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         ),
                         textFieldConfiguration: TextFieldConfiguration(
                           decoration: InputDecoration(
-                              hintText: 'Type', labelText: 'Sales Person',labelStyle: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold)),
+                              hintText: 'Type',
+                              labelText: 'Sales Person',
+                              labelStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold)),
                           controller: this._salesPersonController,
                         ),
                       ),
@@ -750,7 +762,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
             //         )
             //       ],
             //     )),
-            
+
             Container(
                 padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
                 child: Column(
@@ -786,7 +798,12 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value,style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             );
                           }).toList(),
                         ),
@@ -795,7 +812,6 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         ),
                       ],
                     ),
-                    
                   ],
                 )),
             SizedBox(height: 20.0),

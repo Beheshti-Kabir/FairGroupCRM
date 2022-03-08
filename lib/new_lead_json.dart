@@ -148,8 +148,8 @@ class New_lead_json {
     map['leadSource'] = _leadSource;
     map['remark'] = _remark;
     map['leadDate'] = _leadDate;
-    map['_salesPerson'] = _salesPerson;
-    map['_paymentMethod'] = _paymentMethod;
+    map['salesPerson'] = _salesPerson;
+    map['paymentMethod'] = _paymentMethod;
     if (_itemDetails != null) {
       map['itemDetails'] = _itemDetails?.map((v) => v.toJson()).toList();
     }
