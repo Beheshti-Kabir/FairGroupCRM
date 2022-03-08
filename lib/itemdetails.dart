@@ -96,6 +96,29 @@ class _ItemDetailsState extends State<ItemDetails> {
     _totalPriceController.clear();
   }
 
+  addProduct() {
+    bool isValid = formValidator();
+    if (isValid) {
+      count += 1;
+      productName = _productNameController.text.toString();
+      description = _descriptionController.text.toString();
+      quantity = _quantityController.text.toString();
+      unitPrice = _unitPriceController.text.toString();
+      //stock = _stockController.text.toString();
+      //totalPrice = _totalPriceController.text.toString();
+      detailsModel = Todo(
+          productName: productName,
+          description: description,
+          quantity: quantity,
+          //stock: "stock",
+          unitPrice: unitPrice);
+      //totalPrice: "totalPrice");
+      detailsTable.add(detailsModel);
+      clearController();
+      setState(() {});
+    }
+  }
+
   formValidator() {
     String productNameValidation = _productNameController.text;
     String quantityValidation = _quantityController.text;
@@ -337,30 +360,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                   padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      bool isValid = formValidator();
-                      if (isValid) {
-                        count += 1;
-                        productName = _productNameController.text.toString();
-                        description = _descriptionController.text.toString();
-                        quantity = _quantityController.text.toString();
-                        unitPrice = _unitPriceController.text.toString();
-                        //stock = _stockController.text.toString();
-                        //totalPrice = _totalPriceController.text.toString();
-                        detailsModel = Todo(
-                            productName: productName,
-                            description: description,
-                            quantity: quantity,
-                            //stock: "stock",
-                            unitPrice: unitPrice);
-                        //totalPrice: "totalPrice");
-                        detailsTable.add(detailsModel);
-                        clearController();
-                        setState(() {});
-                      }
+                      addProduct();
                     },
                     child: Container(
                       height: 30.0,
-                      width: 80.0,
+                      width: 100.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
                         shadowColor: Colors.lightBlueAccent,
@@ -368,11 +372,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                         elevation: 7.0,
                         child: Center(
                           child: Text(
-                            "Add items",
+                            "Add more items",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 10.0),
                           ),
-                          
                         ),
                       ),
                     ),
@@ -382,12 +385,19 @@ class _ItemDetailsState extends State<ItemDetails> {
                   padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      print('count:' + count.toString());
-                      Navigator.of(context).pop(detailsTable);
+                      if (_productNameController.text.toString() == null ||
+                          _productNameController.text.toString().isEmpty) {
+                        print('count:' + count.toString());
+                        Navigator.of(context).pop(detailsTable);
+                      } else {
+                        addProduct();
+                        print('count:' + count.toString());
+                        Navigator.of(context).pop(detailsTable);
+                      }
                     },
                     child: Container(
                       height: 30.0,
-                      width: 80.0,
+                      width: 100.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
                         shadowColor: Colors.lightBlueAccent,

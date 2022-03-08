@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:ui';
+import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -453,6 +454,7 @@ class _NewLeadState extends State<NewLead> {
                       ),
                     ),
                     keyboardType: TextInputType.number,
+                    inputFormatters: [LengthLimitingTextInputFormatter(11)],
                   )
                 ],
               ),
@@ -565,106 +567,185 @@ class _NewLeadState extends State<NewLead> {
                 ],
               ),
             ),
+            // Container(
+            //     padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Text("Profession",
+            //             style: TextStyle(
+            //               fontSize: 17,
+            //               color: Colors.grey,
+            //               fontWeight: FontWeight.bold,
+            //             )),
+            //         Row(
+            //           // ignore: pre
+            //           //fer_const_literals_to_create_immutables
+            //           children: <Widget>[
+            //             DropdownButton<String>(
+            //               value: _professionController.text,
+            //               icon: const Icon(Icons.arrow_downward),
+            //               iconSize: icnSize,
+            //               elevation: 16,
+            //               style: const TextStyle(color: Colors.blue),
+            //               underline: Container(
+            //                 height: 2,
+            //                 color: dropColor,
+            //               ),
+            //               onChanged: (String? newValue_stepType) {
+            //                 setState(() {
+            //                   _professionController.text = newValue_stepType!;
+            //                 });
+            //               },
+            //               items: professionList
+            //                   .map<DropdownMenuItem<String>>((String value) {
+            //                 return DropdownMenuItem<String>(
+            //                   value: value,
+            //                   child: Text(
+            //                     value,
+            //                     style: TextStyle(
+            //                         color: Colors.grey,
+            //                         fontWeight: FontWeight.bold),
+            //                   ),
+            //                 );
+            //               }).toList(),
+            //             ),
+            //             SizedBox(
+            //               width: 10.0,
+            //             ),
+            //           ],
+            //         ),
+            //       ],
+            //     )),
+
+            // Container(
+            //     padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Text("Payment Method",
+            //             style: TextStyle(
+            //               fontSize: 17,
+            //               color: Colors.grey,
+            //               fontWeight: FontWeight.bold,
+            //             )),
+            //         Row(
+            //           // ignore: pre
+            //           //fer_const_literals_to_create_immutables
+            //           children: <Widget>[
+            //             DropdownButton<String>(
+            //               value: _paymentMethodController.text,
+            //               icon: const Icon(Icons.arrow_downward),
+            //               iconSize: icnSize,
+            //               elevation: 16,
+            //               style: const TextStyle(color: Colors.blue),
+            //               underline: Container(
+            //                 height: 2,
+            //                 color: dropColor,
+            //               ),
+            //               onChanged: (String? newValue_payment) {
+            //                 setState(() {
+            //                   _paymentMethodController.text = newValue_payment!;
+            //                 });
+            //               },
+            //               items: paymentMethodList
+            //                   .map<DropdownMenuItem<String>>((String value) {
+            //                 return DropdownMenuItem<String>(
+            //                   value: value,
+            //                   child: Text(
+            //                     value,
+            //                     style: TextStyle(
+            //                         color: Colors.grey,
+            //                         fontWeight: FontWeight.bold),
+            //                   ),
+            //                 );
+            //               }).toList(),
+            //             ),
+            //             SizedBox(
+            //               width: 10.0,
+            //             ),
+            //           ],
+            //         ),
+            //       ],
+            //     )),
             Container(
-                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Profession",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    Row(
-                      // ignore: pre
-                      //fer_const_literals_to_create_immutables
-                      children: <Widget>[
-                        DropdownButton<String>(
-                          value: _professionController.text,
-                          icon: const Icon(Icons.arrow_downward),
-                          iconSize: icnSize,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.blue),
-                          underline: Container(
-                            height: 2,
-                            color: dropColor,
-                          ),
-                          onChanged: (String? newValue_stepType) {
-                            setState(() {
-                              _professionController.text = newValue_stepType!;
-                            });
-                          },
-                          items: professionList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                      ],
-                    ),
+
+                    TypeAheadFormField(
+                      suggestionsCallback: (pattern) => professionList.where(
+                        (item) => item.toLowerCase().contains(
+                              pattern.toLowerCase(),
+                            ),
+                      ),
+                      itemBuilder: (_, String item) => ListTile(
+                          title: Text(item,
+                              overflow: TextOverflow.ellipsis, maxLines: 2)),
+                      onSuggestionSelected: (String val) {
+                        this._professionController.text = val;
+                      },
+                      getImmediateSuggestions: true,
+                      hideSuggestionsOnKeyboardHide: false,
+                      hideOnEmpty: false,
+                      noItemsFoundBuilder: (context) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('No Suggestion'),
+                      ),
+                      textFieldConfiguration: TextFieldConfiguration(
+                        decoration: InputDecoration(
+                            hintText: 'Search',
+                            labelText: 'Profession',
+                            labelStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold)),
+                        controller: this._professionController,
+                      ),
+                    )
+
                   ],
                 )),
+
             Container(
-                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Payment Method",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    Row(
-                      // ignore: pre
-                      //fer_const_literals_to_create_immutables
-                      children: <Widget>[
-                        DropdownButton<String>(
-                          value: _paymentMethodController.text,
-                          icon: const Icon(Icons.arrow_downward),
-                          iconSize: icnSize,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.blue),
-                          underline: Container(
-                            height: 2,
-                            color: dropColor,
-                          ),
-                          onChanged: (String? newValue_payment) {
-                            setState(() {
-                              _paymentMethodController.text = newValue_payment!;
-                            });
-                          },
-                          items: paymentMethodList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                      ],
-                    ),
+
+                    TypeAheadFormField(
+                      suggestionsCallback: (pattern) => paymentMethodList.where(
+                        (item) => item.toLowerCase().contains(
+                              pattern.toLowerCase(),
+                            ),
+                      ),
+                      itemBuilder: (_, String item) => ListTile(
+                          title: Text(item,
+                              overflow: TextOverflow.ellipsis, maxLines: 2)),
+                      onSuggestionSelected: (String val) {
+                        this._paymentMethodController.text = val;
+                      },
+                      getImmediateSuggestions: true,
+                      hideSuggestionsOnKeyboardHide: false,
+                      hideOnEmpty: false,
+                      noItemsFoundBuilder: (context) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('No Suggestion'),
+                      ),
+                      textFieldConfiguration: TextFieldConfiguration(
+                        decoration: InputDecoration(
+                            hintText: 'Search',
+                            labelText: 'Payment Method',
+                            labelStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold)),
+                        controller: this._paymentMethodController,
+                      ),
+                    )
                   ],
                 )),
 
@@ -1005,86 +1086,97 @@ class _NewLeadState extends State<NewLead> {
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
-                   
-                    if (isLoad) {
-                      bool isValid = formValidator();
-                      if (isValid) {
-                        Fluttertoast.showToast(
-                            msg: "Saving..",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.TOP,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
 
-                        setState(() {
-                          isLoad = false;
-                        });
-                        // leadNo = _leadNoController.text;
-                        // customerContact = _customerContactController.text;
-                        // customerName = _customerNameController.text;
-                        // customerAddress = _customerAddressController.text;
-                        // customerEmail = _customerEmailController.text;
-                        // companyName = _companyNameController.text;
-                        // website = _websiteController.text;
-                        // projectType = _projectTypeController.text;
-                        // projectDescription = _projectDescriptionController.text;
-                        // budget = _budgetController.text;
-                        // remark = _remarkController.text;
-                        List<String> salesPersonControllerMiddle =
-                            _salesPersonController.text.split(' ');
-                        String _salesPersonControllerFinal =
-                            salesPersonControllerMiddle[0];
-                        List<String> leadSourceControllerMiddle =
-                            _leadNoController.text.split('& Code:');
-                        String _leadSourceControllerFinal =
-                            leadSourceControllerMiddle[0];
-                        var new_lead_values = New_lead_json(
-                            profession: _professionController.text,
-                            customerName: _customerNameController.text,
-                            customerContact: _customerContactController.text,
-                            customerAddress: _customerAddressController.text,
-                            customerEmail: _customerEmailController.text,
-                            customerDOB: customerDOB.toString(),
-                            companyName: _companyNameController.text,
-                            longitude: long,
-                            lattitude: lat,
-                            userID: Constants.employeeId,
-                            leadSource: _leadSourceControllerFinal,
-                            remark: _remarkController.text,
-                            leadDate: 'leadDate',
-                            salesPerson: _salesPersonControllerFinal,
-                            paymentMethod: _paymentMethodController.text,
-                            itemDetails: detailsTable);
-                        var response = await createAlbum(new_lead_values);
-
-                        if (response.toLowerCase().trim() == 'success') {
-                          Navigator.of(context)
-                              .pushReplacementNamed('/summery');
-                        } else {
-                          setState(
-                            () {
-                              isLoad = true;
-                            },
-                          );
+                    if (detailsTable.length == 0) {
+                      Fluttertoast.showToast(
+                          msg: "Product Missing!!\nADD ITEM DETAILS",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      if (isLoad) {
+                        bool isValid = formValidator();
+                        if (isValid) {
                           Fluttertoast.showToast(
-                              msg: response,
+                              msg: "Saving..",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.TOP,
                               timeInSecForIosWeb: 1,
                               backgroundColor: Colors.red,
                               textColor: Colors.white,
                               fontSize: 16.0);
+
+                          setState(() {
+                            isLoad = false;
+                          });
+                          // leadNo = _leadNoController.text;
+                          // customerContact = _customerContactController.text;
+                          // customerName = _customerNameController.text;
+                          // customerAddress = _customerAddressController.text;
+                          // customerEmail = _customerEmailController.text;
+                          // companyName = _companyNameController.text;
+                          // website = _websiteController.text;
+                          // projectType = _projectTypeController.text;
+                          // projectDescription = _projectDescriptionController.text;
+                          // budget = _budgetController.text;
+                          // remark = _remarkController.text;
+                          List<String> salesPersonControllerMiddle =
+                              _salesPersonController.text.split(' ');
+                          String _salesPersonControllerFinal =
+                              salesPersonControllerMiddle[0];
+                          List<String> leadSourceControllerMiddle =
+                              _leadNoController.text.split('& Code:');
+                          String _leadSourceControllerFinal =
+                              leadSourceControllerMiddle[0];
+                          var new_lead_values = New_lead_json(
+                              profession: _professionController.text,
+                              customerName: _customerNameController.text,
+                              customerContact: _customerContactController.text,
+                              customerAddress: _customerAddressController.text,
+                              customerEmail: _customerEmailController.text,
+                              customerDOB: customerDOB.toString(),
+                              companyName: _companyNameController.text,
+                              longitude: long,
+                              lattitude: lat,
+                              userID: Constants.employeeId,
+                              leadSource: _leadSourceControllerFinal,
+                              remark: _remarkController.text,
+                              leadDate: 'leadDate',
+                              salesPerson: _salesPersonControllerFinal,
+                              paymentMethod: _paymentMethodController.text,
+                              itemDetails: detailsTable);
+                          var response = await createAlbum(new_lead_values);
+
+                          if (response.toLowerCase().trim() == 'success') {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/summery');
+                          } else {
+                            setState(
+                              () {
+                                isLoad = true;
+                              },
+                            );
+                            Fluttertoast.showToast(
+                                msg: response,
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+
+                          print('MyResponse=>$response');
                         }
 
-                        print('MyResponse=>$response');
+                        // var map = json.decode(res);
+                        // if (map["result"].toLowerCase().trim() == 'success') {
+                        //   Navigator.of(context).pushNamed('/summery');
+                        //}
                       }
-
-                      // var map = json.decode(res);
-                      // if (map["result"].toLowerCase().trim() == 'success') {
-                      //   Navigator.of(context).pushNamed('/summery');
-                      //}
                     }
                   },
                   child: Container(
