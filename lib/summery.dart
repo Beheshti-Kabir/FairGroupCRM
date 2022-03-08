@@ -43,6 +43,7 @@ class _SummeryPageState extends State<SummeryPage> {
   late var totalInProgress = '';
   late var totalNoAnswer = '';
   String version = Constants.version;
+  String employID = Constants.employeeId;
 
   @override
   initState() {
@@ -91,7 +92,8 @@ class _SummeryPageState extends State<SummeryPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Summary'),
+        title: Text('Summary For $employID'),
+                
       ),
       body: Column(
         children: <Widget>[
@@ -122,6 +124,7 @@ class _SummeryPageState extends State<SummeryPage> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
+                            textAlign: TextAlign.center
                           ),
                         ),
                       ),
@@ -154,7 +157,9 @@ class _SummeryPageState extends State<SummeryPage> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
+                                  
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
@@ -768,7 +773,16 @@ class _SummeryPageState extends State<SummeryPage> {
               ],
             ),
           ),
-
+          // Container(
+          //   alignment: Alignment.topLeft,
+          //   padding: EdgeInsets.only(top: 50.0, left: 10.0),
+          //   child: Text(
+          //     'Logged In As $employID',
+          //     textAlign: TextAlign.left,
+              
+          //     style: TextStyle(color: Colors.grey,),
+          //   ),
+          // ),
           Container(
             alignment: Alignment.bottomRight,
             padding: EdgeInsets.only(top: 50.0, right: 10.0),

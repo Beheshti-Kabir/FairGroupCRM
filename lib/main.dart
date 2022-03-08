@@ -135,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: InputDecoration(
                       errorText:
                           _employIDValidate ? 'Value Can\'t Be Empty' : null,
-                      labelText: 'EmployID',
+                      labelText: 'Employee ID',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
                       focusedBorder: UnderlineInputBorder(
