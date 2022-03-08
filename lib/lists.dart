@@ -76,7 +76,7 @@ class _ListsPageState extends State<ListsPage> {
     //var model = LeadListModel.fromJson();
     statusValue = jsonDecode(response.body)['leadList'];
     //print("\ntype"+statusValue[index].toString());
-    
+
     //print(
     //    "\n2nd" +  dex]['leadProducts'][0]['LeadProduct'].toString());
 
