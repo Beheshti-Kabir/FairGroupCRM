@@ -229,6 +229,7 @@ class _NewLeadState extends State<NewLead> {
   bool _customerEmailValidate = false;
   bool _customerComapnyValidate = false;
   bool _customerNameValidate = false;
+  bool _salesPersonValidate = false;
   bool _employIDValidate = false;
   bool isLoad = true;
 
@@ -286,12 +287,18 @@ class _NewLeadState extends State<NewLead> {
     String customerAddress = _customerAddressController.text;
     String customerEmail = _customerEmailController.text;
     String customerCompany = _companyNameController.text;
+    String salesPersonn = _salesPersonController.text;
 
     setState(() {
       if (customerContact == null || customerContact.isEmpty) {
         _customerContactValidate = true;
       } else {
         _customerContactValidate = false;
+      }
+      if (salesPersonn == null || salesPersonn.isEmpty) {
+        _salesPersonValidate = true;
+      } else {
+        _salesPersonValidate = false;
       }
 
       if (customerCompany == null || customerCompany.isEmpty) {
@@ -324,6 +331,7 @@ class _NewLeadState extends State<NewLead> {
       }
     });
     if (!_customerContactValidate &&
+        !_salesPersonValidate &&
         !_customerAddressValidate &&
         !_customerComapnyValidate &&
         !_customerEmailValidate &&
@@ -870,7 +878,6 @@ class _NewLeadState extends State<NewLead> {
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
                         decoration: InputDecoration(
-                            hintText: 'Type',
                             labelText: 'Lead Source',
                             labelStyle: TextStyle(
                                 color: Colors.grey,
@@ -956,6 +963,9 @@ class _NewLeadState extends State<NewLead> {
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
                         decoration: InputDecoration(
+                            errorText: _customerComapnyValidate
+                                ? 'Value Can\'t Be Empty'
+                                : null,
                             hintText: 'Type',
                             labelText: 'Sales Person',
                             labelStyle: TextStyle(
