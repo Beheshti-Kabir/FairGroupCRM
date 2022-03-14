@@ -110,6 +110,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
 
   final _todoController = TextEditingController();
   late final _stepController = TextEditingController();
+  late final _cancelReasonController = TextEditingController();
 
   bool _leadNoValidate = false;
   bool _meetDateVaidate = false;
@@ -128,12 +129,21 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   String executionDate = '';
   String followupDate = '';
   String remarks = '';
+  String cancelReason = '';
   String salesPerson = '';
   String stepNo = '';
   List<String> todoTypeList = [''];
   List<String> stepNoList = [''];
   List<String> sales_person = [''];
   List<String> leadNoList = [''];
+  List<String> cancelReasonList = [
+    '1.Not interested Anymore',
+    '2.Lost to Competitor',
+    '3.Financial issue',
+    '4.Better Offer from Competitor',
+    '5.Product Not Available',
+    ''
+  ];
   late List<String> leadNoControllerMiddle;
   var meet_date = '';
   var execution_date = '';
@@ -281,6 +291,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
           'lattitute': lat,
           'longitute': long,
           'userID': Constants.employeeId,
+          'cancelReason': cancelReason,
         }
             // ),}
 
@@ -435,13 +446,13 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                   // )
                   Text(
                     "Customer Name: " + _personNameController.text,
-                    style: TextStyle(color: Colors.grey, fontSize: 20.0),
+                    style: TextStyle(color: Colors.grey, fontSize: 18.0),
                   ),
                 ],
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 18.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -687,81 +698,81 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
               ),
             ),
             //SizedBox(height: 15.0),
-            Container(
-                padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TypeAheadFormField(
-                        suggestionsCallback: (pattern) => sales_person.where(
-                          (item) => item.toLowerCase().contains(
-                                pattern.toLowerCase(),
-                              ),
-                        ),
-                        itemBuilder: (_, String item) => ListTile(
-                            title: Text(
-                          item,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        )),
-                        onSuggestionSelected: (String val) {
-                          this._salesPersonController.text = val;
-                        },
-                        getImmediateSuggestions: true,
-                        hideSuggestionsOnKeyboardHide: false,
-                        hideOnEmpty: false,
-                        noItemsFoundBuilder: (context) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('No Suggestion'),
-                        ),
-                        textFieldConfiguration: TextFieldConfiguration(
-                          decoration: InputDecoration(
-                              hintText: 'Type',
-                              labelText: 'Sales Person',
-                              labelStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold)),
-                          controller: this._salesPersonController,
-                        ),
-                      ),
-                    ])),
             // Container(
-            //     padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            //     padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
             //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.start,
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         TypeAheadFormField(
-            //           suggestionsCallback: (pattern) => stepNoList.where(
-            //             (item) => item.toLowerCase().contains(
-            //                   pattern.toLowerCase(),
-            //                 ),
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           TypeAheadFormField(
+            //             suggestionsCallback: (pattern) => sales_person.where(
+            //               (item) => item.toLowerCase().contains(
+            //                     pattern.toLowerCase(),
+            //                   ),
+            //             ),
+            //             itemBuilder: (_, String item) => ListTile(
+            //                 title: Text(
+            //               item,
+            //               overflow: TextOverflow.ellipsis,
+            //               maxLines: 2,
+            //             )),
+            //             onSuggestionSelected: (String val) {
+            //               this._salesPersonController.text = val;
+            //             },
+            //             getImmediateSuggestions: true,
+            //             hideSuggestionsOnKeyboardHide: false,
+            //             hideOnEmpty: false,
+            //             noItemsFoundBuilder: (context) => Padding(
+            //               padding: const EdgeInsets.all(8.0),
+            //               child: Text('No Suggestion'),
+            //             ),
+            //             textFieldConfiguration: TextFieldConfiguration(
+            //               decoration: InputDecoration(
+            //                   hintText: 'Type',
+            //                   labelText: 'Sales Person',
+            //                   labelStyle: TextStyle(
+            //                       color: Colors.grey,
+            //                       fontWeight: FontWeight.bold)),
+            //               controller: this._salesPersonController,
+            //             ),
             //           ),
-            //           itemBuilder: (_, String item) => ListTile(
-            //               title: Text(
-            //             item,
-            //             overflow: TextOverflow.ellipsis,
-            //             maxLines: 2,
-            //           )),
-            //           onSuggestionSelected: (String val) {
-            //             this._stepController.text = val;
-            //           },
-            //           getImmediateSuggestions: true,
-            //           hideSuggestionsOnKeyboardHide: false,
-            //           hideOnEmpty: false,
-            //           noItemsFoundBuilder: (context) => Padding(
-            //             padding: const EdgeInsets.all(8.0),
-            //             child: Text('No Suggestion'),
-            //           ),
-            //           textFieldConfiguration: TextFieldConfiguration(
-            //             decoration: InputDecoration(
-            //                 hintText: 'Type', labelText: 'Step No'),
-            //             controller: this._stepController,
-            //           ),
-            //         )
-            //       ],
-            //     )),
+            //         ])),
+            // // Container(
+            // //     padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            // //     child: Column(
+            // //       mainAxisAlignment: MainAxisAlignment.start,
+            // //       crossAxisAlignment: CrossAxisAlignment.start,
+            // //       children: [
+            // //         TypeAheadFormField(
+            // //           suggestionsCallback: (pattern) => stepNoList.where(
+            // //             (item) => item.toLowerCase().contains(
+            // //                   pattern.toLowerCase(),
+            // //                 ),
+            // //           ),
+            // //           itemBuilder: (_, String item) => ListTile(
+            // //               title: Text(
+            // //             item,
+            // //             overflow: TextOverflow.ellipsis,
+            // //             maxLines: 2,
+            // //           )),
+            // //           onSuggestionSelected: (String val) {
+            // //             this._stepController.text = val;
+            // //           },
+            // //           getImmediateSuggestions: true,
+            // //           hideSuggestionsOnKeyboardHide: false,
+            // //           hideOnEmpty: false,
+            // //           noItemsFoundBuilder: (context) => Padding(
+            // //             padding: const EdgeInsets.all(8.0),
+            // //             child: Text('No Suggestion'),
+            // //           ),
+            // //           textFieldConfiguration: TextFieldConfiguration(
+            // //             decoration: InputDecoration(
+            // //                 hintText: 'Type', labelText: 'Step No'),
+            // //             controller: this._stepController,
+            // //           ),
+            // //         )
+            // //       ],
+            // //     )),
 
             Container(
                 padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
@@ -792,7 +803,10 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                           onChanged: (String? newValue_stepType) {
                             setState(() {
                               _stepController.text = newValue_stepType!;
+                              _cancelReasonController.text = '';
+                              //print(_stepController.text.toString());
                             });
+                            // setState(() {});
                           },
                           items: stepNoList
                               .map<DropdownMenuItem<String>>((String value) {
@@ -807,19 +821,77 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                             );
                           }).toList(),
                         ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
+                        // SizedBox(
+                        //   width: 10.0,
+                        // ),
                       ],
                     ),
                   ],
                 )),
+
+            (_stepController.text.toString() == 'CANCEL')
+                ? Container(
+                    padding:
+                        EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Cancel Reason",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Row(
+                          // ignore: pre
+                          //fer_const_literals_to_create_immutables
+                          children: <Widget>[
+                            DropdownButton<String>(
+                              value: _cancelReasonController.text,
+                              icon: const Icon(Icons.arrow_downward),
+                              iconSize: icnSize,
+                              elevation: 16,
+                              style: const TextStyle(color: Colors.blue),
+                              underline: Container(
+                                height: 2,
+                                color: dropColor,
+                              ),
+                              onChanged: (String? newValue_cancelReason) {
+                                setState(() {
+                                  _cancelReasonController.text =
+                                      newValue_cancelReason!;
+                                });
+                              },
+                              items: cancelReasonList
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ))
+                : Container(),
             SizedBox(height: 20.0),
             Container(
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
                     if (isLoad) {
+                      //isLoad = true;
                       print("before validation");
                       bool isValid = formValidator();
                       if (isValid) {
@@ -850,8 +922,11 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         todoDescription = _todoDescriptionController.text;
                         // have to set meet date
                         remarks = _remarkController.text;
-                        salesPerson = _salesPersonControllerFinal;
+                        salesPerson = Constants.employeeId;
                         stepNo = _stepController.text;
+                        cancelReason = _cancelReasonController.text
+                            .toString()
+                            .split('.')[1];
                         print("after controller");
                         // newLeadTransactionModel = Todo_New_Lead_Transaction(
                         //     leadinfo,

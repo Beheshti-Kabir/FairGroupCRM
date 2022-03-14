@@ -62,6 +62,7 @@ class _SummeryPageState extends State<SummeryPage> {
     });
     response = await http.post(
         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getSummary'),
+        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getSummary'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -93,7 +94,6 @@ class _SummeryPageState extends State<SummeryPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Summary For $employID'),
-                
       ),
       body: Column(
         children: <Widget>[
@@ -118,14 +118,12 @@ class _SummeryPageState extends State<SummeryPage> {
                         color: Colors.blue[800],
                         elevation: 7.0,
                         child: Center(
-                          child: Text(
-                            'New Lead',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center
-                          ),
+                          child: Text('New Lead',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center),
                         ),
                       ),
                     ),
@@ -157,7 +155,6 @@ class _SummeryPageState extends State<SummeryPage> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -779,7 +776,7 @@ class _SummeryPageState extends State<SummeryPage> {
           //   child: Text(
           //     'Logged In As $employID',
           //     textAlign: TextAlign.left,
-              
+
           //     style: TextStyle(color: Colors.grey,),
           //   ),
           // ),

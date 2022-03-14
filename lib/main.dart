@@ -23,25 +23,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{
-        '/summery': (BuildContext context) => SummeryPage(),
-        '/newlead': (BuildContext context) => NewLead(),
-        '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
-        '/itemdetails': (BuildContext context) => ItemDetails(),
-        '/logInPage': (BuildContext context) => MyHomePage(),
-        '/listsPage': (BuildContext context) => ListsPage(),
-        '/changePasswordPage': (BuildContext context) => ChangePasswordPage(),
-      },
-      home: MyHomePage(),
-      builder: (context,widget){
-              /// Always Constant font size though change system font size
-              return MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                child: widget!,
-              );
-            }
-    );
+        debugShowCheckedModeBanner: false,
+        routes: <String, WidgetBuilder>{
+          '/summery': (BuildContext context) => SummeryPage(),
+          '/newlead': (BuildContext context) => NewLead(),
+          '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
+          '/itemdetails': (BuildContext context) => ItemDetails(),
+          '/logInPage': (BuildContext context) => MyHomePage(),
+          '/listsPage': (BuildContext context) => ListsPage(),
+          '/changePasswordPage': (BuildContext context) => ChangePasswordPage(),
+        },
+        home: MyHomePage(),
+        builder: (context, widget) {
+          /// Always Constant font size though change system font size
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: widget!,
+          );
+        });
   }
 }
 
@@ -85,7 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
-        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -175,24 +173,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () async {
                     bool isValid = formValidator();
                     isValid == true
-                    ?Fluttertoast.showToast(
-                        
-                        msg: "Loging In..",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0)
-                    :Fluttertoast.showToast(
-                        
-                        msg: "Field Missing",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
+                        ? Fluttertoast.showToast(
+                            msg: "Loging In..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0)
+                        : Fluttertoast.showToast(
+                            msg: "Field Missing",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
                     print(_employIDController.text);
                     print(_passwordController.text);
                     if (isValid) {
@@ -254,55 +250,56 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               padding: EdgeInsets.only(top: 20.0),
               child: GestureDetector(
-                          onTap: () async {
-                            Fluttertoast.showToast(
-                                msg: "Loading..",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.TOP,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                            Navigator.pushNamed(context, '/changePasswordPage');
-                          },
-                          child: SizedBox(
-                            height: 60.0,
-                            //width: 170.0,
-                            child: Material(
-                              //borderRadius: BorderRadius.(20.0),
-                              //shadowColor: Color.fromARGB(255, 65, 133, 250),
-                              //color: Colors.white,
-                              
-                              child: Center(
-                                child: Text(
-                                  'Change Password',
-                                  style: TextStyle(
-                                    color: Colors.blue[800],
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-            ),
-        //     FooterView(children: <Widget>[], footer: new Footer(
-        //   child: Padding(
-        //     padding: new EdgeInsets.all(10.0),
-        //     child: Text('Version 1.0.6\nDeveloped By Fair Group, IT Software Team'),
-        //   ),
-        // ),
-        // //flex: 1,
-        // )
-        Container(
-          alignment: Alignment.bottomRight,
-          padding: EdgeInsets.only(top: 50.0,right: 10.0),
-          child: Text('Version $version\nDeveloped By Fair Group,\nIT Software Team',
-                textAlign: TextAlign.right,
-                style: TextStyle(color: Colors.grey),),
-        )
+                onTap: () async {
+                  Fluttertoast.showToast(
+                      msg: "Loading..",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                  Navigator.pushNamed(context, '/changePasswordPage');
+                },
+                child: SizedBox(
+                  height: 60.0,
+                  //width: 170.0,
+                  child: Material(
+                    //borderRadius: BorderRadius.(20.0),
+                    //shadowColor: Color.fromARGB(255, 65, 133, 250),
+                    //color: Colors.white,
 
+                    child: Center(
+                      child: Text(
+                        'Change Password',
+                        style: TextStyle(
+                          color: Colors.blue[800],
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            //     FooterView(children: <Widget>[], footer: new Footer(
+            //   child: Padding(
+            //     padding: new EdgeInsets.all(10.0),
+            //     child: Text('Version 1.0.6\nDeveloped By Fair Group, IT Software Team'),
+            //   ),
+            // ),
+            // //flex: 1,
+            // )
+            Container(
+              alignment: Alignment.bottomRight,
+              padding: EdgeInsets.only(top: 50.0, right: 10.0),
+              child: Text(
+                'Version $version\nDeveloped By Fair Group,\nIT Software Team',
+                textAlign: TextAlign.right,
+                style: TextStyle(color: Colors.grey),
+              ),
+            )
           ],
         ),
       ),
