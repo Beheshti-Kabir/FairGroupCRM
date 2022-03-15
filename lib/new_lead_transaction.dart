@@ -137,11 +137,11 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   List<String> sales_person = [''];
   List<String> leadNoList = [''];
   List<String> cancelReasonList = [
-    '1.Not interested Anymore',
-    '2.Lost to Competitor',
-    '3.Financial issue',
-    '4.Better Offer from Competitor',
-    '5.Product Not Available',
+    'Not interested Anymore',
+    'Lost to Competitor',
+    'Financial issue',
+    'Better Offer from Competitor',
+    'Product Not Available',
     ''
   ];
   late List<String> leadNoControllerMiddle;
@@ -816,7 +816,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                                 value,
                                 style: TextStyle(
                                     color: Colors.grey,
-                                    fontWeight: FontWeight.bold),
+                                    //fontWeight: FontWeight.bold,
+                                    fontSize: 17),
                               ),
                             );
                           }).toList(),
@@ -872,7 +873,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                                     value,
                                     style: TextStyle(
                                         color: Colors.grey,
-                                        fontWeight: FontWeight.bold),
+                                        //fontWeight: FontWeight.bold,
+                                        fontSize: 17.0),
                                   ),
                                 );
                               }).toList(),
