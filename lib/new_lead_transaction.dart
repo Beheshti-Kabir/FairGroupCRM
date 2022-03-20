@@ -101,6 +101,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   final _personContactController = TextEditingController();
 
   final _todoDescriptionController = TextEditingController();
+  final _lostToController = TextEditingController();
   // final _meetDateController = TextEditingController();
   // final _executionDateController = TextEditingController();
   // final _followupDateController = TextEditingController();
@@ -131,6 +132,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   String remarks = '';
   String cancelReason = '';
   String salesPerson = '';
+  String lostTo = '';
   String stepNo = '';
   List<String> todoTypeList = [''];
   List<String> stepNoList = [''];
@@ -292,6 +294,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
           'longitute': long,
           'userID': Constants.employeeId,
           'cancelReason': cancelReason,
+          'lostToWhom': lostTo,
         }
             // ),}
 
@@ -804,6 +807,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                             setState(() {
                               _stepController.text = newValue_stepType!;
                               _cancelReasonController.text = '';
+                              _lostToController.text = '';
                               //print(_stepController.text.toString());
                             });
                             // setState(() {});
@@ -887,6 +891,28 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                       ],
                     ))
                 : Container(),
+            (_cancelReasonController.text.toString() == 'Lost to Competitor')
+                ? Container(
+                    padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+                    child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        TextField(
+                          controller: _lostToController,
+                          decoration: InputDecoration(
+                            labelText: 'Lost To Whom',
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : Container(),
             SizedBox(height: 20.0),
             Container(
               child: Center(
@@ -930,6 +956,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                             .toString()
                             .split('.')[1];
                         print("after controller");
+                        lostTo = _lostToController.text;
                         // newLeadTransactionModel = Todo_New_Lead_Transaction(
                         //     leadinfo,
                         //     personName,
