@@ -229,16 +229,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
       } else {
         _leadNoValidate = false;
       }
-      if (personNameValidation == null || personNameValidation.isEmpty) {
-        _personNameValidate = true;
-      } else {
-        _personNameValidate = false;
-      }
-      if (personContactValidation == null || personContactValidation.isEmpty) {
-        _personContactValidate = true;
-      } else {
-        _personContactValidate = false;
-      }
+
       if (Constants.employeeId == '' ||
           Constants.employeeId == null ||
           Constants.employeeId.isEmpty) {
@@ -246,22 +237,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
       } else {
         _employIDValidate = false;
       }
-      // if (meetDate == null || meet_date.isEmpty) {
-      //   _meetDateVaidate = true;
-      // } else {
-      //   _meetDateVaidate = false;
-      // }
-      if (salesPerson == null || salesPerson.isEmpty) {
-        _salesPersonValidate = true;
-      } else {
-        _salesPersonValidate = false;
-      }
     });
-    if (!_leadNoValidate &&
-        !_personNameValidate &&
-        !_personContactValidate &&
-        !_salesPersonValidate &&
-        !_employIDValidate) {
+    if (!_leadNoValidate && !_employIDValidate) {
       return true;
     } else {
       return false;
@@ -511,7 +488,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         textFieldConfiguration: TextFieldConfiguration(
                           decoration: InputDecoration(
                               hintText: 'Type',
-                              labelText: 'Todo',
+                              labelText: 'Todo*',
                               labelStyle: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold)),
@@ -922,6 +899,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                       //isLoad = true;
                       print("before validation");
                       bool isValid = formValidator();
+                      print(isValid);
                       if (isValid) {
                         Fluttertoast.showToast(
                             msg: "Saving..",
@@ -952,9 +930,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         remarks = _remarkController.text;
                         salesPerson = Constants.employeeId;
                         stepNo = _stepController.text;
-                        cancelReason = _cancelReasonController.text
-                            .toString()
-                            .split('.')[1];
+                        cancelReason = _cancelReasonController.text.toString();
+
                         print("after controller");
                         lostTo = _lostToController.text;
                         // newLeadTransactionModel = Todo_New_Lead_Transaction(
