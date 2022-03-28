@@ -49,6 +49,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.1.0
   geolocator: ^8.0.1
   #location: ^4.3.0 
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +82,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/fairgroup_logo.jpg
 
 flutter_icons:
   image_path: "assets/CRM_logo.jpg"

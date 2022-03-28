@@ -12,6 +12,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:login_prac/constants.dart';
 import 'package:login_prac/itemdetails.dart';
 import 'package:login_prac/todo.dart';
+import 'package:login_prac/utils/sesssion_manager.dart';
 
 import 'new_lead_json.dart';
 
@@ -100,6 +101,11 @@ class _NewLeadState extends State<NewLead> {
   initState() {
     super.initState();
     getData();
+    getEmployID();
+  }
+
+  getEmployID() async {
+    salesManID = await localGetEmployeeID();
   }
 
   getData() async {
@@ -208,6 +214,7 @@ class _NewLeadState extends State<NewLead> {
   String remark = '';
   String customerDOB = '';
   String leadDate = '';
+  String salesManID = '';
   late var salesPersonJSON;
   late var leadSourceJSON;
   late var outletJSON;
@@ -1147,7 +1154,7 @@ class _NewLeadState extends State<NewLead> {
                               companyName: _companyNameController.text,
                               longitude: long,
                               lattitude: lat,
-                              userID: Constants.employeeId,
+                              userID: salesManID,
                               leadSource: _leadSourceControllerFinal,
                               remark: _remarkController.text,
                               leadDate: 'leadDate',

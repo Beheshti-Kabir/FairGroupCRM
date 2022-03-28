@@ -9,8 +9,10 @@ import 'package:http/http.dart' as http;
 import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/constants.dart';
 import 'package:login_prac/lists.dart';
+import 'package:login_prac/logInPage.dart';
 import 'package:login_prac/main.dart';
 import 'package:login_prac/new_lead_transaction.dart';
+import 'package:login_prac/utils/sesssion_manager.dart';
 
 class SummeryPage extends StatefulWidget {
   @override
@@ -43,11 +45,17 @@ class _SummeryPageState extends State<SummeryPage> {
   late var totalInProgress = '';
   late var totalNoAnswer = '';
   String version = Constants.version;
-  String employID = Constants.employeeId;
+  String employID = '';
 
   @override
   initState() {
     super.initState();
+    getEmployID();
+  }
+
+  getEmployID() async {
+    employID = await localGetEmployeeID();
+    print('getEmployID: ' + employID);
     getSummary();
   }
 
@@ -60,6 +68,7 @@ class _SummeryPageState extends State<SummeryPage> {
       //print("lead=" + json.decode(response.body)['totalLead']);
       // result['leadInfo'];
     });
+    print('obj=$employID');
     response = await http.post(
         Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getSummary'),
         //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getSummary'),
@@ -68,12 +77,13 @@ class _SummeryPageState extends State<SummeryPage> {
           'Accept': 'application/json'
         },
         body: jsonEncode(<String, String>{
-          'userID': Constants.employeeId,
+          'userID': employID,
         }));
 
     setState(() {
       if (response.statusCode == 200) {
       } else {
+        print(response.body);
         throw Exception('Failed to load album');
       }
 
@@ -740,11 +750,12 @@ class _SummeryPageState extends State<SummeryPage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    Constants.employeeId = '';
+                    storeLocalSetEmployeeID(Constants.employeeIDKey, '');
+                    storeLocalSetLogInStatus(Constants.logInStatusKey, 'fail');
                     //Navigator.of(context).pushReplacementNamed('/logInPage');
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                            builder: (context) => new MyHomePage()),
+                            builder: (context) => new LogInPage()),
                         (Route<dynamic> route) => false);
                   },
                   child: Container(

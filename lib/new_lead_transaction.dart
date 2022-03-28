@@ -12,6 +12,7 @@ import 'dart:ffi';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:login_prac/constants.dart';
 import 'package:login_prac/todo_new_lead_transaction.dart';
+import 'package:login_prac/utils/sesssion_manager.dart';
 
 class CustomPicker extends CommonPickerModel {
   String digits(int value, int length) {
@@ -134,6 +135,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   String salesPerson = '';
   String lostTo = '';
   String stepNo = '';
+  String employID = '';
   List<String> todoTypeList = [''];
   List<String> stepNoList = [''];
   List<String> sales_person = [''];
@@ -161,8 +163,13 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     super.initState();
     getLeadData();
     getLocation();
+    getEmployID();
 
     //serviceEnable();
+  }
+
+  getEmployID() async {
+    employID = await localGetEmployeeID();
   }
 
   @override
@@ -928,7 +935,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         todoDescription = _todoDescriptionController.text;
                         // have to set meet date
                         remarks = _remarkController.text;
-                        salesPerson = Constants.employeeId;
+                        salesPerson = employID;
                         stepNo = _stepController.text;
                         cancelReason = _cancelReasonController.text.toString();
 
