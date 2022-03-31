@@ -399,14 +399,12 @@ class _NewLeadState extends State<NewLead> {
             //           onConfirm: (date) {
             //         print('confirm $date');
             //         leadDate = date.toString();
-
             //         var lead_date_day = date.day.toInt() < 10
             //             ? '0' + date.day.toString()
             //             : date.day.toString();
             //         var lead_date_month = date.month.toInt() < 10
             //             ? '0' + date.month.toString()
             //             : date.month.toString();
-
             //         setState(() {
             //           leadDate = date.year.toString() +
             //               '-' +

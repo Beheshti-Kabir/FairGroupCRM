@@ -495,7 +495,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         textFieldConfiguration: TextFieldConfiguration(
                           decoration: InputDecoration(
                               hintText: 'Type',
-                              labelText: 'Todo*',
+                              labelText: 'Mode Of Follow Up*',
                               labelStyle: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold)),
@@ -657,7 +657,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                   }, currentTime: DateTime.now());
                 },
                 child: Text(
-                  "Followup Date: $_followupDateController",
+                  "Followup Date*: $_followupDateController",
                   style: TextStyle(
                       fontSize: 17,
                       color: Colors.grey,
@@ -767,7 +767,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Step Type",
+                    Text("Enquiry Step Type*",
                         style: TextStyle(
                           fontSize: 17,
                           color: Colors.grey,
@@ -902,79 +902,106 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
-                    if (isLoad) {
-                      //isLoad = true;
-                      print("before validation");
-                      bool isValid = formValidator();
-                      print(isValid);
-                      if (isValid) {
+                    if (_stepController.text == '') {
+                      Fluttertoast.showToast(
+                          msg: "Enquiry Step Type Missing..",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      if (followUp_date == '' &&
+                          _stepController.text != 'INVOICED' &&
+                          _stepController.text != 'CANCEL' &&
+                          _stepController.text != 'LOST' &&
+                          _stepController.text != 'INVALID') {
                         Fluttertoast.showToast(
-                            msg: "Saving..",
+                            msg: "Follow-Up Date Missing..",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.TOP,
                             timeInSecForIosWeb: 1,
                             backgroundColor: Colors.red,
                             textColor: Colors.white,
                             fontSize: 16.0);
+                      } else {
+                        if (isLoad) {
+                          //isLoad = true;
+                          print("before validation");
+                          bool isValid = formValidator();
+                          print(isValid);
+                          if (isValid) {
+                            Fluttertoast.showToast(
+                                msg: "Saving..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
 
-                        setState(() {
-                          isLoad = false;
-                        });
-                        List<String> salesPersonControllerMiddle =
-                            _salesPersonController.text.split(' ');
-                        String _salesPersonControllerFinal =
-                            salesPersonControllerMiddle[0];
-                        leadNoControllerMiddle =
-                            _leadNoController.text.split('-');
-                        String _leadNoControllerFinal =
-                            leadNoControllerMiddle[0];
-                        leadinfo = _leadNoControllerFinal;
-                        personName = _personNameController.text;
-                        personContact = _personContactController.text;
-                        todoType = _todoController.text;
-                        todoDescription = _todoDescriptionController.text;
-                        // have to set meet date
-                        remarks = _remarkController.text;
-                        salesPerson = employID;
-                        stepNo = _stepController.text;
-                        cancelReason = _cancelReasonController.text.toString();
+                            setState(() {
+                              isLoad = false;
+                            });
+                            List<String> salesPersonControllerMiddle =
+                                _salesPersonController.text.split(' ');
+                            String _salesPersonControllerFinal =
+                                salesPersonControllerMiddle[0];
+                            leadNoControllerMiddle =
+                                _leadNoController.text.split('-');
+                            String _leadNoControllerFinal =
+                                leadNoControllerMiddle[0];
+                            leadinfo = _leadNoControllerFinal;
+                            personName = _personNameController.text;
+                            personContact = _personContactController.text;
+                            todoType = _todoController.text;
+                            todoDescription = _todoDescriptionController.text;
+                            // have to set meet date
+                            remarks = _remarkController.text;
+                            salesPerson = employID;
+                            stepNo = _stepController.text;
+                            cancelReason =
+                                _cancelReasonController.text.toString();
 
-                        print("after controller");
-                        lostTo = _lostToController.text;
-                        // newLeadTransactionModel = Todo_New_Lead_Transaction(
-                        //     leadinfo,
-                        //     personName,
-                        //     personContact,
-                        //     todoType,
-                        //     todoDescription,
-                        //     meetDate,
-                        //     executionDate,
-                        //     followupDate,
-                        //     remarks,
-                        //     salesPerson,
-                        //     stepNo);
-                        //newLeadTransactionSend.add(newLeadTransactionModel);
-                        var response = await createAlbum();
+                            print("after controller");
+                            lostTo = _lostToController.text;
+                            // newLeadTransactionModel = Todo_New_Lead_Transaction(
+                            //     leadinfo,
+                            //     personName,
+                            //     personContact,
+                            //     todoType,
+                            //     todoDescription,
+                            //     meetDate,
+                            //     executionDate,
+                            //     followupDate,
+                            //     remarks,
+                            //     salesPerson,
+                            //     stepNo);
+                            //newLeadTransactionSend.add(newLeadTransactionModel);
+                            var response = await createAlbum();
 
-                        //print(json.encode(newLeadTransactionSend));
-                        if (response.toLowerCase().trim() == 'success') {
-                          Navigator.of(context)
-                              .pushReplacementNamed('/summery');
-                        } else {
-                          setState(
-                            () {
-                              isLoad = true;
-                            },
-                          );
-                          print(response);
-                          Fluttertoast.showToast(
-                              msg: response,
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
+                            //print(json.encode(newLeadTransactionSend));
+                            if (response.toLowerCase().trim() == 'success') {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/summery');
+                            } else {
+                              setState(
+                                () {
+                                  isLoad = true;
+                                },
+                              );
+                              print(response);
+                              Fluttertoast.showToast(
+                                  msg: response,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                          }
                         }
                       }
                     }

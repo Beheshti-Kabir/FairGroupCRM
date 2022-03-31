@@ -32,6 +32,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+   
+//    signingConfigs{
+//        release{
+
+//            storeFile file("crm_store_key")
+//             storePassword "crmstorekey2022"
+//             keyAlias "crm_alias_key"
+//             keyPassword "crmstorekey2022"
+//        }
+//    }
 
     kotlinOptions {
         jvmTarget = '1.8'
