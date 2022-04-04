@@ -157,11 +157,7 @@ class _NewLeadState extends State<NewLead> {
       sales_person.insert(0, salesPersonMiddle);
     }
     for (var j = 0; j < leadSourceNumber; j++) {
-      String leadSourceMiddle = leadSourceJSON[j]['name'] +
-          ' & Code: ' +
-          leadSourceJSON[j]['code'].toString();
-      lead_source.insert(0, leadSourceMiddle);
-      print(leadSourceMiddle);
+      lead_source.insert(0, leadSourceJSON[j]['name']);
     }
     print("Leaing Lead Loop");
   }
@@ -1138,10 +1134,10 @@ class _NewLeadState extends State<NewLead> {
                               _salesPersonController.text.split(' ');
                           String _salesPersonControllerFinal =
                               salesPersonControllerMiddle[0];
-                          List<String> leadSourceControllerMiddle =
-                              _leadNoController.text.split('& Code:');
-                          String _leadSourceControllerFinal =
-                              leadSourceControllerMiddle[0];
+                          // List<String> leadSourceControllerMiddle =
+                          //     _leadNoController.text.split('& Code:');
+                          // String _leadSourceControllerFinal =
+                          //     leadSourceControllerMiddle[0];
                           var new_lead_values = New_lead_json(
                               profession: _professionController.text,
                               customerName: _customerNameController.text,
@@ -1153,7 +1149,7 @@ class _NewLeadState extends State<NewLead> {
                               longitude: long,
                               lattitude: lat,
                               userID: salesManID,
-                              leadSource: _leadSourceControllerFinal,
+                              leadSource: _leadNoController.text,
                               remark: _remarkController.text,
                               leadDate: 'leadDate',
                               salesPerson: _salesPersonControllerFinal,

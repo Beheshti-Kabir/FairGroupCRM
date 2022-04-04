@@ -1,0 +1,26 @@
+1.0.15
+-- named changed
+-- made mandatory fields 
+-- added step types
+-- mode of follow up typeahead to dropdown
+
+1.0.13
+--  Sales Person Required Field
+--  Cancel reasoning
+
+1.0.11
+-- changer the drop down in new lead
+-- Added validation for product add
+
+Previous Modifications 
+- text size fixed
+- added new fields in new lead
+	-- profession
+	-- payment method
+- fixed lead create time
+- made the mandatory filed
+	-- company name
+	-- customer email
+- removed from mandatory field
+	-- customer date of birth
+- removed the lead date from new lead (as the date time will be taken when the value hits the server)

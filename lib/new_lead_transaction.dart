@@ -464,45 +464,102 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                 ],
               ),
             ),
+            // Container(
+            //     padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+            //     child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           TypeAheadFormField(
+            //             suggestionsCallback: (pattern) => todoTypeList.where(
+            //               (item) => item.toLowerCase().contains(
+            //                     pattern.toLowerCase(),
+            //                   ),
+            //             ),
+            //             itemBuilder: (_, String item) => ListTile(
+            //                 title: Text(
+            //               item,
+            //               overflow: TextOverflow.ellipsis,
+            //               maxLines: 2,
+            //             )),
+            //             onSuggestionSelected: (String val) {
+            //               this._todoController.text = val;
+            //             },
+            //             getImmediateSuggestions: true,
+            //             hideSuggestionsOnKeyboardHide: false,
+            //             hideOnEmpty: false,
+            //             noItemsFoundBuilder: (context) => Padding(
+            //               padding: const EdgeInsets.all(8.0),
+            //               child: Text('No Suggestion'),
+            //             ),
+            //             textFieldConfiguration: TextFieldConfiguration(
+            //               decoration: InputDecoration(
+            //                   hintText: 'Type',
+            //                   labelText: 'Mode Of Follow Up*',
+            //                   labelStyle: TextStyle(
+            //                       color: Colors.grey,
+            //                       fontWeight: FontWeight.bold)),
+            //               controller: this._todoController,
+            //             ),
+            //           ),
+            //         ])),
             Container(
                 padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TypeAheadFormField(
-                        suggestionsCallback: (pattern) => todoTypeList.where(
-                          (item) => item.toLowerCase().contains(
-                                pattern.toLowerCase(),
-                              ),
-                        ),
-                        itemBuilder: (_, String item) => ListTile(
-                            title: Text(
-                          item,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Mode of Follow Up*",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
                         )),
-                        onSuggestionSelected: (String val) {
-                          this._todoController.text = val;
-                        },
-                        getImmediateSuggestions: true,
-                        hideSuggestionsOnKeyboardHide: false,
-                        hideOnEmpty: false,
-                        noItemsFoundBuilder: (context) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('No Suggestion'),
+                    Row(
+                      // ignore: pre
+                      //fer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          value: _todoController.text,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: icnSize,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.blue),
+                          underline: Container(
+                            height: 2,
+                            color: dropColor,
+                          ),
+                          onChanged: (String? newValue_stepType) {
+                            setState(() {
+                              _todoController.text = newValue_stepType!;
+                              // _cancelReasonController.text = '';
+                              // _lostToController.text = '';
+                              //print(_stepController.text.toString());
+                            });
+                            // setState(() {});
+                          },
+                          items: todoTypeList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    //fontWeight: FontWeight.bold,
+                                    fontSize: 17),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        textFieldConfiguration: TextFieldConfiguration(
-                          decoration: InputDecoration(
-                              hintText: 'Type',
-                              labelText: 'Mode Of Follow Up*',
-                              labelStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold)),
-                          controller: this._todoController,
-                        ),
-                      ),
-                    ])),
+                        // SizedBox(
+                        //   width: 10.0,
+                        // ),
+                      ],
+                    ),
+                  ],
+                )),
+
             Container(
               padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
@@ -902,9 +959,9 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
-                    if (_stepController.text == '') {
+                    if (_todoController.toString() == '') {
                       Fluttertoast.showToast(
-                          msg: "Enquiry Step Type Missing..",
+                          msg: "Mode of FollowUp missing..",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -912,13 +969,9 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     } else {
-                      if (followUp_date == '' &&
-                          _stepController.text != 'INVOICED' &&
-                          _stepController.text != 'CANCEL' &&
-                          _stepController.text != 'LOST' &&
-                          _stepController.text != 'INVALID') {
+                      if (_stepController.text == '') {
                         Fluttertoast.showToast(
-                            msg: "Follow-Up Date Missing..",
+                            msg: "Enquiry Step Type Missing..",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.TOP,
                             timeInSecForIosWeb: 1,
@@ -926,80 +979,95 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                             textColor: Colors.white,
                             fontSize: 16.0);
                       } else {
-                        if (isLoad) {
-                          //isLoad = true;
-                          print("before validation");
-                          bool isValid = formValidator();
-                          print(isValid);
-                          if (isValid) {
-                            Fluttertoast.showToast(
-                                msg: "Saving..",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.TOP,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-
-                            setState(() {
-                              isLoad = false;
-                            });
-                            List<String> salesPersonControllerMiddle =
-                                _salesPersonController.text.split(' ');
-                            String _salesPersonControllerFinal =
-                                salesPersonControllerMiddle[0];
-                            leadNoControllerMiddle =
-                                _leadNoController.text.split('-');
-                            String _leadNoControllerFinal =
-                                leadNoControllerMiddle[0];
-                            leadinfo = _leadNoControllerFinal;
-                            personName = _personNameController.text;
-                            personContact = _personContactController.text;
-                            todoType = _todoController.text;
-                            todoDescription = _todoDescriptionController.text;
-                            // have to set meet date
-                            remarks = _remarkController.text;
-                            salesPerson = employID;
-                            stepNo = _stepController.text;
-                            cancelReason =
-                                _cancelReasonController.text.toString();
-
-                            print("after controller");
-                            lostTo = _lostToController.text;
-                            // newLeadTransactionModel = Todo_New_Lead_Transaction(
-                            //     leadinfo,
-                            //     personName,
-                            //     personContact,
-                            //     todoType,
-                            //     todoDescription,
-                            //     meetDate,
-                            //     executionDate,
-                            //     followupDate,
-                            //     remarks,
-                            //     salesPerson,
-                            //     stepNo);
-                            //newLeadTransactionSend.add(newLeadTransactionModel);
-                            var response = await createAlbum();
-
-                            //print(json.encode(newLeadTransactionSend));
-                            if (response.toLowerCase().trim() == 'success') {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/summery');
-                            } else {
-                              setState(
-                                () {
-                                  isLoad = true;
-                                },
-                              );
-                              print(response);
+                        if (followUp_date == '' &&
+                            _stepController.text != 'INVOICED' &&
+                            _stepController.text != 'CANCEL' &&
+                            _stepController.text != 'LOST' &&
+                            _stepController.text != 'INVALID') {
+                          Fluttertoast.showToast(
+                              msg: "Follow-Up Date Missing..",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.TOP,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          if (isLoad) {
+                            //isLoad = true;
+                            print("before validation");
+                            bool isValid = formValidator();
+                            print(isValid);
+                            if (isValid) {
                               Fluttertoast.showToast(
-                                  msg: response,
+                                  msg: "Saving..",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.TOP,
                                   timeInSecForIosWeb: 1,
                                   backgroundColor: Colors.red,
                                   textColor: Colors.white,
                                   fontSize: 16.0);
+
+                              setState(() {
+                                isLoad = false;
+                              });
+                              List<String> salesPersonControllerMiddle =
+                                  _salesPersonController.text.split(' ');
+                              String _salesPersonControllerFinal =
+                                  salesPersonControllerMiddle[0];
+                              leadNoControllerMiddle =
+                                  _leadNoController.text.split('-');
+                              String _leadNoControllerFinal =
+                                  leadNoControllerMiddle[0];
+                              leadinfo = _leadNoControllerFinal;
+                              personName = _personNameController.text;
+                              personContact = _personContactController.text;
+                              todoType = _todoController.text;
+                              todoDescription = _todoDescriptionController.text;
+                              // have to set meet date
+                              remarks = _remarkController.text;
+                              salesPerson = employID;
+                              stepNo = _stepController.text;
+                              cancelReason =
+                                  _cancelReasonController.text.toString();
+
+                              print("after controller");
+                              lostTo = _lostToController.text;
+                              // newLeadTransactionModel = Todo_New_Lead_Transaction(
+                              //     leadinfo,
+                              //     personName,
+                              //     personContact,
+                              //     todoType,
+                              //     todoDescription,
+                              //     meetDate,
+                              //     executionDate,
+                              //     followupDate,
+                              //     remarks,
+                              //     salesPerson,
+                              //     stepNo);
+                              //newLeadTransactionSend.add(newLeadTransactionModel);
+                              var response = await createAlbum();
+
+                              //print(json.encode(newLeadTransactionSend));
+                              if (response.toLowerCase().trim() == 'success') {
+                                Navigator.of(context)
+                                    .pushReplacementNamed('/summery');
+                              } else {
+                                setState(
+                                  () {
+                                    isLoad = true;
+                                  },
+                                );
+                                print(response);
+                                Fluttertoast.showToast(
+                                    msg: response,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
                             }
                           }
                         }
