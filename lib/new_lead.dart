@@ -968,7 +968,7 @@ class _NewLeadState extends State<NewLead> {
                                 ? 'Value Can\'t Be Empty'
                                 : null,
                             hintText: 'Type',
-                            labelText: 'Sales Person',
+                            labelText: 'Sales Person*',
                             labelStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),

@@ -165,19 +165,20 @@ class New_lead_json {
 /// totalPrice : ""
 
 class Todo {
-  Todo({
-    String? productName,
-    String? description,
-    String? quantity,
-    //String? stock,
-    String? unitPrice,
-    //String? totalPrice,
-  }) {
+  Todo(
+      {String? productName,
+      String? description,
+      String? quantity,
+      //String? stock,
+      String? unitPrice,
+      //String? totalPrice,
+      String? prospectType}) {
     _productName = productName;
     _description = description;
     _quantity = quantity;
     //_stock = stock;
     _unitPrice = unitPrice;
+    _prospectType = prospectType;
     //_totalPrice = totalPrice;
   }
 
@@ -187,6 +188,7 @@ class Todo {
     _quantity = json['quantity'];
     //_stock = json['stock'];
     _unitPrice = json['unitPrice'];
+    _prospectType = json['prospectType'];
     //_totalPrice = json['totalPrice'];
   }
   String? _productName;
@@ -194,6 +196,7 @@ class Todo {
   String? _quantity;
   //String? _stock;
   String? _unitPrice;
+  String? _prospectType;
   //String? _totalPrice;
 
   String? get productName => _productName;
@@ -201,6 +204,7 @@ class Todo {
   String? get quantity => _quantity;
   //String? get stock => _stock;
   String? get unitPrice => _unitPrice;
+  String? get prospectType => _prospectType;
   //String? get totalPrice => _totalPrice;
 
   Map<String, dynamic> toJson() {
@@ -210,6 +214,7 @@ class Todo {
     map['quantity'] = _quantity;
     //map['stock'] = _stock;
     map['unitPrice'] = _unitPrice;
+    map['prospectType'] = _prospectType;
     //map['totalPrice'] = _totalPrice;
     return map;
   }

@@ -1,8 +1,14 @@
+1.0.16
+-- Product Details Page added Prospect Type
+-- Product Name Price from server
+-- Made Some required Fields
+
 1.0.15
 -- named changed
 -- made mandatory fields 
 -- added step types
 -- mode of follow up typeahead to dropdown
+-- summary page edited
 
 1.0.13
 --  Sales Person Required Field

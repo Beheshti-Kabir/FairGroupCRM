@@ -253,10 +253,11 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   }
 
   Future<String> createAlbum() async {
+    String employIDD = await localGetEmployeeID();
     var response = await http.post(
         Uri.parse(
             'http://202.84.44.234:9085/rbd/leadInfoApi/saveLeadTransaction'),
-        //'http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadTransaction'),
+        // 'http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadTransaction'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -272,11 +273,11 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
           'executionDate': execution_date,
           'followupDate': followUp_date,
           'remarks': remarks,
-          'salesPerson': salesPerson,
+          'salesPerson': employIDD,
           'stepNo': stepNo,
           'lattitute': lat,
           'longitute': long,
-          'userID': Constants.employeeId,
+          'userID': employIDD,
           'cancelReason': cancelReason,
           'lostToWhom': lostTo,
         }
@@ -504,63 +505,65 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
             //           ),
             //         ])),
             Container(
-                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Mode of Follow Up*",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    Row(
-                      // ignore: pre
-                      //fer_const_literals_to_create_immutables
-                      children: <Widget>[
-                        DropdownButton<String>(
-                          value: _todoController.text,
-                          icon: const Icon(Icons.arrow_downward),
-                          iconSize: icnSize,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.blue),
-                          underline: Container(
-                            height: 2,
-                            color: dropColor,
-                          ),
-                          onChanged: (String? newValue_stepType) {
-                            setState(() {
-                              _todoController.text = newValue_stepType!;
-                              // _cancelReasonController.text = '';
-                              // _lostToController.text = '';
-                              //print(_stepController.text.toString());
-                            });
-                            // setState(() {});
-                          },
-                          items: todoTypeList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    //fontWeight: FontWeight.bold,
-                                    fontSize: 17),
-                              ),
-                            );
-                          }).toList(),
+              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Mode of Follow Up*",
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  Row(
+                    // ignore: pre
+                    //fer_const_literals_to_create_immutables
+                    children: <Widget>[
+                      DropdownButton<String>(
+                        //isExpanded: true,
+                        value: _todoController.text,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: icnSize,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.blue),
+                        underline: Container(
+                          height: 2,
+                          color: dropColor,
                         ),
-                        // SizedBox(
-                        //   width: 10.0,
-                        // ),
-                      ],
-                    ),
-                  ],
-                )),
+                        onChanged: (String? newValue_stepType) {
+                          setState(() {
+                            _todoController.text = newValue_stepType!;
+                            // _cancelReasonController.text = '';
+                            // _lostToController.text = '';
+                            //print(_stepController.text.toString());
+                          });
+                          // setState(() {});
+                        },
+                        items: todoTypeList
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  //fontWeight: FontWeight.bold,
+                                  fontSize: 17),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      // SizedBox(
+                      //   width: 10.0,
+                      // ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
 
-            Container(
+             Container(
               padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
@@ -835,6 +838,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                       //fer_const_literals_to_create_immutables
                       children: <Widget>[
                         DropdownButton<String>(
+                          //isExpanded: true,
                           value: _stepController.text,
                           icon: const Icon(Icons.arrow_downward),
                           iconSize: icnSize,
@@ -894,6 +898,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                           //fer_const_literals_to_create_immutables
                           children: <Widget>[
                             DropdownButton<String>(
+                              //isExpanded: true,
                               value: _cancelReasonController.text,
                               icon: const Icon(Icons.arrow_downward),
                               iconSize: icnSize,

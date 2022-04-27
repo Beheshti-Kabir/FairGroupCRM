@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   getRoutePath() async {
     String vari = await localGetEmployeeID();
+    Constants.employeeId = vari;
     print('main=' + vari);
     bool logInStatus = await localLoginStatus();
     if (logInStatus) {

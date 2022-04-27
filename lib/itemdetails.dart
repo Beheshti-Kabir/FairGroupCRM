@@ -2,12 +2,30 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
+import 'package:login_prac/constants.dart';
 
 import 'package:login_prac/todo.dart';
+import 'package:login_prac/utils/constants.dart';
 
 import 'new_lead_json.dart';
+
+List<String> productNameList = [];
+List<String> productPriceList = [];
+final _productNameSearchController = TextEditingController();
+late var produtcListJSON;
+late var productListNumber;
+bool productLoaded = false;
+
+String productName = '';
+String unitPrice = '';
+
+final _productNameController = TextEditingController();
+
+final _productNameController2 = TextEditingController();
+final _unitPriceController = TextEditingController();
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({Key? key}) : super(key: key);
@@ -17,70 +35,34 @@ class ItemDetails extends StatefulWidget {
 }
 
 class _ItemDetailsState extends State<ItemDetails> {
+  callBack() {
+    setState(() {});
+  }
+
   @override
   initState() {
     super.initState();
     //getProduct();
   }
 
-  getProduct() async {
-    print("inside getData");
-    final response = await http
-        .get(Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getData'));
-
-    produtcListJSON = json.decode(response.body)['productList'];
-
-    productListNumber = produtcListJSON.length;
-
-    // print(salesPersonJSON[4]['empCode'].toString() +
-    //     ' ' +
-    //     salesPersonJSON[4]['empName']);
-    // print("leaving getData");
-    for (var i = 0; i < productListNumber; i++) {
-      int productLenght = produtcListJSON[i]['name'].length;
-      double productLengthHalf = productLenght.toDouble() / 2;
-      int productHalfLenght = productLengthHalf.toInt();
-      if (productLenght > 30) {
-        if (productLenght.isEven) {
-          produtcListJSON[i]['name'] =
-              produtcListJSON[i]['name'].substring(0, productHalfLenght) +
-                  produtcListJSON[i]['name'].substring(productHalfLenght);
-        } else {
-          produtcListJSON[i]['name'] =
-              produtcListJSON[i]['name'].substring(0, productHalfLenght + 1) +
-                  produtcListJSON[i]['name'].substring(productHalfLenght + 1);
-        }
-      }
-      String productListMiddle = produtcListJSON[i]['name'] +
-          ' & Code: ' +
-          produtcListJSON[i]['code'].toString();
-      product_list.insert(0, productListMiddle);
-    }
-
-    print("Leaing Lead Loop");
-  }
-
-  final _productNameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _quantityController = TextEditingController();
   final _stockController = TextEditingController();
-  final _unitPriceController = TextEditingController();
   final _totalPriceController = TextEditingController();
+  final _prospectController = TextEditingController();
   final _productListController = '';
   var count = 0;
-  late var produtcListJSON;
-  late var productListNumber;
 
-  String productName = '';
   String description = '';
   String quantity = '';
   String stock = '';
-  String unitPrice = '';
   String totalPrice = '';
+  String prospectType = '';
   List<Todo> detailsTable = [];
   var icnSize = 18.0;
   var dropColor = Colors.blue;
-  List<String> product_list = [''];
+
+  List<String> prospectTypeList = ['', 'HOT', 'WARM', 'COLD'];
 
   late Todo detailsModel;
 
@@ -94,6 +76,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     _stockController.clear();
     _unitPriceController.clear();
     _totalPriceController.clear();
+    _prospectController.clear();
   }
 
   addProduct() {
@@ -104,6 +87,7 @@ class _ItemDetailsState extends State<ItemDetails> {
       description = _descriptionController.text.toString();
       quantity = _quantityController.text.toString();
       unitPrice = _unitPriceController.text.toString();
+      prospectType = _prospectController.text.toString();
       //stock = _stockController.text.toString();
       //totalPrice = _totalPriceController.text.toString();
       detailsModel = Todo(
@@ -111,7 +95,8 @@ class _ItemDetailsState extends State<ItemDetails> {
           description: description,
           quantity: quantity,
           //stock: "stock",
-          unitPrice: unitPrice);
+          unitPrice: unitPrice,
+          prospectType: prospectType);
       //totalPrice: "totalPrice");
       detailsTable.add(detailsModel);
       clearController();
@@ -123,18 +108,20 @@ class _ItemDetailsState extends State<ItemDetails> {
     String productNameValidation = _productNameController.text;
     String quantityValidation = _quantityController.text;
     setState(() {
-      if (productNameValidation == null || productNameValidation.isEmpty) {
-        _productNameValidate = true;
-      } else {
-        _productNameValidate = false;
-      }
+      // if (productNameValidation == null || productNameValidation.isEmpty) {
+      //   _productNameValidate = true;
+      // } else {
+      //   _productNameValidate = false;
+      // }
       if (quantityValidation == null || quantityValidation.isEmpty) {
         _quantityValidate = true;
       } else {
         _quantityValidate = false;
       }
     });
-    if (!_productNameValidate && !_quantityValidate) {
+    if (
+        //!_productNameValidate &&
+        !_quantityValidate) {
       return true;
     } else {
       return false;
@@ -232,25 +219,101 @@ class _ItemDetailsState extends State<ItemDetails> {
 
             //       ],
             //     )),
+            //
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
-              child: Column(
+              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+              child: Row(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
-                  TextField(
-                    controller: _productNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Product Name',
-                      labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
+                  // TextField(
+                  //   controller: _personNameController,
+                  //   decoration: InputDecoration(
+                  //     errorText:
+                  //         _personNameValidate ? 'Value Can\'t Be Empty' : null,
+                  //     labelText: 'Person Name*',
+                  //     labelStyle: TextStyle(
+                  //         fontWeight: FontWeight.bold, color: Colors.grey),
+                  //     focusedBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(color: Colors.blue),
+                  //     ),
+                  //   ),
+                  // )
+                  Expanded(
+                    child: Text(
+                      "Product Name: " + _productNameController.text,
+                      style: TextStyle(color: Colors.grey, fontSize: 18.0),
                     ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      setState(() {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => Dialog(
+                              child: ShowDialog(
+                            callBackFunction: callBack,
+                          )),
+                        );
+                      });
+                    },
+                    icon: const Icon(Icons.arrow_drop_down),
                   )
                 ],
               ),
             ),
+            // Container(
+            //     padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         TypeAheadFormField(
+            //           suggestionsCallback: (pattern) => product_list.where(
+            //             (item) => item.toLowerCase().contains(
+            //                   pattern.toLowerCase(),
+            //                 ),
+            //           ),
+            //           itemBuilder: (_, String item) => ListTile(
+            //               title: Text(
+            //             item,
+            //             overflow: TextOverflow.ellipsis,
+            //             maxLines: 2,
+            //           )),
+            //           onSuggestionSelected: (String val) {
+            //             this._productNameSearchController.text = val;
+            //             // leadNoControllerMiddle =
+            //             //     _leadNoController.text.split('-');
+            //             setState(() {
+            //               // _personNameController.text =
+            //               //     leadNoControllerMiddle[1];
+            //               // _personContactController.text =
+            //               //     leadNoControllerMiddle[2];
+            //             });
+            //             print(_productNameSearchController.text);
+            //           },
+            //           getImmediateSuggestions: true,
+            //           hideSuggestionsOnKeyboardHide: false,
+            //           hideOnEmpty: false,
+            //           noItemsFoundBuilder: (context) => Padding(
+            //             padding: const EdgeInsets.all(8.0),
+            //             child: Text('No Suggestion'),
+            //           ),
+            //           textFieldConfiguration: TextFieldConfiguration(
+            //             decoration: InputDecoration(
+            //                 errorText: _productNameValidate
+            //                     ? 'Value Can\'t Be Empty'
+            //                     : null,
+            //                 hintText: '',
+            //                 labelText: 'Product Name',
+            //                 labelStyle: TextStyle(
+            //                     color: Colors.grey,
+            //                     fontWeight: FontWeight.bold)),
+            //             controller: this._productNameSearchController,
+            //           ),
+            //         )
+            //       ],
+            //     )),
+
             // SizedBox(
             //   height: 15.0,
             // ),
@@ -281,7 +344,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                   TextField(
                     controller: _quantityController,
                     decoration: InputDecoration(
-                      labelText: 'Quantity',
+                      errorText:
+                          _quantityValidate ? 'Value Can\'t Be Empty' : null,
+                      labelText: 'Quantity*',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
                       focusedBorder: UnderlineInputBorder(
@@ -332,6 +397,63 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ],
               ),
             ),
+            Container(
+                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Enquiry Step Type*",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Row(
+                      // ignore: pre
+                      //fer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          //isExpanded: true,
+                          value: _prospectController.text,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: icnSize,
+                          elevation: 15,
+                          style: const TextStyle(color: Colors.blue),
+                          underline: Container(
+                            height: 2,
+                            color: dropColor,
+                          ),
+                          onChanged: (String? newValue_prospectType) {
+                            setState(() {
+                              _prospectController.text = newValue_prospectType!;
+                              // _cancelReasonController.text = '';
+                              // _lostToController.text = '';
+                              //print(_stepController.text.toString());
+                            });
+                            // setState(() {});
+                          },
+                          items: prospectTypeList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    //fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        // SizedBox(
+                        //   width: 10.0,
+                        // ),
+                      ],
+                    ),
+                  ],
+                )),
             // Container(
             //   padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
             //   child: Column(t
@@ -360,7 +482,31 @@ class _ItemDetailsState extends State<ItemDetails> {
                   padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      addProduct();
+                      if (_productNameController.text.toString() == null ||
+                          _productNameController.text.toString().isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Product Name Missing..",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      } else {
+                        if (_prospectController.text.toString() == null ||
+                            _prospectController.text.toString().isEmpty) {
+                          Fluttertoast.showToast(
+                              msg: "Enquiry Stem Type Missing..",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.TOP,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          addProduct();
+                        }
+                      }
                     },
                     child: Container(
                       height: 30.0,
@@ -390,7 +536,19 @@ class _ItemDetailsState extends State<ItemDetails> {
                         print('count:' + count.toString());
                         Navigator.of(context).pop(detailsTable);
                       } else {
-                        addProduct();
+                        if (_prospectController.text.toString() == null ||
+                            _prospectController.text.toString().isEmpty) {
+                          Fluttertoast.showToast(
+                              msg: "Enquiry Stem Type Missing..",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.TOP,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          addProduct();
+                        }
                         print('count:' + count.toString());
                         Navigator.of(context).pop(detailsTable);
                       }
@@ -453,6 +611,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     ),
                     flex: 1,
                   ),
+
                   // Expanded(
                   //   child: Text(
                   //     'Stock',
@@ -464,6 +623,14 @@ class _ItemDetailsState extends State<ItemDetails> {
                   Expanded(
                     child: Text(
                       'Unit Price',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Prospect Type',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -533,6 +700,13 @@ class _ItemDetailsState extends State<ItemDetails> {
                           ),
                           flex: 1,
                         ),
+                        Expanded(
+                          child: Text(
+                            model.prospectType.toString(),
+                            textAlign: TextAlign.center,
+                          ),
+                          flex: 1,
+                        ),
                         // Expanded(
                         //   child: Text(
                         //     model.totalPrice.toString(),
@@ -547,6 +721,261 @@ class _ItemDetailsState extends State<ItemDetails> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ShowDialog extends StatefulWidget {
+  final Function callBackFunction;
+
+  const ShowDialog({Key? key, required this.callBackFunction})
+      : super(key: key);
+
+  @override
+  State<ShowDialog> createState() => _ShowDialogState();
+}
+
+class _ShowDialogState extends State<ShowDialog> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  bool _productValidator = false;
+
+  getProduct() async {
+    setState(() {
+      productLoaded = false;
+    });
+    productNameList = [];
+    productPriceList = [];
+    print("inside getData");
+
+    final response = await http.post(
+        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getProductList'),
+        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getProductList'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'productName': _productNameSearchController.text,
+        }));
+
+    produtcListJSON = json.decode(response.body);
+
+    productListNumber = produtcListJSON.length;
+    print('getProduct value=' + produtcListJSON.toString());
+
+    // // print(salesPersonJSON[4]['empCode'].toString() +
+    // //     ' ' +
+    // //     salesPersonJSON[4]['empName']);
+    // // print("leaving getData");
+    // for (int i = 0; i < productListNumber; i++) {
+    //   int productLenght = produtcListJSON[i]['name'].length;
+    //   double productLengthHalf = productLenght.toDouble() / 2;
+    //   int productHalfLenght = productLengthHalf.toInt();
+    //   if (productLenght > 30) {
+    //     if (productLenght.isEven) {
+    //       produtcListJSON[i]['name'] =
+    //           produtcListJSON[i]['name'].substring(0, productHalfLenght) +
+    //               produtcListJSON[i]['name'].substring(productHalfLenght);
+    //     } else {
+    //       produtcListJSON[i]['name'] =
+    //           produtcListJSON[i]['name'].substring(0, productHalfLenght + 1) +
+    //               produtcListJSON[i]['name'].substring(productHalfLenght + 1);
+    //     }
+    //   }
+    //   String productListMiddle = produtcListJSON[i]['name'] +
+    //       ' & Code: ' +
+    //       produtcListJSON[i]['code'].toString();
+    //   product_list.insert(0, productListMiddle);
+    // }
+    for (int i = 0; i < productListNumber; i++) {
+      productNameList.add(produtcListJSON[i]['productName'].toString());
+      productPriceList.add(produtcListJSON[i]['productPrice'].toString());
+    }
+
+    setState(() {
+      productLoaded = true;
+    });
+    print("Leaing Lead Loop");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 450,
+      width: 150,
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Container(
+            height: 50,
+            child: TextField(
+              controller: _productNameSearchController,
+              onChanged: (value) {
+                setState(() {});
+                if (_productNameSearchController.text.length > 2) {
+                  productLoaded = false;
+                  setState(() {});
+                  getProduct();
+                }
+              },
+              decoration: InputDecoration(
+                labelText: 'Search',
+                labelStyle: TextStyle(
+                    //         fontWeight:FontWeight.bold,
+                    color: Colors.grey),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          (_productNameSearchController.text.length > 2)
+              ? (productLoaded)
+                  ? (productListNumber > 0)
+                      ? Expanded(
+                          child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: productListNumber,
+                              primary: false,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    _productNameController.text =
+                                        productNameList[index];
+                                    _unitPriceController.text =
+                                        productPriceList[index];
+
+                                    widget.callBackFunction();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(bottom: 5.0),
+                                    child: Container(
+                                      padding: EdgeInsets.all(5.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                            width: 1.0,
+                                          )),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  'Product Name : ' +
+                                                      productNameList[index],
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 15),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  'Product Price : ' +
+                                                      productPriceList[index],
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 15),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        )
+                      : Center(
+                          child: Column(
+                          children: [
+                            Text('No Suggestion'),
+                            SizedBox(
+                              height: 30.0,
+                            ),
+                            TextField(
+                              controller: _productNameController2,
+                              decoration: InputDecoration(
+                                errorText: _productValidator
+                                    ? 'Value Can\'t Be Empty'
+                                    : null,
+                                labelText: 'Type Product Name*',
+                                labelStyle: TextStyle(
+                                  //fontWeight: FontWeight.normal,
+                                  color: Colors.grey, fontSize: 15,
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(
+                                  top: 20.0, left: 20.0, right: 20.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (_productNameController2.text == null ||
+                                      _productNameController2.text.isEmpty) {
+                                    _productValidator = false;
+                                  } else {
+                                    _productNameController.text =
+                                        _productNameController2.text;
+                                    _unitPriceController.text = '0';
+                                    widget.callBackFunction();
+                                    _productNameController2.text = '';
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                                child: Container(
+                                  height: 30.0,
+                                  width: 100.0,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    shadowColor: Colors.grey,
+                                    color: Colors.grey[600],
+                                    elevation: 7.0,
+                                    child: Center(
+                                      child: Text(
+                                        "Done",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 10.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ))
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    )
+              : Center(
+                  child: Text(
+                    'Type Minimum 3 Character',
+                  ),
+                )
+        ],
+      ),
+      // (productLoaded)
+      //     ?
+
+      //
     );
   }
 }
