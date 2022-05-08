@@ -907,42 +907,38 @@ class _ShowDialogState extends State<ShowDialog> {
                             SizedBox(
                               height: 30.0,
                             ),
-                            TextField(
-                              controller: _productNameController2,
-                              decoration: InputDecoration(
-                                errorText: _productValidator
-                                    ? 'Value Can\'t Be Empty'
-                                    : null,
-                                labelText: 'Type Product Name*',
-                                labelStyle: TextStyle(
-                                  //fontWeight: FontWeight.normal,
-                                  color: Colors.grey, fontSize: 15,
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue),
-                                ),
-                              ),
-                            ),
+                            // TextField(
+                            //   controller: _productNameController2,
+                            //   decoration: InputDecoration(
+                            //     errorText: _productValidator
+                            //         ? 'Value Can\'t Be Empty'
+                            //         : null,
+                            //     labelText: 'Type Product Name*',
+                            //     labelStyle: TextStyle(
+                            //       //fontWeight: FontWeight.normal,
+                            //       color: Colors.grey, fontSize: 15,
+                            //     ),
+                            //     focusedBorder: UnderlineInputBorder(
+                            //       borderSide: BorderSide(color: Colors.blue),
+                            //     ),
+                            //   ),
+                            // ),
+
                             Container(
                               padding: EdgeInsets.only(
-                                  top: 20.0, left: 20.0, right: 20.0),
+                                  top: 0.0, left: 20.0, right: 20.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  if (_productNameController2.text == null ||
-                                      _productNameController2.text.isEmpty) {
-                                    _productValidator = false;
-                                  } else {
-                                    _productNameController.text =
-                                        _productNameController2.text;
-                                    _unitPriceController.text = '0';
-                                    widget.callBackFunction();
-                                    _productNameController2.text = '';
-                                    Navigator.of(context).pop();
-                                  }
+                                  _productNameController.text =
+                                      _productNameSearchController.text;
+                                  _unitPriceController.text = '0';
+                                  widget.callBackFunction();
+                                  _productNameSearchController.text = '';
+                                  Navigator.of(context).pop();
                                 },
                                 child: Container(
                                   height: 30.0,
-                                  width: 100.0,
+                                  width: 300.0,
                                   child: Material(
                                     borderRadius: BorderRadius.circular(20.0),
                                     shadowColor: Colors.grey,
@@ -950,7 +946,7 @@ class _ShowDialogState extends State<ShowDialog> {
                                     elevation: 7.0,
                                     child: Center(
                                       child: Text(
-                                        "Done",
+                                        "Add This As New Product Name",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 10.0),
