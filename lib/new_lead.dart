@@ -209,6 +209,7 @@ class _NewLeadState extends State<NewLead> {
   String budget = '';
   String remark = '';
   String customerDOB = '';
+  String nextFollowUpDate = '';
   String leadDate = '';
   String salesManID = '';
   late var salesPersonJSON;
@@ -707,7 +708,7 @@ class _NewLeadState extends State<NewLead> {
                       textFieldConfiguration: TextFieldConfiguration(
                         decoration: InputDecoration(
                             hintText: 'Search',
-                            labelText: 'Profession',
+                            labelText: 'Profession*',
                             labelStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),
@@ -879,7 +880,7 @@ class _NewLeadState extends State<NewLead> {
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
                         decoration: InputDecoration(
-                            labelText: 'Lead Source',
+                            labelText: 'Lead Source*',
                             labelStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),
@@ -980,7 +981,42 @@ class _NewLeadState extends State<NewLead> {
             SizedBox(
               height: 15.0,
             ),
-
+            Container(
+              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
+              child: TextButton(
+                onPressed: () {
+                  DatePicker.showDatePicker(context, showTitleActions: true,
+                      //     onChanged: (date) {
+                      //   print('change $date in time zone ' +
+                      //       date.timeZoneOffset.inHours.toString());
+                      // },
+                      onConfirm: (date) {
+                    print('confirm $date');
+                    nextFollowUpDate = date.toString();
+                    var nextFollowUpDate_date_day = date.day.toInt() < 10
+                        ? '0' + date.day.toString()
+                        : date.day.toString();
+                    var nextFollowUpDate_date_month = date.month.toInt() < 10
+                        ? '0' + date.month.toString()
+                        : date.month.toString();
+                    setState(() {
+                      nextFollowUpDate = date.year.toString() +
+                          '-' +
+                          nextFollowUpDate_date_month.toString() +
+                          '-' +
+                          nextFollowUpDate_date_day.toString();
+                    });
+                  }, currentTime: DateTime.now());
+                },
+                child: Text(
+                  "Next Follow-Up Date*: $nextFollowUpDate",
+                  style: TextStyle(
+                      fontSize: 17,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             // Container(
             //     padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
             //     child: Column(
@@ -1104,85 +1140,99 @@ class _NewLeadState extends State<NewLead> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     } else {
-                      if (isLoad) {
-                        bool isValid = formValidator();
-                        if (isValid) {
-                          Fluttertoast.showToast(
-                              msg: "Saving..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-
-                          setState(() {
-                            isLoad = false;
-                          });
-                          // leadNo = _leadNoController.text;
-                          // customerContact = _customerContactController.text;
-                          // customerName = _customerNameController.text;
-                          // customerAddress = _customerAddressController.text;
-                          // customerEmail = _customerEmailController.text;
-                          // companyName = _companyNameController.text;
-                          // website = _websiteController.text;
-                          // projectType = _projectTypeController.text;
-                          // projectDescription = _projectDescriptionController.text;
-                          // budget = _budgetController.text;
-                          // remark = _remarkController.text;
-                          List<String> salesPersonControllerMiddle =
-                              _salesPersonController.text.split(' ');
-                          String _salesPersonControllerFinal =
-                              salesPersonControllerMiddle[0];
-                          // List<String> leadSourceControllerMiddle =
-                          //     _leadNoController.text.split('& Code:');
-                          // String _leadSourceControllerFinal =
-                          //     leadSourceControllerMiddle[0];
-                          var new_lead_values = New_lead_json(
-                              profession: _professionController.text,
-                              customerName: _customerNameController.text,
-                              customerContact: _customerContactController.text,
-                              customerAddress: _customerAddressController.text,
-                              customerEmail: _customerEmailController.text,
-                              customerDOB: customerDOB.toString(),
-                              companyName: _companyNameController.text,
-                              longitude: long,
-                              lattitude: lat,
-                              userID: salesManID,
-                              leadSource: _leadNoController.text,
-                              remark: _remarkController.text,
-                              leadDate: 'leadDate',
-                              salesPerson: _salesPersonControllerFinal,
-                              paymentMethod: _paymentMethodController.text,
-                              itemDetails: detailsTable);
-                          var response = await createAlbum(new_lead_values);
-
-                          if (response.toLowerCase().trim() == 'success') {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/summery');
-                          } else {
-                            setState(
-                              () {
-                                isLoad = true;
-                              },
-                            );
+                      if (nextFollowUpDate.toString() == '') {
+                        Fluttertoast.showToast(
+                            msg:
+                                "Next Follow-Up Date Missing!!\nGive Follow-Up Date",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      } else {
+                        if (isLoad) {
+                          bool isValid = formValidator();
+                          if (isValid) {
                             Fluttertoast.showToast(
-                                msg: response,
+                                msg: "Saving..",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.TOP,
                                 timeInSecForIosWeb: 1,
                                 backgroundColor: Colors.red,
                                 textColor: Colors.white,
                                 fontSize: 16.0);
+
+                            setState(() {
+                              isLoad = false;
+                            });
+                            // leadNo = _leadNoController.text;
+                            // customerContact = _customerContactController.text;
+                            // customerName = _customerNameController.text;
+                            // customerAddress = _customerAddressController.text;
+                            // customerEmail = _customerEmailController.text;
+                            // companyName = _companyNameController.text;
+                            // website = _websiteController.text;
+                            // projectType = _projectTypeController.text;
+                            // projectDescription = _projectDescriptionController.text;
+                            // budget = _budgetController.text;
+                            // remark = _remarkController.text;
+                            List<String> salesPersonControllerMiddle =
+                                _salesPersonController.text.split(' ');
+                            String _salesPersonControllerFinal =
+                                salesPersonControllerMiddle[0];
+                            // List<String> leadSourceControllerMiddle =
+                            //     _leadNoController.text.split('& Code:');
+                            // String _leadSourceControllerFinal =
+                            //     leadSourceControllerMiddle[0];
+                            var new_lead_values = New_lead_json(
+                                profession: _professionController.text,
+                                customerName: _customerNameController.text,
+                                customerContact:
+                                    _customerContactController.text,
+                                customerAddress:
+                                    _customerAddressController.text,
+                                customerEmail: _customerEmailController.text,
+                                customerDOB: customerDOB.toString(),
+                                companyName: _companyNameController.text,
+                                longitude: long,
+                                lattitude: lat,
+                                userID: salesManID,
+                                leadSource: _leadNoController.text,
+                                remark: _remarkController.text,
+                                nextFollowUpDate: nextFollowUpDate,
+                                salesPerson: _salesPersonControllerFinal,
+                                paymentMethod: _paymentMethodController.text,
+                                itemDetails: detailsTable);
+                            var response = await createAlbum(new_lead_values);
+
+                            if (response.toLowerCase().trim() == 'success') {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/summery');
+                            } else {
+                              setState(
+                                () {
+                                  isLoad = true;
+                                },
+                              );
+                              Fluttertoast.showToast(
+                                  msg: response,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+
+                            print('MyResponse=>$response');
                           }
 
-                          print('MyResponse=>$response');
+                          // var map = json.decode(res);
+                          // if (map["result"].toLowerCase().trim() == 'success') {
+                          //   Navigator.of(context).pushNamed('/summery');
+                          //}
                         }
-
-                        // var map = json.decode(res);
-                        // if (map["result"].toLowerCase().trim() == 'success') {
-                        //   Navigator.of(context).pushNamed('/summery');
-                        //}
                       }
                     }
                   },

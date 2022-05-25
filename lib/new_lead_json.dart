@@ -1,4 +1,4 @@
-/// new_lead : {"profession":"","customerName":"","customerContact":"","customerAddress":"","customerEmail":"","customerDOB":"","companyName":"","longitude":"","lattitude":"","userID":"","leadSource":"","remark":"","leadDate":"","_salesPerson":"","_paymentMethod":"","itemDetails":[{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]}
+/// new_lead : {"profession":"","customerName":"","customerContact":"","customerAddress":"","customerEmail":"","customerDOB":"","companyName":"","longitude":"","lattitude":"","userID":"","leadSource":"","remark":"","nextFollowUpDate":"","_salesPerson":"","_paymentMethod":"","itemDetails":[{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]}
 
 // class NewLeadJson {
 //   NewLeadJson({
@@ -35,7 +35,7 @@
 /// userID : ""
 /// leadSource : ""
 /// remark : ""
-/// leadDate : ""
+/// nextFollowUpDate : ""
 /// _salesPerson : ""
 /// _paymentMethod : ""
 /// itemDetails : [{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]
@@ -54,7 +54,7 @@ class New_lead_json {
       String? userID,
       String? leadSource,
       String? remark,
-      String? leadDate,
+      String? nextFollowUpDate,
       String? salesPerson,
       String? paymentMethod,
       List<Todo>? itemDetails}) {
@@ -70,7 +70,7 @@ class New_lead_json {
     _userID = userID;
     _leadSource = leadSource;
     _remark = remark;
-    _leadDate = leadDate;
+    _nextFollowUpDate = nextFollowUpDate;
     _salesPerson = salesPerson;
     _paymentMethod = paymentMethod;
     _itemDetails = itemDetails;
@@ -89,7 +89,7 @@ class New_lead_json {
     _userID = json['userID'];
     _leadSource = json['leadSource'];
     _remark = json['remark'];
-    _leadDate = json['leadDate'];
+    _nextFollowUpDate = json['nextFollowUpDate'];
     _salesPerson = json['salesPerson'];
     _paymentMethod = json['paymentMethod'];
     if (json['itemDetails'] != null) {
@@ -111,7 +111,7 @@ class New_lead_json {
   String? _userID;
   String? _leadSource;
   String? _remark;
-  String? _leadDate;
+  String? _nextFollowUpDate;
   String? _salesPerson;
   String? _paymentMethod;
   List<Todo>? _itemDetails;
@@ -128,7 +128,7 @@ class New_lead_json {
   String? get userID => _userID;
   String? get leadSource => _leadSource;
   String? get remark => _remark;
-  String? get leadDate => _leadDate;
+  String? get nextFollowUpDate => _nextFollowUpDate;
   String? get salesPerson => _salesPerson;
   String? get paymentMethod => _paymentMethod;
   List<Todo>? get itemDetails => _itemDetails;
@@ -147,7 +147,7 @@ class New_lead_json {
     map['userID'] = _userID;
     map['leadSource'] = _leadSource;
     map['remark'] = _remark;
-    map['leadDate'] = _leadDate;
+    map['followUpDate'] = _nextFollowUpDate;
     map['salesPerson'] = _salesPerson;
     map['paymentMethod'] = _paymentMethod;
     if (_itemDetails != null) {

@@ -156,13 +156,13 @@ class _SummeryPageState extends State<SummeryPage> {
                           flex: 1,
                           child: Container(
                             padding:
-                                EdgeInsets.fromLTRB(20.0, 40.0, 10.0, 25.0),
+                                EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 25.0),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.of(context).pushNamed('/newlead');
                               },
                               child: Container(
-                                height: 45.0,
+                                height: 60.0,
                                 // width: 110.0,
                                 child: Material(
                                   borderRadius: BorderRadius.circular(25.0),
@@ -186,7 +186,7 @@ class _SummeryPageState extends State<SummeryPage> {
                           flex: 1,
                           child: Container(
                             padding:
-                                EdgeInsets.fromLTRB(10.0, 40.0, 20.0, 25.0),
+                                EdgeInsets.fromLTRB(10.0, 20.0, 20.0, 25.0),
                             child: Stack(
                               children: <Widget>[
                                 GestureDetector(
@@ -195,7 +195,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                         .pushNamed('/newleadtransaction');
                                   },
                                   child: SizedBox(
-                                    height: 45.0,
+                                    height: 60.0,
                                     //width: 170.0,
                                     child: Material(
                                       borderRadius: BorderRadius.circular(25.0),
@@ -229,7 +229,7 @@ class _SummeryPageState extends State<SummeryPage> {
                             flex: 1,
                             child: Container(
                               padding:
-                                  EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
+                                  EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
                               child: GestureDetector(
                                 onTap: () async {
                                   Fluttertoast.showToast(
@@ -254,7 +254,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                           arguments: 'TOTAL');
                                 },
                                 child: SizedBox(
-                                  height: 45.0,
+                                  height: 60.0,
                                   //width: MediaQuery.of(context).size.width,
                                   child: Material(
                                     borderRadius: BorderRadius.circular(25.0),
@@ -397,7 +397,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                                             index * 2]);
                                               },
                                               child: SizedBox(
-                                                height: 45.0,
+                                                height: 60.0,
                                                 //width: 170.0,
                                                 child: Material(
                                                   borderRadius:
@@ -414,7 +414,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                                                 .toString() ==
                                                             'IN-PROGRESS')
                                                         ? Text(
-                                                            'TOTAL NEW LEAD\n' +
+                                                            'TOTAL ZERO ACTIVITY LEAD\n' +
                                                                 stepNameValueList[
                                                                         index *
                                                                             2]
@@ -508,7 +508,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                                                           1]);
                                                     },
                                                     child: SizedBox(
-                                                      height: 45.0,
+                                                      height: 60.0,
                                                       //width: 170.0,
                                                       child: Material(
                                                         borderRadius:

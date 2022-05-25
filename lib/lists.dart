@@ -34,13 +34,13 @@ class _ListsPageState extends State<ListsPage> {
   bool gotData = false;
 
   late dynamic response;
-  late var totalInvoice = '';
-  late var totalPna = '';
-  late var totalFollowUp = '';
-  late var totalLead = '';
-  late var totalCancel = '';
-  late var totalInProgress = '';
-  late var totalNoAnswer = '';
+  // late var totalInvoice = '';
+  // late var totalPna = '';
+  // late var totalFollowUp = '';
+  // late var totalLead = '';
+  // late var totalCancel = '';
+  // late var totalInProgress = '';
+  // late var totalNoAnswer = '';
   late String stepType = '';
   List<dynamic> statusValue = [];
 
@@ -237,6 +237,19 @@ class _ListsPageState extends State<ListsPage> {
                                     padding: const EdgeInsets.only(left: 4.0),
                                     child: Text(
                                         statusValue[index]['email'].toString(),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4.0),
+                                      child: Text('Lead Source',
+                                          style: TextStyle(fontSize: 20.0))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['leadSource']
+                                            .toString(),
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),

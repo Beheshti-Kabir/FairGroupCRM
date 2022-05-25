@@ -136,6 +136,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   String lostTo = '';
   String stepNo = '';
   String employID = '';
+  String customerDOB = '';
   List<String> todoTypeList = [''];
   List<String> stepNoList = [''];
   List<String> sales_person = [''];
@@ -257,7 +258,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     var response = await http.post(
         Uri.parse(
             'http://202.84.44.234:9085/rbd/leadInfoApi/saveLeadTransaction'),
-        // 'http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadTransaction'),
+        //'http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadTransaction'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -272,6 +273,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
           'meetDate': meet_date,
           'executionDate': execution_date,
           'followupDate': followUp_date,
+          'customerDOB': customerDOB,
           'remarks': remarks,
           'salesPerson': employIDD,
           'stepNo': stepNo,
@@ -389,6 +391,10 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                               leadNoControllerMiddle[1];
                           _personContactController.text =
                               leadNoControllerMiddle[2];
+                          customerDOB = leadNoControllerMiddle[3];
+                          if (customerDOB == 'null') {
+                            customerDOB = '2022-01-01';
+                          }
                         });
                         print(_leadNoController.text);
                       },
@@ -465,6 +471,43 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                 ],
               ),
             ),
+            Container(
+              padding: EdgeInsets.only(top: 0.0, left: 13.0, right: 20.0),
+              child: TextButton(
+                onPressed: () {
+                  DatePicker.showDatePicker(context, showTitleActions: true,
+                      //     onChanged: (date) {
+                      //   print('change $date in time zone ' +
+                      //       date.timeZoneOffset.inHours.toString());
+                      // },
+                      onConfirm: (date) {
+                    print('confirm $date');
+                    customerDOB = date.toString();
+                    var customerDOB_date_day = date.day.toInt() < 10
+                        ? '0' + date.day.toString()
+                        : date.day.toString();
+                    var customerDOB_date_month = date.month.toInt() < 10
+                        ? '0' + date.month.toString()
+                        : date.month.toString();
+                    setState(() {
+                      customerDOB = date.year.toString() +
+                          '-' +
+                          customerDOB_date_month.toString() +
+                          '-' +
+                          customerDOB_date_day.toString();
+                    });
+                  }, currentTime: DateTime.now());
+                },
+                child: Text(
+                  "Customer DOB: $customerDOB",
+                  style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.normal),
+                ),
+              ),
+            ),
+
             // Container(
             //     padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
             //     child: Column(
@@ -563,7 +606,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
               ),
             ),
 
-             Container(
+            Container(
               padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
