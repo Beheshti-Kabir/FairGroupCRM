@@ -161,7 +161,6 @@ class _ItemDetailsState extends State<ItemDetails> {
             //         //   Row(
             //         //     // ignore: pre
             //         //     //fer_const_literals_to_create_immutables
-
             //         //     children: <Widget>[
             //         //       DropdownButton<String>(
             //         //         value: _productListController,
@@ -216,7 +215,6 @@ class _ItemDetailsState extends State<ItemDetails> {
             //         //     controller: this._productNameController,
             //         //   ),
             //         // ),
-
             //       ],
             //     )),
             //
