@@ -60,9 +60,9 @@ class _ListsPageState extends State<ListsPage> {
     //   // result['leadInfo'];
     // });
 
-    response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getDataByStatus'),
-        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getDataByStatus'),
+    String localURL = Constants.globalURL;
+    var response = await http.post(Uri.parse(localURL + '/getDataByStatus'),
+        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -75,6 +75,7 @@ class _ListsPageState extends State<ListsPage> {
     //print(json.decode(response.body).toString());
     //var model = LeadListModel.fromJson();
     statusValue = jsonDecode(response.body)['leadList'];
+    print(statusValue.toString());
     //print("\ntype"+statusValue[index].toString());
 
     //print(
@@ -237,6 +238,20 @@ class _ListsPageState extends State<ListsPage> {
                                     padding: const EdgeInsets.only(left: 4.0),
                                     child: Text(
                                         statusValue[index]['email'].toString(),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Lead Type',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['leadCategory']
+                                            .toString(),
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),

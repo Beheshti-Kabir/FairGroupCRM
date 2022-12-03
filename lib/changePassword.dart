@@ -80,8 +80,8 @@ class _changePassword extends State<ChangePasswordPage> {
   }
 
   Future<String> createAlbum() async {
-    var response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/changePwd'),
+    String localURL = Constants.globalURL;
+    var response = await http.post(Uri.parse(localURL + '/changePwd'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -97,7 +97,7 @@ class _changePassword extends State<ChangePasswordPage> {
             ));
     var responsee = json.decode(response.body)['result'];
     if (response.statusCode == 200) {
-      if (responsee.toString().toLowerCase().trim()=='fail') {
+      if (responsee.toString().toLowerCase().trim() == 'fail') {
         return 'EmployID & Password Don\'t Match';
       } else {
         return json.decode(response.body)['result'];
@@ -206,11 +206,11 @@ class _changePassword extends State<ChangePasswordPage> {
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
                           fontSize: 16.0);
-                          setState(
-                          () {
-                            isLoad = true;
-                          },
-                        );  
+                      setState(
+                        () {
+                          isLoad = true;
+                        },
+                      );
                     } else {
                       employID = _employID.text;
                       oldPassword = _oldPassword.text;

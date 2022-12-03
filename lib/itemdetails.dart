@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:login_prac/constants.dart';
 
 import 'package:login_prac/todo.dart';
-import 'package:login_prac/utils/constants.dart';
 
 import 'new_lead_json.dart';
 
@@ -750,8 +749,8 @@ class _ShowDialogState extends State<ShowDialog> {
     productPriceList = [];
     print("inside getData");
 
-    final response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getProductList'),
+    String localURL = Constants.globalURL;
+    var response = await http.post(Uri.parse(localURL + '/getProductList'),
         //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getProductList'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -815,7 +814,7 @@ class _ShowDialogState extends State<ShowDialog> {
               controller: _productNameSearchController,
               onChanged: (value) {
                 setState(() {});
-                if (_productNameSearchController.text.length > 2) {
+                if (_productNameSearchController.text.length > 1) {
                   productLoaded = false;
                   setState(() {});
                   getProduct();
@@ -832,7 +831,7 @@ class _ShowDialogState extends State<ShowDialog> {
           SizedBox(
             height: 20.0,
           ),
-          (_productNameSearchController.text.length > 2)
+          (_productNameSearchController.text.length > 1)
               ? (productLoaded)
                   ? (productListNumber > 0)
                       ? Expanded(
@@ -961,7 +960,7 @@ class _ShowDialogState extends State<ShowDialog> {
                     )
               : Center(
                   child: Text(
-                    'Type Minimum 3 Character',
+                    'Type Minimum 2 Character',
                   ),
                 )
         ],

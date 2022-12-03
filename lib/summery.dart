@@ -78,8 +78,8 @@ class _SummeryPageState extends State<SummeryPage> {
     });
 
     print('obj=$employID');
-    response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getSummary'),
+    String localURL = Constants.globalURL;
+    response = await http.post(Uri.parse(localURL + '/getSummary'),
         //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getSummary'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -142,6 +142,18 @@ class _SummeryPageState extends State<SummeryPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Summary For $employID'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.manage_search,
+              size: 30,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/searchDateLead');
+            },
+          )
+        ],
       ),
       body: (stepNameList.isNotEmpty)
           ? SingleChildScrollView(

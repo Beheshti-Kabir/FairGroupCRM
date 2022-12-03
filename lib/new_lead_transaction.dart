@@ -176,8 +176,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   @override
   getLeadData() async {
     print("inside getData");
-    final response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getLeadData'),
+    String localURL = Constants.globalURL;
+    var response = await http.post(Uri.parse(localURL + '/getLeadData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -255,9 +255,8 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
 
   Future<String> createAlbum() async {
     String employIDD = await localGetEmployeeID();
-    var response = await http.post(
-        Uri.parse(
-            'http://202.84.44.234:9085/rbd/leadInfoApi/saveLeadTransaction'),
+    String localURL = Constants.globalURL;
+    var response = await http.post(Uri.parse(localURL + '/saveLeadTransaction'),
         //'http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadTransaction'),
         headers: <String, String>{
           'Content-Type': 'application/json',

@@ -16,6 +16,7 @@ import 'package:login_prac/itemdetails.dart';
 import 'package:login_prac/lists.dart';
 import 'package:login_prac/logInPage.dart';
 import 'package:login_prac/new_lead_transaction.dart';
+import 'package:login_prac/search_date_date.dart';
 import 'package:login_prac/utils/sesssion_manager.dart';
 import 'controller.dart';
 import 'summery.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           '/listsPage': (BuildContext context) => ListsPage(),
           '/changePasswordPage': (BuildContext context) => ChangePasswordPage(),
           '/logInPage': (BuildContext context) => LogInPage(),
+          '/searchDateLead': (BuildContext context) => SearchDateLead(),
         },
         home: MyHomePage(),
         builder: (context, widget) {

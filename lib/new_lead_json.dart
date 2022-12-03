@@ -43,6 +43,7 @@
 class New_lead_json {
   New_lead_json(
       {String? profession,
+      String? leadCategory,
       String? customerName,
       String? customerContact,
       String? customerAddress,
@@ -59,6 +60,7 @@ class New_lead_json {
       String? paymentMethod,
       List<Todo>? itemDetails}) {
     _profession = profession;
+    _leadCategory = leadCategory;
     _customerName = customerName;
     _customerContact = customerContact;
     _customerAddress = customerAddress;
@@ -78,6 +80,7 @@ class New_lead_json {
 
   New_lead_json.fromJson(dynamic json) {
     _profession = json['profession'];
+    _leadCategory = json['leadCategory'];
     _customerName = json['customerName'];
     _customerContact = json['customerContact'];
     _customerAddress = json['customerAddress'];
@@ -100,6 +103,7 @@ class New_lead_json {
     }
   }
   String? _profession;
+  String? _leadCategory;
   String? _customerName;
   String? _customerContact;
   String? _customerAddress;
@@ -117,6 +121,7 @@ class New_lead_json {
   List<Todo>? _itemDetails;
 
   String? get profession => _profession;
+  String? get leadCategory => _leadCategory;
   String? get customerName => _customerName;
   String? get customerContact => _customerContact;
   String? get customerAddress => _customerAddress;
@@ -136,6 +141,7 @@ class New_lead_json {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['profession'] = _profession;
+    map['leadCategory'] = _leadCategory;
     map['customerName'] = _customerName;
     map['customerContact'] = _customerContact;
     map['customerAddress'] = _customerAddress;

@@ -110,8 +110,8 @@ class _NewLeadState extends State<NewLead> {
 
   getData() async {
     print("inside getData");
-    final response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/getData'),
+    String localURL = Constants.globalURL;
+    var response = await http.post(Uri.parse(localURL + '/getData'),
         //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -224,9 +224,11 @@ class _NewLeadState extends State<NewLead> {
   late var paymentMethodNumber;
   List<String> professionList = [''];
   List<String> paymentMethodList = [''];
+  List<String> leadCategoryList = ['', 'B2B', 'GRT', 'HP', 'CASH'];
 
   String _leadSourceController = '';
   String _salesPersonController = '';
+  String _leadCategoryController = '';
 
   bool _leadNoValidate = false;
   bool _customerContactValidate = false;
@@ -240,9 +242,9 @@ class _NewLeadState extends State<NewLead> {
 
   Future<String> createAlbum(New_lead_json new_lead_values) async {
     print('json value=' + new_lead_values.toJson().toString());
-    var response = await http.post(
-        Uri.parse('http://202.84.44.234:9085/rbd/leadInfoApi/saveLeadInfo'),
-        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadInfo'),
+    String localURL = Constants.globalURL;
+    var response = await http.post(Uri.parse(localURL + '/saveLeadInfo'),
+        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/saveLeadInfo'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -681,6 +683,108 @@ class _NewLeadState extends State<NewLead> {
             //         ),
             //       ],
             //     )),
+
+            // Container(
+            //     padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Text("Lead Category",
+            //             style: TextStyle(
+            //               fontSize: 17,
+            //               color: Colors.grey,
+            //               fontWeight: FontWeight.bold,
+            //             )),
+            //         Row(
+            //           // ignore: pre
+            //           //fer_const_literals_to_create_immutables
+            //           children: <Widget>[
+            //             DropdownButton<String>(
+            //               value: _leadCategoryController,
+            //               icon: const Icon(Icons.arrow_downward),
+            //               iconSize: icnSize,
+            //               elevation: 16,
+            //               style: const TextStyle(color: Colors.blue),
+            //               underline: Container(
+            //                 height: 2,
+            //                 color: dropColor,
+            //               ),
+            //               onChanged: (String? newValue_sales) {
+            //                 setState(() {
+            //                   _leadCategoryController = newValue_sales!;
+            //                   // List<String> salesPersonControllerMiddle =
+            //                   //     _salesPersonController.split(' ');
+            //                   // _salesPersonController =
+            //                   //     salesPersonControllerMiddle[0];
+            //                 });
+            //               },
+            //               items: leadCategoryList
+            //                   .map<DropdownMenuItem<String>>((String value) {
+            //                 return DropdownMenuItem<String>(
+            //                   value: value,
+            //                   child: Text(value),
+            //                 );
+            //               }).toList(),
+            //             ),
+            //             SizedBox(
+            //               width: 10.0,
+            //             ),
+            //           ],
+            //         ),
+            //       ],
+            //     )),
+            Container(
+                padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Lead Category",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Row(
+                      // ignore: pre
+                      //fer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          value: _leadCategoryController,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: icnSize,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.blue),
+                          underline: Container(
+                            height: 2,
+                            color: dropColor,
+                          ),
+                          onChanged: (String? newValue_sales) {
+                            setState(() {
+                              _leadCategoryController = newValue_sales!;
+                              // List<String> salesPersonControllerMiddle =
+                              //     _salesPersonController.split(' ');
+                              // _salesPersonController =
+                              //     salesPersonControllerMiddle[0];
+                            });
+                          },
+                          items: leadCategoryList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+
             Container(
                 padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                 child: Column(
@@ -1197,6 +1301,7 @@ class _NewLeadState extends State<NewLead> {
                               // String _leadSourceControllerFinal =
                               //     leadSourceControllerMiddle[0];
                               var new_lead_values = New_lead_json(
+                                  leadCategory: _leadCategoryController,
                                   profession: _professionController.text,
                                   customerName: _customerNameController.text,
                                   customerContact:
