@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -40,6 +41,8 @@ class _SearchDateLeadState extends State<SearchDateLead> {
   String toDateController = '';
   var fromDate = '';
   var toDate = '';
+  var phoneNumber = '';
+  final phoneNumberController = TextEditingController();
 
   late dynamic response;
   // late var totalInvoice = '';
@@ -158,11 +161,13 @@ class _SearchDateLeadState extends State<SearchDateLead> {
     stepType = _leadMode.toString();
     toDate = toDateController.toString();
     fromDate = fromDateController.toString();
+    phoneNumber = phoneNumberController.text;
     print('date' + toDate.toString());
 
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getDataByStatus'),
-        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
+    var response = await http.post(
+        //Uri.parse(localURL + '/getDataByStatus'),
+        Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -171,7 +176,9 @@ class _SearchDateLeadState extends State<SearchDateLead> {
           'userID': Constants.employeeId,
           'stepType': stepType,
           'toDate': toDate,
-          'fromDate': fromDate
+          'fromDate': fromDate,
+          'phoneNo': phoneNumber,
+          'allSearch': 'FALSE'
         }));
 
     statusValue = jsonDecode(response.body)['leadList'];
@@ -191,6 +198,15 @@ class _SearchDateLeadState extends State<SearchDateLead> {
             fontSize: 16.0);
       }
     });
+  }
+
+  getDateSearchNymber() {
+    setState(() {
+      toDateController = '';
+      fromDateController = '';
+      fromDateController = '';
+    });
+    getSearchData();
   }
 
   @override
@@ -384,6 +400,50 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                         ],
                       )),
                 ),
+
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                      padding: EdgeInsets.all(10.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.lightBlueAccent,
+                            width: 3.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            controller: phoneNumberController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+
+                              // errorText: phoneNumberValid
+                              //     ? 'Value Can\'t Be Empty'
+                              //     : null,
+
+                              labelText: 'Customer Contact : ',
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                  color: Colors.blue[700]),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                              ),
+                            ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(11)
+                            ],
+                          )
+                        ],
+                      )),
+                ),
+
                 Container(
                   padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 30.0),
                   child: Stack(
@@ -391,34 +451,36 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                       GestureDetector(
                         onTap: () {
                           bool isValid = formValidator();
-                          isValid == true
-                              ? Fluttertoast.showToast(
-                                  msg: "Lead Mode Field Missing...",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.TOP,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0)
-                              : toDateController == ''
+                          phoneNumberController.text.isNotEmpty
+                              ? getDateSearchNymber()
+                              : isValid == true
                                   ? Fluttertoast.showToast(
-                                      msg: "To Date Field Missing..",
+                                      msg: "Lead Mode Field Missing...",
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.TOP,
                                       timeInSecForIosWeb: 1,
                                       backgroundColor: Colors.red,
                                       textColor: Colors.white,
                                       fontSize: 16.0)
-                                  : fromDateController == ''
+                                  : toDateController == ''
                                       ? Fluttertoast.showToast(
-                                          msg: "From Date Field Missing..",
+                                          msg: "To Date Field Missing..",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.TOP,
                                           timeInSecForIosWeb: 1,
                                           backgroundColor: Colors.red,
                                           textColor: Colors.white,
                                           fontSize: 16.0)
-                                      : getSearchData();
+                                      : fromDateController == ''
+                                          ? Fluttertoast.showToast(
+                                              msg: "From Date Field Missing..",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.TOP,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.red,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0)
+                                          : getSearchData();
                         },
                         child: Container(
                           height: 30.0,

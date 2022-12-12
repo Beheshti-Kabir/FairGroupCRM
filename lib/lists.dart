@@ -61,8 +61,9 @@ class _ListsPageState extends State<ListsPage> {
     // });
 
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getDataByStatus'),
-        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
+    var response = await http.post(
+        // /Uri.parse(localURL + '/getDataByStatus'),
+        Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -70,6 +71,7 @@ class _ListsPageState extends State<ListsPage> {
         body: jsonEncode(<String, String>{
           'userID': Constants.employeeId,
           'stepType': stepType,
+          'allSearch': 'FALSE'
         }));
     //print("getStepType");
     //print(json.decode(response.body).toString());
