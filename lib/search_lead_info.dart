@@ -165,9 +165,8 @@ class _SearchDateLeadState extends State<SearchDateLead> {
     print('date' + toDate.toString());
 
     String localURL = Constants.globalURL;
-    var response = await http.post(
-        //Uri.parse(localURL + '/getDataByStatus'),
-        Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
+    var response = await http.post(Uri.parse(localURL + '/getDataByStatus'),
+        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'

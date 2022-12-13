@@ -62,7 +62,7 @@ class _ListsPageState extends State<ListsPage> {
 
     String localURL = Constants.globalURL;
     var response = await http.post(
-        // /Uri.parse(localURL + '/getDataByStatus'),
+        //Uri.parse(localURL + '/getDataByStatus'),
         Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
