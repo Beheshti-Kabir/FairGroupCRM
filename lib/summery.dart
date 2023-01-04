@@ -110,7 +110,7 @@ class _SummeryPageState extends State<SummeryPage> {
         body: jsonEncode(<String, String>{
           'userID': employID,
         }));
-    print('toooooooooooo' + json.decode(response.body)[0][0].toString());
+    //print('toooooooooooo' + json.decode(response.body)[0][0].toString());
     dataJSON = json.decode(response.body);
     number = dataJSON.length;
     row = (number / 2).round();
@@ -157,7 +157,7 @@ class _SummeryPageState extends State<SummeryPage> {
 
   Widget build(BuildContext context) {
     if (!gotData) {
-      getSummary();
+      //getSummary();
       gotData = true;
     }
     return Scaffold(
