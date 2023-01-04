@@ -12,19 +12,26 @@ import 'package:login_prac/todo.dart';
 import 'new_lead_json.dart';
 
 List<String> productNameList = [];
+List<String> productSKUList = [];
+List<String> productModelList = [];
 List<String> productPriceList = [];
 final _productNameSearchController = TextEditingController();
-late var produtcListJSON;
+final _quantityController = TextEditingController();
+late var productListJSON;
 late var productListNumber;
 bool productLoaded = false;
 
 String productName = '';
 String unitPrice = '';
+String productRemarks = '';
+String SKU = '';
 
 final _productNameController = TextEditingController();
-
+final _stockController = TextEditingController();
 final _productNameController2 = TextEditingController();
 final _unitPriceController = TextEditingController();
+final _productModelController = TextEditingController();
+final _remarksController = TextEditingController();
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({Key? key}) : super(key: key);
@@ -44,15 +51,12 @@ class _ItemDetailsState extends State<ItemDetails> {
     //getProduct();
   }
 
-  final _descriptionController = TextEditingController();
-  final _quantityController = TextEditingController();
-  final _stockController = TextEditingController();
   final _totalPriceController = TextEditingController();
   final _prospectController = TextEditingController();
   final _productListController = '';
   var count = 0;
 
-  String description = '';
+  String productModel = '';
   String quantity = '';
   String stock = '';
   String totalPrice = '';
@@ -70,7 +74,7 @@ class _ItemDetailsState extends State<ItemDetails> {
 
   void clearController() {
     _productNameController.clear();
-    _descriptionController.clear();
+    _productModelController.clear();
     _quantityController.clear();
     _stockController.clear();
     _unitPriceController.clear();
@@ -82,8 +86,9 @@ class _ItemDetailsState extends State<ItemDetails> {
     bool isValid = formValidator();
     if (isValid) {
       count += 1;
+      productRemarks = _remarksController.text;
       productName = _productNameController.text.toString();
-      description = _descriptionController.text.toString();
+      productModel = _productModelController.text.toString();
       quantity = _quantityController.text.toString();
       unitPrice = _unitPriceController.text.toString();
       prospectType = _prospectController.text.toString();
@@ -91,9 +96,9 @@ class _ItemDetailsState extends State<ItemDetails> {
       //totalPrice = _totalPriceController.text.toString();
       detailsModel = Todo(
           productName: productName,
-          description: description,
+          productModel: productModel,
           quantity: quantity,
-          //stock: "stock",
+          productRemarks: productRemarks,
           unitPrice: unitPrice,
           prospectType: prospectType);
       //totalPrice: "totalPrice");
@@ -244,6 +249,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   IconButton(
                     onPressed: () async {
                       setState(() {
+                        _productNameSearchController.text = '';
                         showDialog(
                           context: context,
                           builder: (BuildContext context) => Dialog(
@@ -252,12 +258,71 @@ class _ItemDetailsState extends State<ItemDetails> {
                           )),
                         );
                       });
+                      setState(() {});
                     },
                     icon: const Icon(Icons.arrow_drop_down),
                   )
                 ],
               ),
             ),
+            Container(
+              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+              child: Row(
+                // ignore: prefer_const_literals_to_create_immutables
+                children: <Widget>[
+                  // TextField(
+                  //   controller: _personNameController,
+                  //   decoration: InputDecoration(
+                  //     errorText:
+                  //         _personNameValidate ? 'Value Can\'t Be Empty' : null,
+                  //     labelText: 'Person Name*',
+                  //     labelStyle: TextStyle(
+                  //         fontWeight: FontWeight.bold, color: Colors.grey),
+                  //     focusedBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(color: Colors.blue),
+                  //     ),
+                  //   ),
+                  // )
+                  Expanded(
+                    child: Text(
+                      "Product Model: " + _productModelController.text,
+                      style: TextStyle(color: Colors.grey, fontSize: 18.0),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            (Constants.companyCode == '2000')
+                ? Container(
+                    padding:
+                        EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                    child: Row(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        // TextField(
+                        //   controller: _personNameController,
+                        //   decoration: InputDecoration(
+                        //     errorText:
+                        //         _personNameValidate ? 'Value Can\'t Be Empty' : null,
+                        //     labelText: 'Person Name*',
+                        //     labelStyle: TextStyle(
+                        //         fontWeight: FontWeight.bold, color: Colors.grey),
+                        //     focusedBorder: UnderlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.blue),
+                        //     ),
+                        //   ),
+                        // )
+                        Expanded(
+                          child: Text(
+                            "Product Stock: " + _stockController.text,
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 18.0),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(),
             // Container(
             //     padding: EdgeInsets.only(left: 20.0, right: 20.0),
             //     child: Column(
@@ -320,9 +385,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
                   TextField(
-                    controller: _descriptionController,
+                    controller: _remarksController,
                     decoration: InputDecoration(
-                      labelText: 'Description',
+                      labelText: 'Remarks',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
                       focusedBorder: UnderlineInputBorder(
@@ -586,7 +651,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   ),
                   Expanded(
                     child: Text(
-                      'Product',
+                      'Product Name',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -594,7 +659,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   ),
                   Expanded(
                     child: Text(
-                      "Description",
+                      "Product Model",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -671,7 +736,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         ),
                         Expanded(
                           child: Text(
-                            model.description.toString(),
+                            model.productModel.toString(),
                             textAlign: TextAlign.center,
                           ),
                           flex: 1,
@@ -741,17 +806,32 @@ class _ShowDialogState extends State<ShowDialog> {
 
   bool _productValidator = false;
 
+  preGetPorduct() async {
+    setState(() {});
+    if (_productNameSearchController.text.length > 1) {
+      productLoaded = false;
+      setState(() {});
+      getProduct();
+      productNameList = [];
+      productPriceList = [];
+      productModelList = [];
+    }
+  }
+
   getProduct() async {
     setState(() {
       productLoaded = false;
+      productNameList = [];
+      productPriceList = [];
+      productModelList = [];
+      productSKUList = [];
     });
-    productNameList = [];
-    productPriceList = [];
-    print("inside getData");
+
+    print("inside getProduct");
 
     String localURL = Constants.globalURL;
     var response = await http.post(Uri.parse(localURL + '/getProductList'),
-        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getProductList'),
+        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getProductList'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -760,44 +840,74 @@ class _ShowDialogState extends State<ShowDialog> {
           'productName': _productNameSearchController.text,
         }));
 
-    produtcListJSON = json.decode(response.body);
+    productListJSON = json.decode(response.body);
 
-    productListNumber = produtcListJSON.length;
-    print('getProduct value=' + produtcListJSON.toString());
+    productListNumber = productListJSON.length;
+    print('getProduct value=' + productListJSON.toString());
 
     // // print(salesPersonJSON[4]['empCode'].toString() +
     // //     ' ' +
     // //     salesPersonJSON[4]['empName']);
     // // print("leaving getData");
     // for (int i = 0; i < productListNumber; i++) {
-    //   int productLenght = produtcListJSON[i]['name'].length;
+    //   int productLenght = productListJSON[i]['name'].length;
     //   double productLengthHalf = productLenght.toDouble() / 2;
     //   int productHalfLenght = productLengthHalf.toInt();
     //   if (productLenght > 30) {
     //     if (productLenght.isEven) {
-    //       produtcListJSON[i]['name'] =
-    //           produtcListJSON[i]['name'].substring(0, productHalfLenght) +
-    //               produtcListJSON[i]['name'].substring(productHalfLenght);
+    //       productListJSON[i]['name'] =
+    //           productListJSON[i]['name'].substring(0, productHalfLenght) +
+    //               productListJSON[i]['name'].substring(productHalfLenght);
     //     } else {
-    //       produtcListJSON[i]['name'] =
-    //           produtcListJSON[i]['name'].substring(0, productHalfLenght + 1) +
-    //               produtcListJSON[i]['name'].substring(productHalfLenght + 1);
+    //       productListJSON[i]['name'] =
+    //           productListJSON[i]['name'].substring(0, productHalfLenght + 1) +
+    //               productListJSON[i]['name'].substring(productHalfLenght + 1);
     //     }
     //   }
-    //   String productListMiddle = produtcListJSON[i]['name'] +
+    //   String productListMiddle = productListJSON[i]['name'] +
     //       ' & Code: ' +
-    //       produtcListJSON[i]['code'].toString();
+    //       productListJSON[i]['code'].toString();
     //   product_list.insert(0, productListMiddle);
     // }
     for (int i = 0; i < productListNumber; i++) {
-      productNameList.add(produtcListJSON[i]['productName'].toString());
-      productPriceList.add(produtcListJSON[i]['productPrice'].toString());
+      productNameList.add(productListJSON[i]['productName'].toString());
+      productModelList.add(productListJSON[i]['productDescription'].toString());
+      productPriceList.add(productListJSON[i]['productPrice'].toString());
+      productSKUList.add(productListJSON[i]['productCode'].toString());
     }
 
     setState(() {
       productLoaded = true;
     });
     print("Leaing Lead Loop");
+  }
+
+  getProductStock(String code) async {
+    print("inside getProductStock");
+
+    String localURL = Constants.globalURL;
+    String companyCode = Constants.companyCode;
+    print('product Code ====' + companyCode.toString());
+    var response = await http.post(Uri.parse(localURL + '/getProductListStock'),
+        // Uri.parse(
+        //     'http://10.100.17.125:8090/rbd/leadInfoApi/getProductListStock'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'productCode': code,
+          'companyCode': companyCode,
+        }));
+
+    var productStockJSON = json.decode(response.body);
+
+    print('getProduct value=' + productStockJSON.toString());
+
+    _stockController.text = productStockJSON[0]['productStock'].toString();
+    print(_stockController.text);
+    widget.callBackFunction();
+    Navigator.of(context).pop();
   }
 
   @override
@@ -812,15 +922,22 @@ class _ShowDialogState extends State<ShowDialog> {
             height: 50,
             child: TextField(
               controller: _productNameSearchController,
-              onChanged: (value) {
+              onSubmitted: (value) {
                 setState(() {});
                 if (_productNameSearchController.text.length > 1) {
                   productLoaded = false;
                   setState(() {});
                   getProduct();
+                  productNameList = [];
+                  productPriceList = [];
+                  productModelList = [];
                 }
               },
               decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: preGetPorduct,
+                ),
                 labelText: 'Search',
                 labelStyle: TextStyle(
                     //         fontWeight:FontWeight.bold,
@@ -842,14 +959,38 @@ class _ShowDialogState extends State<ShowDialog> {
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
-                                  onTap: () {
-                                    _productNameController.text =
-                                        productNameList[index];
-                                    _unitPriceController.text =
-                                        productPriceList[index];
-
-                                    widget.callBackFunction();
-                                    Navigator.of(context).pop();
+                                  onTap: () async {
+                                    if (Constants.companyCode == '2000') {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "Searching For Stock!!\nPlease wait for couple of seconds. ",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                      SKU = productSKUList[index];
+                                      _stockController.text =
+                                          getProductStock(SKU).toString();
+                                      _productNameController.text =
+                                          productNameList[index];
+                                      _unitPriceController.text =
+                                          productPriceList[index];
+                                      _productModelController.text =
+                                          productModelList[index];
+                                      _quantityController.text = '1';
+                                    } else {
+                                      _productNameController.text =
+                                          productNameList[index];
+                                      _unitPriceController.text =
+                                          productPriceList[index];
+                                      _productModelController.text =
+                                          productModelList[index];
+                                      _quantityController.text = '1';
+                                      widget.callBackFunction();
+                                      Navigator.of(context).pop();
+                                    }
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.only(bottom: 5.0),
@@ -870,6 +1011,19 @@ class _ShowDialogState extends State<ShowDialog> {
                                                 child: Text(
                                                   'Product Name : ' +
                                                       productNameList[index],
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 15),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  'Product productModel : ' +
+                                                      productModelList[index],
                                                   style: TextStyle(
                                                       color: Colors.grey,
                                                       fontSize: 15),

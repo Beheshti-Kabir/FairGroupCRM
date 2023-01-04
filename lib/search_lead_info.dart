@@ -199,7 +199,7 @@ class _SearchDateLeadState extends State<SearchDateLead> {
     });
   }
 
-  getDateSearchNymber() {
+  getDateSearchNumber() {
     setState(() {
       toDateController = '';
       fromDateController = '';
@@ -451,7 +451,7 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                         onTap: () {
                           bool isValid = formValidator();
                           phoneNumberController.text.isNotEmpty
-                              ? getDateSearchNymber()
+                              ? getDateSearchNumber()
                               : isValid == true
                                   ? Fluttertoast.showToast(
                                       msg: "Lead Mode Field Missing...",
@@ -619,22 +619,22 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                               style: TextStyle(fontSize: 20.0)),
                                         ),
                                       ]),
-                                      TableRow(children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 4.0),
-                                          child: Text('Customer Mail',
-                                              style: TextStyle(fontSize: 20.0)),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 4.0),
-                                          child: Text(
-                                              statusValue[index]['email']
-                                                  .toString(),
-                                              style: TextStyle(fontSize: 20.0)),
-                                        ),
-                                      ]),
+                                      // TableRow(children: [
+                                      //   Padding(
+                                      //     padding:
+                                      //         const EdgeInsets.only(left: 4.0),
+                                      //     child: Text('Customer Mail',
+                                      //         style: TextStyle(fontSize: 20.0)),
+                                      //   ),
+                                      //   Padding(
+                                      //     padding:
+                                      //         const EdgeInsets.only(left: 4.0),
+                                      //     child: Text(
+                                      //         statusValue[index]['email']
+                                      //             .toString(),
+                                      //         style: TextStyle(fontSize: 20.0)),
+                                      //   ),
+                                      // ]),
                                       TableRow(children: [
                                         Padding(
                                           padding:
@@ -653,20 +653,37 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                       ]),
                                       TableRow(children: [
                                         Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4.0),
-                                            child: Text('Lead Source',
-                                                style:
-                                                    TextStyle(fontSize: 20.0))),
+                                          padding:
+                                              const EdgeInsets.only(left: 4.0),
+                                          child: Text('Lead Prospect Type',
+                                              style: TextStyle(fontSize: 20.0)),
+                                        ),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(left: 4.0),
                                           child: Text(
-                                              statusValue[index]['leadSource']
+                                              statusValue[index]
+                                                      ['leadProspectType']
                                                   .toString(),
                                               style: TextStyle(fontSize: 20.0)),
                                         ),
                                       ]),
+                                      // TableRow(children: [
+                                      //   Padding(
+                                      //       padding: const EdgeInsets.only(
+                                      //           left: 4.0),
+                                      //       child: Text('Lead Source',
+                                      //           style:
+                                      //               TextStyle(fontSize: 20.0))),
+                                      //   Padding(
+                                      //     padding:
+                                      //         const EdgeInsets.only(left: 4.0),
+                                      //     child: Text(
+                                      //         statusValue[index]['leadSource']
+                                      //             .toString(),
+                                      //         style: TextStyle(fontSize: 20.0)),
+                                      //   ),
+                                      // ]),
                                       TableRow(children: [
                                         Padding(
                                           padding:
@@ -695,6 +712,22 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                               const EdgeInsets.only(left: 4.0),
                                           child: Text(
                                               statusValue[index]['createdBy']
+                                                  .toString(),
+                                              style: TextStyle(fontSize: 20.0)),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 4.0),
+                                            child: Text('Next Follow-Up Date',
+                                                style:
+                                                    TextStyle(fontSize: 20.0))),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 4.0),
+                                          child: Text(
+                                              statusValue[index]['followupDate']
                                                   .toString(),
                                               style: TextStyle(fontSize: 20.0)),
                                         ),

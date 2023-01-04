@@ -1,4 +1,4 @@
-/// new_lead : {"profession":"","customerName":"","customerContact":"","customerAddress":"","customerEmail":"","customerDOB":"","companyName":"","longitude":"","lattitude":"","userID":"","leadSource":"","remark":"","nextFollowUpDate":"","_salesPerson":"","_paymentMethod":"","itemDetails":[{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]}
+/// new_lead : {"profession":"","customerName":"","customerContact":"","customerAddress":"","customerEmail":"","customerDOB":"","companyName":"","longitude":"","lattitude":"","userID":"","leadSource":"","remark":"","nextFollowUpDate":"","_salesPerson":"","_paymentMethod":"","itemDetails":[{"productName":"","productModel":"","quantity":"","productRemarks":"","unitPrice":"","totalPrice":""}]}
 
 // class NewLeadJson {
 //   NewLeadJson({
@@ -38,12 +38,13 @@
 /// nextFollowUpDate : ""
 /// _salesPerson : ""
 /// _paymentMethod : ""
-/// itemDetails : [{"productName":"","description":"","quantity":"","stock":"","unitPrice":"","totalPrice":""}]
+/// itemDetails : [{"productName":"","productModel":"","quantity":"","productRemarks":"","unitPrice":"","totalPrice":""}]
 
 class New_lead_json {
   New_lead_json(
       {String? profession,
       String? leadCategory,
+      String? bsoType,
       String? customerName,
       String? customerContact,
       String? customerAddress,
@@ -55,12 +56,14 @@ class New_lead_json {
       String? userID,
       String? leadSource,
       String? remark,
+      String? leadProspectType,
       String? nextFollowUpDate,
       String? salesPerson,
       String? paymentMethod,
       List<Todo>? itemDetails}) {
     _profession = profession;
     _leadCategory = leadCategory;
+    _bsoType = bsoType;
     _customerName = customerName;
     _customerContact = customerContact;
     _customerAddress = customerAddress;
@@ -72,6 +75,7 @@ class New_lead_json {
     _userID = userID;
     _leadSource = leadSource;
     _remark = remark;
+    _leadProspectType = leadProspectType;
     _nextFollowUpDate = nextFollowUpDate;
     _salesPerson = salesPerson;
     _paymentMethod = paymentMethod;
@@ -81,6 +85,7 @@ class New_lead_json {
   New_lead_json.fromJson(dynamic json) {
     _profession = json['profession'];
     _leadCategory = json['leadCategory'];
+    _bsoType = json['bsoType'];
     _customerName = json['customerName'];
     _customerContact = json['customerContact'];
     _customerAddress = json['customerAddress'];
@@ -92,6 +97,7 @@ class New_lead_json {
     _userID = json['userID'];
     _leadSource = json['leadSource'];
     _remark = json['remark'];
+    _leadProspectType = json['leadProspectType'];
     _nextFollowUpDate = json['nextFollowUpDate'];
     _salesPerson = json['salesPerson'];
     _paymentMethod = json['paymentMethod'];
@@ -104,6 +110,7 @@ class New_lead_json {
   }
   String? _profession;
   String? _leadCategory;
+  String? _bsoType;
   String? _customerName;
   String? _customerContact;
   String? _customerAddress;
@@ -115,6 +122,7 @@ class New_lead_json {
   String? _userID;
   String? _leadSource;
   String? _remark;
+  String? _leadProspectType;
   String? _nextFollowUpDate;
   String? _salesPerson;
   String? _paymentMethod;
@@ -122,6 +130,7 @@ class New_lead_json {
 
   String? get profession => _profession;
   String? get leadCategory => _leadCategory;
+  String? get bsoType => _bsoType;
   String? get customerName => _customerName;
   String? get customerContact => _customerContact;
   String? get customerAddress => _customerAddress;
@@ -133,6 +142,7 @@ class New_lead_json {
   String? get userID => _userID;
   String? get leadSource => _leadSource;
   String? get remark => _remark;
+  String? get leadProspectType => _leadProspectType;
   String? get nextFollowUpDate => _nextFollowUpDate;
   String? get salesPerson => _salesPerson;
   String? get paymentMethod => _paymentMethod;
@@ -142,6 +152,7 @@ class New_lead_json {
     final map = <String, dynamic>{};
     map['profession'] = _profession;
     map['leadCategory'] = _leadCategory;
+    map['bsoType'] = _bsoType;
     map['customerName'] = _customerName;
     map['customerContact'] = _customerContact;
     map['customerAddress'] = _customerAddress;
@@ -153,6 +164,7 @@ class New_lead_json {
     map['userID'] = _userID;
     map['leadSource'] = _leadSource;
     map['remark'] = _remark;
+    map['leadProspectType'] = _leadProspectType;
     map['followUpDate'] = _nextFollowUpDate;
     map['salesPerson'] = _salesPerson;
     map['paymentMethod'] = _paymentMethod;
@@ -164,25 +176,25 @@ class New_lead_json {
 }
 
 /// productName : ""
-/// description : ""
+/// productModel : ""
 /// quantity : ""
-/// stock : ""
+/// productRemarks : ""
 /// unitPrice : ""
 /// totalPrice : ""
 
 class Todo {
   Todo(
       {String? productName,
-      String? description,
+      String? productModel,
       String? quantity,
-      //String? stock,
+      String? productRemarks,
       String? unitPrice,
       //String? totalPrice,
       String? prospectType}) {
     _productName = productName;
-    _description = description;
+    _productModel = productModel;
     _quantity = quantity;
-    //_stock = stock;
+    _productRemarks = productRemarks;
     _unitPrice = unitPrice;
     _prospectType = prospectType;
     //_totalPrice = totalPrice;
@@ -190,25 +202,25 @@ class Todo {
 
   Todo.fromJson(dynamic json) {
     _productName = json['productName'];
-    _description = json['description'];
+    _productModel = json['productModel'];
     _quantity = json['quantity'];
-    //_stock = json['stock'];
+    _productRemarks = json['productRemarks'];
     _unitPrice = json['unitPrice'];
     _prospectType = json['prospectType'];
     //_totalPrice = json['totalPrice'];
   }
   String? _productName;
-  String? _description;
+  String? _productModel;
   String? _quantity;
-  //String? _stock;
+  String? _productRemarks;
   String? _unitPrice;
   String? _prospectType;
   //String? _totalPrice;
 
   String? get productName => _productName;
-  String? get description => _description;
+  String? get productModel => _productModel;
   String? get quantity => _quantity;
-  //String? get stock => _stock;
+  String? get productRemarks => _productRemarks;
   String? get unitPrice => _unitPrice;
   String? get prospectType => _prospectType;
   //String? get totalPrice => _totalPrice;
@@ -216,9 +228,9 @@ class Todo {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['productName'] = _productName;
-    map['description'] = _description;
+    map['productModel'] = _productModel;
     map['quantity'] = _quantity;
-    //map['stock'] = _stock;
+    map['productRemarks'] = _productRemarks;
     map['unitPrice'] = _unitPrice;
     map['prospectType'] = _prospectType;
     //map['totalPrice'] = _totalPrice;

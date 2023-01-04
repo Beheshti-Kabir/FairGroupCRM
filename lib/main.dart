@@ -12,9 +12,11 @@ import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/api_service.dart';
 import 'package:login_prac/changePassword.dart';
 import 'package:login_prac/constants.dart';
+import 'package:login_prac/follow_up_date_list.dart';
 import 'package:login_prac/itemdetails.dart';
 import 'package:login_prac/lists.dart';
 import 'package:login_prac/logInPage.dart';
+import 'package:login_prac/new_lead_new.dart';
 import 'package:login_prac/new_lead_transaction.dart';
 import 'package:login_prac/utils/sesssion_manager.dart';
 import 'package:login_prac/search_lead_info.dart';
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{
           '/summery': (BuildContext context) => SummeryPage(),
-          '/newlead': (BuildContext context) => NewLead(),
+          '/newlead': (BuildContext context) => NewLeadNew(),
           '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
           '/itemdetails': (BuildContext context) => ItemDetails(),
           '/logInPage': (BuildContext context) => MyHomePage(),
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
           '/changePasswordPage': (BuildContext context) => ChangePasswordPage(),
           '/logInPage': (BuildContext context) => LogInPage(),
           '/searchDateLead': (BuildContext context) => SearchDateLead(),
+          '/followUpListsPage': (BuildContext context) => FollowUpListsPage(),
         },
         home: MyHomePage(),
         builder: (context, widget) {

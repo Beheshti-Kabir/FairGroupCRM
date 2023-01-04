@@ -1,4 +1,4 @@
 class Constants {
-  static const androidVersionName = '1.0.20';
-  static const androidCode = '20';
+  static const androidVersionName = '1.0.21';
+  static const androidCode = '21';
 }

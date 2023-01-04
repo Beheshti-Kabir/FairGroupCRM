@@ -432,28 +432,6 @@ class _NewLeadState extends State<NewLead> {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
                   TextField(
-                    controller: _customerNameController,
-                    decoration: InputDecoration(
-                      errorText: _customerNameValidate
-                          ? 'Value Can\'t Be Empty'
-                          : null,
-                      labelText: 'Customer Name*',
-                      labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
-              child: Column(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: <Widget>[
-                  TextField(
                     controller: _customerContactController,
                     decoration: InputDecoration(
                       errorText: _customerContactValidate
@@ -472,6 +450,29 @@ class _NewLeadState extends State<NewLead> {
                 ],
               ),
             ),
+            Container(
+              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              child: Column(
+                // ignore: prefer_const_literals_to_create_immutables
+                children: <Widget>[
+                  TextField(
+                    controller: _customerNameController,
+                    decoration: InputDecoration(
+                      errorText: _customerNameValidate
+                          ? 'Value Can\'t Be Empty'
+                          : null,
+                      labelText: 'Customer Name*',
+                      labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+
             Container(
               padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(

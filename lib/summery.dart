@@ -3,9 +3,11 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/constants.dart';
 import 'package:login_prac/lists.dart';
@@ -53,6 +55,7 @@ class _SummeryPageState extends State<SummeryPage> {
   int next = 1;
   int row = 0;
   int totalLead = 0;
+  int followUpDateCount = 0;
   late var dataJSON;
 
   @override
@@ -64,23 +67,42 @@ class _SummeryPageState extends State<SummeryPage> {
   getEmployID() async {
     employID = await localGetEmployeeID();
     print('getEmployID: ' + employID);
+    getFollowUpData();
     getSummary();
   }
 
-  getSummary() async {
-    setState(() {
-      // isLoading = false;
+  getFollowUpData() async {
+    DateTime now = DateTime.now();
+    var formatter = DateFormat('yyyy-MM-dd');
+    String searchDate = formatter.format(now);
 
-      //print(json.decode(response.body)['totalLead']);
-      //result = json.decode(response.body);
-      //print("lead=" + json.decode(response.body)['totalLead']);
-      // result['leadInfo'];
-    });
+    String localURL = Constants.globalURL;
+    var response = await http.post(Uri.parse(localURL + '/getFollowUpInfo'),
+        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getFollowUpInfo'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'userID': Constants.employeeId,
+          'searchDate': searchDate,
+          'allSearch': 'FALSE'
+        }));
+    var statusValue = jsonDecode(response.body)['leadList'];
+    print(statusValue.toString());
+    followUpDateCount = statusValue.length;
+    print(searchDate);
+    print('===============================' + followUpDateCount.toString());
+    setState(() {});
+  }
+
+  getSummary() async {
+    setState(() {});
 
     print('obj=$employID');
     String localURL = Constants.globalURL;
     response = await http.post(Uri.parse(localURL + '/getSummary'),
-        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getSummary'),
+        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getSummary'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -141,6 +163,32 @@ class _SummeryPageState extends State<SummeryPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        leading: Badge(
+          showBadge: (followUpDateCount > 0) ? true : false,
+          position: BadgePosition.topEnd(top: 05, end: 05),
+          badgeContent: Text(
+            followUpDateCount.toString(),
+            style: const TextStyle(
+                fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          child: IconButton(
+            icon: Icon(Icons.notifications_active_outlined),
+            onPressed: () {
+              if (followUpDateCount == 0) {
+                Fluttertoast.showToast(
+                    msg: "No Pending Follow-up Leads",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.TOP,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              } else {
+                Navigator.of(context).pushNamed('/followUpListsPage');
+              }
+            },
+          ),
+        ),
         title: Text('Summary For $employID'),
         actions: <Widget>[
           IconButton(

@@ -61,9 +61,8 @@ class _ListsPageState extends State<ListsPage> {
     // });
 
     String localURL = Constants.globalURL;
-    var response = await http.post(
-        //Uri.parse(localURL + '/getDataByStatus'),
-        Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
+    var response = await http.post(Uri.parse(localURL + '/getDataByStatus'),
+        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -230,19 +229,19 @@ class _ListsPageState extends State<ListsPage> {
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),
-                                TableRow(children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text('Customer Mail',
-                                        style: TextStyle(fontSize: 20.0)),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text(
-                                        statusValue[index]['email'].toString(),
-                                        style: TextStyle(fontSize: 20.0)),
-                                  ),
-                                ]),
+                                // TableRow(children: [
+                                //   Padding(
+                                //     padding: const EdgeInsets.only(left: 4.0),
+                                //     child: Text('Customer Mail',
+                                //         style: TextStyle(fontSize: 20.0)),
+                                //   ),
+                                //   Padding(
+                                //     padding: const EdgeInsets.only(left: 4.0),
+                                //     child: Text(
+                                //         statusValue[index]['email'].toString(),
+                                //         style: TextStyle(fontSize: 20.0)),
+                                //   ),
+                                // ]),
                                 TableRow(children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
@@ -259,17 +258,31 @@ class _ListsPageState extends State<ListsPage> {
                                 ]),
                                 TableRow(children: [
                                   Padding(
-                                      padding: const EdgeInsets.only(left: 4.0),
-                                      child: Text('Lead Source',
-                                          style: TextStyle(fontSize: 20.0))),
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Lead Prospect Type',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
                                     child: Text(
-                                        statusValue[index]['leadSource']
+                                        statusValue[index]['leadProspectType']
                                             .toString(),
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),
+                                // TableRow(children: [
+                                //   Padding(
+                                //       padding: const EdgeInsets.only(left: 4.0),
+                                //       child: Text('Lead Source',
+                                //           style: TextStyle(fontSize: 20.0))),
+                                //   Padding(
+                                //     padding: const EdgeInsets.only(left: 4.0),
+                                //     child: Text(
+                                //         statusValue[index]['leadSource']
+                                //             .toString(),
+                                //         style: TextStyle(fontSize: 20.0)),
+                                //   ),
+                                // ]),
                                 TableRow(children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
@@ -295,6 +308,20 @@ class _ListsPageState extends State<ListsPage> {
                                     child: Text(
                                         statusValue[index]['createdBy']
                                             .toString(),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4.0),
+                                      child: Text('Next Follow-up Date',
+                                          style: TextStyle(fontSize: 20.0))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['followupDate']
+                                            .toString()
+                                            .split("T")[0],
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),

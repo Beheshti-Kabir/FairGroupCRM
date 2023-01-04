@@ -100,7 +100,6 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   final _leadNoController = TextEditingController();
   final _personNameController = TextEditingController();
   final _personContactController = TextEditingController();
-
   final _todoDescriptionController = TextEditingController();
   final _lostToController = TextEditingController();
   // final _meetDateController = TextEditingController();
@@ -110,6 +109,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   final _salesPersonController = TextEditingController();
   //final _stepNoControler = TextEditingController();
 
+  late final _leadProspectController = TextEditingController();
   final _todoController = TextEditingController();
   late final _stepController = TextEditingController();
   late final _cancelReasonController = TextEditingController();
@@ -137,10 +137,12 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   String stepNo = '';
   String employID = '';
   String customerDOB = '';
+  String leadProspectType = '';
   List<String> todoTypeList = [''];
   List<String> stepNoList = [''];
   List<String> sales_person = [''];
   List<String> leadNoList = [''];
+  List<String> leadProspectTypeList = ['', 'HOT', 'WARM', 'COLD'];
   List<String> cancelReasonList = [
     'Not interested Anymore',
     'Lost to Competitor',
@@ -178,6 +180,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     print("inside getData");
     String localURL = Constants.globalURL;
     var response = await http.post(Uri.parse(localURL + '/getLeadData'),
+        //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getLeadData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -185,7 +188,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
         body: jsonEncode(<String, String>{
           'userID': Constants.employeeId,
         }));
-
+    print('getLeadData  ====' + json.decode(response.body).toString());
     salesPersonJSON = json.decode(response.body)['salesPersonList'];
     todoJSON = json.decode(response.body)['todoList'];
     stepJSON = json.decode(response.body)['stepList'];
@@ -220,9 +223,9 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
       String leadNoMiddle = leadNoJSON[i]['title'].toString();
       leadNoList.insert(0, leadNoMiddle);
     }
-    print(todoTypeList);
-    print(stepNoList);
-    print(leadNoList);
+    // print(todoTypeList);
+    // print(stepNoList);
+    // print(leadNoList);
   }
 
   formValidator() {
@@ -257,7 +260,6 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     String employIDD = await localGetEmployeeID();
     String localURL = Constants.globalURL;
     var response = await http.post(Uri.parse(localURL + '/saveLeadTransaction'),
-        //'http://10.100.18.167:8090/rbd/leadInfoApi/saveLeadTransaction'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -281,6 +283,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
           'userID': employIDD,
           'cancelReason': cancelReason,
           'lostToWhom': lostTo,
+          'leadProspectType': leadProspectType,
         }
             // ),}
 
@@ -394,6 +397,14 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                           if (customerDOB == 'null') {
                             customerDOB = '2022-01-01';
                           }
+                          String leadCategoryControllerMiddle =
+                              leadNoControllerMiddle[4];
+                          if (leadCategoryControllerMiddle == 'null') {
+                            _leadProspectController.text = '';
+                          } else {
+                            _leadProspectController.text =
+                                leadCategoryControllerMiddle;
+                          }
                         });
                         print(_leadNoController.text);
                       },
@@ -506,7 +517,64 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                 ),
               ),
             ),
-
+            Container(
+                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Enquiry Step Type*",
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Row(
+                      // ignore: pre
+                      //fer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          //isExpanded: true,
+                          value: _leadProspectController.text,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: icnSize,
+                          elevation: 15,
+                          style: const TextStyle(color: Colors.blue),
+                          underline: Container(
+                            height: 2,
+                            color: dropColor,
+                          ),
+                          onChanged: (String? newValue_prospectType) {
+                            setState(() {
+                              _leadProspectController.text =
+                                  newValue_prospectType!;
+                              // _cancelReasonController.text = '';
+                              // _lostToController.text = '';
+                              //print(_stepController.text.toString());
+                            });
+                            // setState(() {});
+                          },
+                          items: leadProspectTypeList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    //fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        // SizedBox(
+                        //   width: 10.0,
+                        // ),
+                      ],
+                    ),
+                  ],
+                )),
             // Container(
             //     padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
             //     child: Column(
@@ -1070,6 +1138,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                               personName = _personNameController.text;
                               personContact = _personContactController.text;
                               todoType = _todoController.text;
+                              leadProspectType = _leadProspectController.text;
                               todoDescription = _todoDescriptionController.text;
                               // have to set meet date
                               remarks = _remarkController.text;
