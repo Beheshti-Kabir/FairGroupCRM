@@ -1074,9 +1074,25 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
-                    if (_todoController.toString() == '') {
+                    final DateTime dateTimeNow = DateTime.now();
+                    final dateTimeCreatedAt = DateTime.parse(followUp_date);
+                    final differenceInDays =
+                        dateTimeCreatedAt.difference(dateTimeNow).inDays;
+                    int dateDiff = int.parse(differenceInDays.toString());
+                    print(differenceInDays);
+                    if (differenceInDays < 0) {
                       Fluttertoast.showToast(
-                          msg: "Mode of FollowUp missing..",
+                          msg: "Previous Date Can't Be\nNext Follow-Up Date",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (differenceInDays > 30) {
+                      Fluttertoast.showToast(
+                          msg:
+                              "Next Follow-Up Date Can't\nBe More Than One Month",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -1084,9 +1100,9 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     } else {
-                      if (_stepController.text == '') {
+                      if (_todoController.toString() == '') {
                         Fluttertoast.showToast(
-                            msg: "Enquiry Step Type Missing..",
+                            msg: "Mode of FollowUp missing..",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.TOP,
                             timeInSecForIosWeb: 1,
@@ -1094,13 +1110,9 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                             textColor: Colors.white,
                             fontSize: 16.0);
                       } else {
-                        if (followUp_date == '' &&
-                            _stepController.text != 'INVOICED' &&
-                            _stepController.text != 'CANCEL' &&
-                            _stepController.text != 'LOST' &&
-                            _stepController.text != 'INVALID') {
+                        if (_stepController.text == '') {
                           Fluttertoast.showToast(
-                              msg: "Follow-Up Date Missing..",
+                              msg: "Enquiry Step Type Missing..",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.TOP,
                               timeInSecForIosWeb: 1,
@@ -1108,81 +1120,98 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                               textColor: Colors.white,
                               fontSize: 16.0);
                         } else {
-                          if (isLoad) {
-                            //isLoad = true;
-                            print("before validation");
-                            bool isValid = formValidator();
-                            print(isValid);
-                            if (isValid) {
-                              Fluttertoast.showToast(
-                                  msg: "Saving..",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.TOP,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-
-                              setState(() {
-                                isLoad = false;
-                              });
-                              List<String> salesPersonControllerMiddle =
-                                  _salesPersonController.text.split(' ');
-                              String _salesPersonControllerFinal =
-                                  salesPersonControllerMiddle[0];
-                              leadNoControllerMiddle =
-                                  _leadNoController.text.split('-');
-                              String _leadNoControllerFinal =
-                                  leadNoControllerMiddle[0];
-                              leadinfo = _leadNoControllerFinal;
-                              personName = _personNameController.text;
-                              personContact = _personContactController.text;
-                              todoType = _todoController.text;
-                              leadProspectType = _leadProspectController.text;
-                              todoDescription = _todoDescriptionController.text;
-                              // have to set meet date
-                              remarks = _remarkController.text;
-                              salesPerson = employID;
-                              stepNo = _stepController.text;
-                              cancelReason =
-                                  _cancelReasonController.text.toString();
-
-                              print("after controller");
-                              lostTo = _lostToController.text;
-                              // newLeadTransactionModel = Todo_New_Lead_Transaction(
-                              //     leadinfo,
-                              //     personName,
-                              //     personContact,
-                              //     todoType,
-                              //     todoDescription,
-                              //     meetDate,
-                              //     executionDate,
-                              //     followupDate,
-                              //     remarks,
-                              //     salesPerson,
-                              //     stepNo);
-                              //newLeadTransactionSend.add(newLeadTransactionModel);
-                              var response = await createAlbum();
-
-                              //print(json.encode(newLeadTransactionSend));
-                              if (response.toLowerCase().trim() == 'success') {
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/summery');
-                              } else {
-                                setState(
-                                  () {
-                                    isLoad = true;
-                                  },
-                                );
-                                print(response);
+                          if (followUp_date == '' &&
+                              _stepController.text != 'INVOICED' &&
+                              _stepController.text != 'CANCEL' &&
+                              _stepController.text != 'LOST' &&
+                              _stepController.text != 'INVALID') {
+                            Fluttertoast.showToast(
+                                msg: "Follow-Up Date Missing..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          } else {
+                            if (isLoad) {
+                              //isLoad = true;
+                              print("before validation");
+                              bool isValid = formValidator();
+                              print(isValid);
+                              if (isValid) {
                                 Fluttertoast.showToast(
-                                    msg: response,
+                                    msg: "Saving..",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.TOP,
                                     timeInSecForIosWeb: 1,
                                     backgroundColor: Colors.red,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
+
+                                setState(() {
+                                  isLoad = false;
+                                });
+                                List<String> salesPersonControllerMiddle =
+                                    _salesPersonController.text.split(' ');
+                                String _salesPersonControllerFinal =
+                                    salesPersonControllerMiddle[0];
+                                leadNoControllerMiddle =
+                                    _leadNoController.text.split('-');
+                                String _leadNoControllerFinal =
+                                    leadNoControllerMiddle[0];
+                                leadinfo = _leadNoControllerFinal;
+                                personName = _personNameController.text;
+                                personContact = _personContactController.text;
+                                todoType = _todoController.text;
+                                leadProspectType = _leadProspectController.text;
+                                todoDescription =
+                                    _todoDescriptionController.text;
+                                // have to set meet date
+                                remarks = _remarkController.text;
+                                salesPerson = employID;
+                                stepNo = _stepController.text;
+                                cancelReason =
+                                    _cancelReasonController.text.toString();
+
+                                print("after controller");
+                                lostTo = _lostToController.text;
+                                // newLeadTransactionModel = Todo_New_Lead_Transaction(
+                                //     leadinfo,
+                                //     personName,
+                                //     personContact,
+                                //     todoType,
+                                //     todoDescription,
+                                //     meetDate,
+                                //     executionDate,
+                                //     followupDate,
+                                //     remarks,
+                                //     salesPerson,
+                                //     stepNo);
+                                //newLeadTransactionSend.add(newLeadTransactionModel);
+                                var response = await createAlbum();
+
+                                //print(json.encode(newLeadTransactionSend));
+                                if (response.toLowerCase().trim() ==
+                                    'success') {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('/summery');
+                                } else {
+                                  setState(
+                                    () {
+                                      isLoad = true;
+                                    },
+                                  );
+                                  print(response);
+                                  Fluttertoast.showToast(
+                                      msg: response,
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
                               }
                             }
                           }

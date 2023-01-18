@@ -1054,8 +1054,11 @@ class _ShowDialogState extends State<ShowDialog> {
                       : Center(
                           child: Column(
                           children: [
-                            Text('No Suggestion'),
-                            SizedBox(
+                            Text(
+                              'No Product Found!! \n\n\nPlease Search With A Different Product Name',
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(
                               height: 30.0,
                             ),
                             // TextField(
@@ -1075,38 +1078,38 @@ class _ShowDialogState extends State<ShowDialog> {
                             //   ),
                             // ),
 
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: 0.0, left: 20.0, right: 20.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  _productNameController.text =
-                                      _productNameSearchController.text;
-                                  _unitPriceController.text = '0';
-                                  widget.callBackFunction();
-                                  _productNameSearchController.text = '';
-                                  Navigator.of(context).pop();
-                                },
-                                child: Container(
-                                  height: 30.0,
-                                  width: 300.0,
-                                  child: Material(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    shadowColor: Colors.grey,
-                                    color: Colors.grey[600],
-                                    elevation: 7.0,
-                                    child: Center(
-                                      child: Text(
-                                        "Add This As New Product Name",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 10.0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Container(
+                            //   padding: EdgeInsets.only(
+                            //       top: 0.0, left: 20.0, right: 20.0),
+                            //   child: GestureDetector(
+                            //     onTap: () {
+                            //       _productNameController.text =
+                            //           _productNameSearchController.text;
+                            //       _unitPriceController.text = '0';
+                            //       widget.callBackFunction();
+                            //       _productNameSearchController.text = '';
+                            //       Navigator.of(context).pop();
+                            //     },
+                            //     child: Container(
+                            //       height: 30.0,
+                            //       width: 300.0,
+                            //       child: Material(
+                            //         borderRadius: BorderRadius.circular(20.0),
+                            //         shadowColor: Colors.grey,
+                            //         color: Colors.grey[600],
+                            //         elevation: 7.0,
+                            //         child: Center(
+                            //           child: Text(
+                            //             "Add This As New Product Name",
+                            //             style: TextStyle(
+                            //                 color: Colors.black,
+                            //                 fontSize: 10.0),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ))
                   : Center(
@@ -1114,7 +1117,8 @@ class _ShowDialogState extends State<ShowDialog> {
                     )
               : Center(
                   child: Text(
-                    'Type Minimum 2 Character',
+                    'Type Minimum 2 Characters \nThen Press Search Button',
+                    textAlign: TextAlign.center,
                   ),
                 )
         ],
