@@ -52,7 +52,7 @@ dependencies:
   flutter_local_notifications: ^13.0.0
   timezone: ^0.9.0
   rxdart: ^0.27.7
-  badges: ^2.0.3
+  badges: ^3.0.2
 
 dev_dependencies:
   flutter_test:

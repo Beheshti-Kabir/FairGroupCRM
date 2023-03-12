@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           '/newlead': (BuildContext context) => NewLeadNew(),
           '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
           '/itemdetails': (BuildContext context) => ItemDetails(),
-          '/logInPage': (BuildContext context) => MyHomePage(),
+          //'/logInPage': (BuildContext context) => MyHomePage(),
           '/listsPage': (BuildContext context) => ListsPage(),
           '/changePasswordPage': (BuildContext context) => ChangePasswordPage(),
           '/logInPage': (BuildContext context) => LogInPage(),

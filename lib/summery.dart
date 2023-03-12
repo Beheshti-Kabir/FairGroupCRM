@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -163,9 +163,9 @@ class _SummeryPageState extends State<SummeryPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leading: Badge(
+        leading: badges.Badge(
           showBadge: (followUpDateCount > 0) ? true : false,
-          position: BadgePosition.topEnd(top: 05, end: 05),
+          position: badges.BadgePosition.topEnd(top: 05, end: 05),
           badgeContent: Text(
             followUpDateCount.toString(),
             style: const TextStyle(

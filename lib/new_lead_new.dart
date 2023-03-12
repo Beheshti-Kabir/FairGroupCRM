@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:ui';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -1558,10 +1558,12 @@ class _NewLeadState extends State<NewLeadNew> {
                       Container(
                           padding: const EdgeInsets.only(
                               top: 0.0, left: 20.0, right: 20.0),
-                          child: Badge(
+                          child: badges.Badge(
                             showBadge: true,
-                            padding: const EdgeInsets.all(8),
-                            badgeColor: Colors.white,
+                            badgeStyle: badges.BadgeStyle(
+                              padding: const EdgeInsets.all(8),
+                              badgeColor: Colors.white,
+                            ),
                             badgeContent: Text(
                               detailsTable.length.toString(),
                               style: const TextStyle(
@@ -1689,9 +1691,9 @@ class _NewLeadState extends State<NewLeadNew> {
                                         textColor: Colors.white,
                                         fontSize: 16.0);
                                   } else {
-                                    if (_salesPersonController == '') {
+                                    if (_leadProspectController.text == '') {
                                       Fluttertoast.showToast(
-                                          msg: "Sales Person Missing",
+                                          msg: "Lead Prospect Type Missing...",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.TOP,
                                           timeInSecForIosWeb: 1,
@@ -1699,9 +1701,9 @@ class _NewLeadState extends State<NewLeadNew> {
                                           textColor: Colors.white,
                                           fontSize: 16.0);
                                     } else {
-                                      if (_bsoController == '') {
+                                      if (_salesPersonController == '') {
                                         Fluttertoast.showToast(
-                                            msg: "BSO Type Missing",
+                                            msg: "Sales Person Missing",
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.TOP,
                                             timeInSecForIosWeb: 1,
@@ -1709,97 +1711,21 @@ class _NewLeadState extends State<NewLeadNew> {
                                             textColor: Colors.white,
                                             fontSize: 16.0);
                                       } else {
-                                        if (isLoad) {
-                                          bool isValid = formValidator();
-                                          if (isValid) {
-                                            Fluttertoast.showToast(
-                                                msg: "Saving..",
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.TOP,
-                                                timeInSecForIosWeb: 1,
-                                                backgroundColor: Colors.red,
-                                                textColor: Colors.white,
-                                                fontSize: 16.0);
-
-                                            setState(() {
-                                              isLoad = false;
-                                            });
-                                            // leadNo = _leadNoController.text;
-                                            // customerContact = _customerContactController.text;
-                                            // customerName = _customerNameController.text;
-                                            // customerAddress = _customerAddressController.text;
-                                            // customerEmail = _customerEmailController.text;
-                                            // companyName = _companyNameController.text;
-                                            // website = _websiteController.text;
-                                            // projectType = _projectTypeController.text;
-                                            // projectDescription = _projectDescriptionController.text;
-                                            // budget = _budgetController.text;
-                                            // remark = _remarkController.text;
-                                            List<String>
-                                                salesPersonControllerMiddle =
-                                                _salesPersonController
-                                                    .split(' ');
-                                            String _salesPersonControllerFinal =
-                                                salesPersonControllerMiddle[0];
-                                            // List<String> leadSourceControllerMiddle =
-                                            //     _leadNoController.text.split('& Code:');
-                                            // String _leadSourceControllerFinal =
-                                            //     leadSourceControllerMiddle[0];
-                                            var new_lead_values = New_lead_json(
-                                                bsoType: _bsoController,
-                                                leadCategory:
-                                                    _leadCategoryController,
-                                                profession:
-                                                    _professionController.text,
-                                                customerName:
-                                                    _customerNameController
-                                                        .text,
-                                                customerContact:
-                                                    _customerContactController
-                                                        .text,
-                                                customerAddress:
-                                                    _customerAddressController
-                                                        .text,
-                                                customerEmail:
-                                                    _customerEmailController
-                                                        .text,
-                                                customerDOB:
-                                                    customerDOB.toString(),
-                                                companyName:
-                                                    _companyNameController.text,
-                                                longitude: long,
-                                                lattitude: lat,
-                                                userID: salesManID,
-                                                leadSource:
-                                                    _leadNoController.text,
-                                                leadProspectType:
-                                                    _leadProspectController
-                                                        .text,
-                                                remark: _remarkController.text,
-                                                nextFollowUpDate:
-                                                    nextFollowUpDate,
-                                                salesPerson:
-                                                    _salesPersonControllerFinal,
-                                                paymentMethod:
-                                                    _paymentMethodController
-                                                        .text,
-                                                itemDetails: detailsTable);
-                                            var response = await createAlbum(
-                                                new_lead_values);
-
-                                            if (response.toLowerCase().trim() ==
-                                                'success') {
-                                              Navigator.of(context)
-                                                  .pushReplacementNamed(
-                                                      '/summery');
-                                            } else {
-                                              setState(
-                                                () {
-                                                  isLoad = true;
-                                                },
-                                              );
+                                        if (_bsoController == '') {
+                                          Fluttertoast.showToast(
+                                              msg: "BSO Type Missing",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.TOP,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.red,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+                                        } else {
+                                          if (isLoad) {
+                                            bool isValid = formValidator();
+                                            if (isValid) {
                                               Fluttertoast.showToast(
-                                                  msg: response,
+                                                  msg: "Saving..",
                                                   toastLength:
                                                       Toast.LENGTH_SHORT,
                                                   gravity: ToastGravity.TOP,
@@ -1807,15 +1733,110 @@ class _NewLeadState extends State<NewLeadNew> {
                                                   backgroundColor: Colors.red,
                                                   textColor: Colors.white,
                                                   fontSize: 16.0);
+
+                                              setState(() {
+                                                isLoad = false;
+                                              });
+                                              // leadNo = _leadNoController.text;
+                                              // customerContact = _customerContactController.text;
+                                              // customerName = _customerNameController.text;
+                                              // customerAddress = _customerAddressController.text;
+                                              // customerEmail = _customerEmailController.text;
+                                              // companyName = _companyNameController.text;
+                                              // website = _websiteController.text;
+                                              // projectType = _projectTypeController.text;
+                                              // projectDescription = _projectDescriptionController.text;
+                                              // budget = _budgetController.text;
+                                              // remark = _remarkController.text;
+                                              List<String>
+                                                  salesPersonControllerMiddle =
+                                                  _salesPersonController
+                                                      .split(' ');
+                                              String
+                                                  _salesPersonControllerFinal =
+                                                  salesPersonControllerMiddle[
+                                                      0];
+                                              // List<String> leadSourceControllerMiddle =
+                                              //     _leadNoController.text.split('& Code:');
+                                              // String _leadSourceControllerFinal =
+                                              //     leadSourceControllerMiddle[0];
+                                              var new_lead_values = New_lead_json(
+                                                  bsoType: _bsoController,
+                                                  leadCategory:
+                                                      _leadCategoryController,
+                                                  profession:
+                                                      _professionController
+                                                          .text,
+                                                  customerName:
+                                                      _customerNameController
+                                                          .text,
+                                                  customerContact:
+                                                      _customerContactController
+                                                          .text,
+                                                  customerAddress:
+                                                      _customerAddressController
+                                                          .text,
+                                                  customerEmail:
+                                                      _customerEmailController
+                                                          .text,
+                                                  customerDOB:
+                                                      customerDOB.toString(),
+                                                  companyName:
+                                                      _companyNameController
+                                                          .text,
+                                                  longitude: long,
+                                                  lattitude: lat,
+                                                  userID: salesManID,
+                                                  leadSource:
+                                                      _leadNoController.text,
+                                                  leadProspectType:
+                                                      _leadProspectController
+                                                          .text,
+                                                  remark:
+                                                      _remarkController.text,
+                                                  nextFollowUpDate:
+                                                      nextFollowUpDate,
+                                                  salesPerson:
+                                                      _salesPersonControllerFinal,
+                                                  paymentMethod:
+                                                      _paymentMethodController
+                                                          .text,
+                                                  itemDetails: detailsTable);
+                                              var response = await createAlbum(
+                                                  new_lead_values);
+
+                                              if (response
+                                                      .toLowerCase()
+                                                      .trim() ==
+                                                  'success') {
+                                                Navigator.of(context)
+                                                    .pushReplacementNamed(
+                                                        '/summery');
+                                              } else {
+                                                setState(
+                                                  () {
+                                                    isLoad = true;
+                                                  },
+                                                );
+                                                Fluttertoast.showToast(
+                                                    msg: response,
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity: ToastGravity.TOP,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor: Colors.red,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0);
+                                              }
+
+                                              print('MyResponse=>$response');
                                             }
 
-                                            print('MyResponse=>$response');
+                                            // var map = json.decode(res);
+                                            // if (map["result"].toLowerCase().trim() == 'success') {
+                                            //   Navigator.of(context).pushNamed('/summery');
+                                            //}
                                           }
-
-                                          // var map = json.decode(res);
-                                          // if (map["result"].toLowerCase().trim() == 'success') {
-                                          //   Navigator.of(context).pushNamed('/summery');
-                                          //}
                                         }
                                       }
                                     }
