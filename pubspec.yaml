@@ -53,6 +53,7 @@ dependencies:
   timezone: ^0.9.0
   rxdart: ^0.27.7
   badges: ^3.0.2
+  quickalert: ^1.0.1
 
 dev_dependencies:
   flutter_test:

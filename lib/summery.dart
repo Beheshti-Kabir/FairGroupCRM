@@ -89,7 +89,7 @@ class _SummeryPageState extends State<SummeryPage> {
           'allSearch': 'FALSE'
         }));
     var statusValue = jsonDecode(response.body)['leadList'];
-    print(statusValue.toString());
+    print('VJGJGV' + statusValue.toString());
     followUpDateCount = statusValue.length;
     print(searchDate);
     print('===============================' + followUpDateCount.toString());
@@ -112,6 +112,8 @@ class _SummeryPageState extends State<SummeryPage> {
         }));
     //print('toooooooooooo' + json.decode(response.body)[0][0].toString());
     dataJSON = json.decode(response.body);
+
+    print(dataJSON.toString());
     number = dataJSON.length;
     row = (number / 2).round();
     for (int i = 0; i < number; i++) {
@@ -265,6 +267,43 @@ class _SummeryPageState extends State<SummeryPage> {
                                       child: Center(
                                         child: Text(
                                           'New Lead Transacsion',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding:
+                                EdgeInsets.fromLTRB(10.0, 20.0, 20.0, 25.0),
+                            child: Stack(
+                              children: <Widget>[
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed('/test-drive');
+                                  },
+                                  child: SizedBox(
+                                    height: 60.0,
+                                    //width: 170.0,
+                                    child: Material(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      shadowColor: Colors.blueAccent,
+                                      color: Colors.blue[800],
+                                      elevation: 7.0,
+                                      child: Center(
+                                        child: Text(
+                                          'Test-Drive',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,

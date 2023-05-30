@@ -113,6 +113,10 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   final _todoController = TextEditingController();
   late final _stepController = TextEditingController();
   late final _cancelReasonController = TextEditingController();
+  late final _modelNameController = TextEditingController();
+
+  late final _financeContoller = TextEditingController();
+  late final _modelNameControllerFinal = TextEditingController();
 
   bool _leadNoValidate = false;
   bool _meetDateVaidate = false;
@@ -133,13 +137,20 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   String remarks = '';
   String cancelReason = '';
   String salesPerson = '';
+  String finance = '';
+  String tdApprovalStatus = '';
+  String tdStatus = '';
   String lostTo = '';
   String stepNo = '';
   String employID = '';
   String customerDOB = '';
   String leadProspectType = '';
+  String modelName = '';
+  String requestedtdTime = '';
   List<String> todoTypeList = [''];
   List<String> stepNoList = [''];
+  List<String> modelList = [''];
+  List<String> financeList = ['', 'YES', 'NO'];
   List<String> sales_person = [''];
   List<String> leadNoList = [''];
   List<String> leadProspectTypeList = ['', 'HOT', 'WARM', 'COLD'];
@@ -155,6 +166,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   var meet_date = '';
   var execution_date = '';
   var followUp_date = '';
+  var requestedTD_date = '';
 
   List<Todo_New_Lead_Transaction> newLeadTransactionSend = [];
 
@@ -193,6 +205,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     todoJSON = json.decode(response.body)['todoList'];
     stepJSON = json.decode(response.body)['stepList'];
     leadNoJSON = json.decode(response.body)['leadList'];
+    modelListJSON = json.decode(response.body)['modelList'];
 
     salesPersonNumber = salesPersonJSON.length;
 
@@ -217,6 +230,11 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
       String stepMiddle = stepJSON[i].toString();
       stepNoList.insert(0, stepMiddle);
     }
+    modelNumber = modelListJSON.length;
+    for (var i = 0; i < modelNumber; i++) {
+      String modelListMiddle = modelListJSON[i].toString();
+      modelList.insert(0, modelListMiddle);
+    }
 
     leadNoNumber = leadNoJSON.length;
     for (var i = 0; i < leadNoNumber; i++) {
@@ -226,6 +244,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     // print(todoTypeList);
     // print(stepNoList);
     // print(leadNoList);
+    setState(() {});
   }
 
   formValidator() {
@@ -284,6 +303,11 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
           'cancelReason': cancelReason,
           'lostToWhom': lostTo,
           'leadProspectType': leadProspectType,
+          'tdModelName': modelName,
+          'tdRequestedTime': requestedTD_date,
+          'tdApprovalStatus': tdApprovalStatus,
+          'tdStatus': tdStatus,
+          'isAutoFinance': finance
         }
             // ),}
 
@@ -321,6 +345,33 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
     }
   }
 
+  void modelNameAddFunction() {
+    if (_modelNameController.text == '') {
+      Fluttertoast.showToast(
+          msg: "Select a model name..",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      if (_modelNameControllerFinal.text != '') {
+        setState(() {
+          _modelNameControllerFinal.text = _modelNameControllerFinal.text +
+              ' , ' +
+              _modelNameController.text;
+          _modelNameController.text = '';
+        });
+      } else {
+        setState(() {
+          _modelNameControllerFinal.text = _modelNameController.text;
+          _modelNameController.text = '';
+        });
+      }
+    }
+  }
+
   @override
   var long = "longitude";
   var lat = "latitude";
@@ -343,15 +394,19 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
   String _meetDateController = '';
   String _followupDateController = '';
   String _executionDateController = '';
+  String _testDriveDateController = '';
 
   late var salesPersonJSON;
   late var salesPersonNumber;
   late var todoJSON;
   late var stepJSON;
+  late var modelListJSON;
   late var leadNoJSON;
-  late var stepNumber;
+
+  int stepNumber = 0;
   late var todoNumber;
   late var leadNoNumber;
+  late var modelNumber;
 
   var icnSize = 18.0;
   var dropColor = Colors.blue;
@@ -362,642 +417,270 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
       appBar: AppBar(
         title: const Text('New Lead Transacsion'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TypeAheadFormField(
-                      suggestionsCallback: (pattern) => leadNoList.where(
-                        (item) => item.toLowerCase().contains(
-                              pattern.toLowerCase(),
-                            ),
-                      ),
-                      itemBuilder: (_, String item) => ListTile(
-                          title: Text(
-                        item,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      )),
-                      onSuggestionSelected: (String val) {
-                        this._leadNoController.text = val;
-                        leadNoControllerMiddle =
-                            _leadNoController.text.split('-');
-                        setState(() {
-                          _personNameController.text =
-                              leadNoControllerMiddle[1];
-                          _personContactController.text =
-                              leadNoControllerMiddle[2];
-                          customerDOB = leadNoControllerMiddle[3];
-                          if (customerDOB == 'null') {
-                            customerDOB = '2022-01-01';
-                          }
-                          String leadCategoryControllerMiddle =
-                              leadNoControllerMiddle[4];
-                          if (leadCategoryControllerMiddle == 'null') {
-                            _leadProspectController.text = '';
-                          } else {
-                            _leadProspectController.text =
-                                leadCategoryControllerMiddle;
-                          }
-                        });
-                        print(_leadNoController.text);
-                      },
-                      getImmediateSuggestions: true,
-                      hideSuggestionsOnKeyboardHide: false,
-                      hideOnEmpty: false,
-                      noItemsFoundBuilder: (context) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('No Suggestion'),
-                      ),
-                      textFieldConfiguration: TextFieldConfiguration(
-                        decoration: InputDecoration(
-                            errorText: _leadNoValidate
-                                ? 'Value Can\'t Be Empty'
-                                : null,
-                            hintText: 'Type',
-                            labelText: 'Lead No*',
-                            labelStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold)),
-                        controller: this._leadNoController,
-                      ),
-                    )
-                  ],
-                )),
-            Container(
-              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+      body: (stepNumber > 0)
+          ? SingleChildScrollView(
               child: Column(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: <Widget>[
-                  // TextField(
-                  //   controller: _personNameController,
-                  //   decoration: InputDecoration(
-                  //     errorText:
-                  //         _personNameValidate ? 'Value Can\'t Be Empty' : null,
-                  //     labelText: 'Person Name*',
-                  //     labelStyle: TextStyle(
-                  //         fontWeight: FontWeight.bold, color: Colors.grey),
-                  //     focusedBorder: UnderlineInputBorder(
-                  //       borderSide: BorderSide(color: Colors.blue),
-                  //     ),
-                  //   ),
-                  // )
-                  Text(
-                    "Customer Name: " + _personNameController.text,
-                    style: TextStyle(color: Colors.grey, fontSize: 18.0),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 18.0),
-              child: Column(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: <Widget>[
-                  // TextField(
-                  //   controller: _personContactController,
-                  //   decoration: InputDecoration(
-                  //     errorText: _personContactValidate
-                  //         ? 'Value Can\'t Be Empty'
-                  //         : null,
-                  //     labelText: 'Person Contact*',
-                  //     labelStyle: TextStyle(
-                  //         fontWeight: FontWeight.bold, color: Colors.grey),
-                  //     focusedBorder: UnderlineInputBorder(
-                  //       borderSide: BorderSide(color: Colors.blue),
-                  //     ),
-                  //   ),
-                  // )
-                  Text(
-                    "Customer Contact: " + _personContactController.text,
-                    style: TextStyle(color: Colors.grey, fontSize: 20.0),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 0.0, left: 13.0, right: 20.0),
-              child: TextButton(
-                onPressed: () {
-                  DatePicker.showDatePicker(context, showTitleActions: true,
-                      //     onChanged: (date) {
-                      //   print('change $date in time zone ' +
-                      //       date.timeZoneOffset.inHours.toString());
-                      // },
-                      onConfirm: (date) {
-                    print('confirm $date');
-                    customerDOB = date.toString();
-                    var customerDOB_date_day = date.day.toInt() < 10
-                        ? '0' + date.day.toString()
-                        : date.day.toString();
-                    var customerDOB_date_month = date.month.toInt() < 10
-                        ? '0' + date.month.toString()
-                        : date.month.toString();
-                    setState(() {
-                      customerDOB = date.year.toString() +
-                          '-' +
-                          customerDOB_date_month.toString() +
-                          '-' +
-                          customerDOB_date_day.toString();
-                    });
-                  }, currentTime: DateTime.now());
-                },
-                child: Text(
-                  "Customer DOB: $customerDOB",
-                  style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.normal),
-                ),
-              ),
-            ),
-            Container(
-                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Enquiry Step Type*",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    Row(
-                      // ignore: pre
-                      //fer_const_literals_to_create_immutables
-                      children: <Widget>[
-                        DropdownButton<String>(
-                          //isExpanded: true,
-                          value: _leadProspectController.text,
-                          icon: const Icon(Icons.arrow_downward),
-                          iconSize: icnSize,
-                          elevation: 15,
-                          style: const TextStyle(color: Colors.blue),
-                          underline: Container(
-                            height: 2,
-                            color: dropColor,
-                          ),
-                          onChanged: (String? newValue_prospectType) {
-                            setState(() {
-                              _leadProspectController.text =
-                                  newValue_prospectType!;
-                              // _cancelReasonController.text = '';
-                              // _lostToController.text = '';
-                              //print(_stepController.text.toString());
-                            });
-                            // setState(() {});
-                          },
-                          items: leadProspectTypeList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    //fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        // SizedBox(
-                        //   width: 10.0,
-                        // ),
-                      ],
-                    ),
-                  ],
-                )),
-            // Container(
-            //     padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
-            //     child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           TypeAheadFormField(
-            //             suggestionsCallback: (pattern) => todoTypeList.where(
-            //               (item) => item.toLowerCase().contains(
-            //                     pattern.toLowerCase(),
-            //                   ),
-            //             ),
-            //             itemBuilder: (_, String item) => ListTile(
-            //                 title: Text(
-            //               item,
-            //               overflow: TextOverflow.ellipsis,
-            //               maxLines: 2,
-            //             )),
-            //             onSuggestionSelected: (String val) {
-            //               this._todoController.text = val;
-            //             },
-            //             getImmediateSuggestions: true,
-            //             hideSuggestionsOnKeyboardHide: false,
-            //             hideOnEmpty: false,
-            //             noItemsFoundBuilder: (context) => Padding(
-            //               padding: const EdgeInsets.all(8.0),
-            //               child: Text('No Suggestion'),
-            //             ),
-            //             textFieldConfiguration: TextFieldConfiguration(
-            //               decoration: InputDecoration(
-            //                   hintText: 'Type',
-            //                   labelText: 'Mode Of Follow Up*',
-            //                   labelStyle: TextStyle(
-            //                       color: Colors.grey,
-            //                       fontWeight: FontWeight.bold)),
-            //               controller: this._todoController,
-            //             ),
-            //           ),
-            //         ])),
-            Container(
-              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Mode of Follow Up*",
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Row(
-                    // ignore: pre
-                    //fer_const_literals_to_create_immutables
-                    children: <Widget>[
-                      DropdownButton<String>(
-                        //isExpanded: true,
-                        value: _todoController.text,
-                        icon: const Icon(Icons.arrow_downward),
-                        iconSize: icnSize,
-                        elevation: 16,
-                        style: const TextStyle(color: Colors.blue),
-                        underline: Container(
-                          height: 2,
-                          color: dropColor,
-                        ),
-                        onChanged: (String? newValue_stepType) {
-                          setState(() {
-                            _todoController.text = newValue_stepType!;
-                            // _cancelReasonController.text = '';
-                            // _lostToController.text = '';
-                            //print(_stepController.text.toString());
-                          });
-                          // setState(() {});
-                        },
-                        items: todoTypeList
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  //fontWeight: FontWeight.bold,
-                                  fontSize: 17),
+                children: <Widget>[
+                  Container(
+                      padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TypeAheadFormField(
+                            suggestionsCallback: (pattern) => leadNoList.where(
+                              (item) => item.toLowerCase().contains(
+                                    pattern.toLowerCase(),
+                                  ),
                             ),
-                          );
-                        }).toList(),
-                      ),
-                      // SizedBox(
-                      //   width: 10.0,
-                      // ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
-              child: Column(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: <Widget>[
-                  TextField(
-                    controller: _todoDescriptionController,
-                    decoration: InputDecoration(
-                      labelText: 'Todo Description',
-                      labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
-              child: TextButton(
-                onPressed: () {
-                  DatePicker.showTimePicker(context, showTitleActions: true,
-                      //     onChanged: (date) {
-                      //   print('change $date in time zone ' +
-                      //       date.timeZoneOffset.inHours.toString());
-                      // },
-                      onConfirm: (date) {
-                    print('confirm meating date $date');
-                    meet_date = date.toString();
-                    var meet_minute = date.minute.toInt() < 10
-                        ? '0' + date.minute.toString()
-                        : date.minute.toString();
-                    var meet_date_day = date.day.toInt() < 10
-                        ? '0' + date.day.toString()
-                        : date.day.toString();
-                    var meet_date_month = date.month.toInt() < 10
-                        ? '0' + date.month.toString()
-                        : date.month.toString();
-
-                    setState(() {
-                      _meetDateController = date.year.toString() +
-                          '-' +
-                          meet_date_month.toString() +
-                          '-' +
-                          meet_date_day.toString() +
-                          ' at ' +
-                          date.hour.toString() +
-                          ':' +
-                          meet_minute.toString();
-                    });
-                  }, currentTime: DateTime.now());
-                },
-                child: Text(
-                  "Start Time* : $_meetDateController",
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
-              child: TextButton(
-                onPressed: () {
-                  DatePicker.showDateTimePicker(context, showTitleActions: true,
-                      //     onChanged: (date) {
-                      //   print('change $date in time zone ' +
-                      //       date.timeZoneOffset.inHours.toString());
-                      // },
-                      onConfirm: (date) {
-                    print('confirm $date');
-                    execution_date = date.toString();
-
-                    var execution_minute = date.minute.toInt() < 10
-                        ? '0' + date.minute.toString()
-                        : date.minute.toString();
-                    var execution_date_day = date.day.toInt() < 10
-                        ? '0' + date.day.toString()
-                        : date.day.toString();
-                    var execution_date_month = date.month.toInt() < 10
-                        ? '0' + date.month.toString()
-                        : date.month.toString();
-
-                    setState(() {
-                      _executionDateController = date.year.toString() +
-                          '-' +
-                          execution_date_month.toString() +
-                          '-' +
-                          execution_date_day.toString() +
-                          ' at ' +
-                          date.hour.toString() +
-                          ':' +
-                          execution_minute.toString();
-                    });
-                  }, currentTime: DateTime.now());
-                },
-                child: Text(
-                  "End Time: $_executionDateController",
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
-              child: TextButton(
-                onPressed: () {
-                  DatePicker.showDateTimePicker(context, showTitleActions: true,
-                      //     onChanged: (date) {
-                      //   print('change $date in time zone ' +
-                      //       date.timeZoneOffset.inHours.toString());
-                      // },
-
-                      onConfirm: (date) {
-                    print('confirm $date');
-                    followUp_date = date.toString();
-
-                    var followup_minute = date.minute.toInt() < 10
-                        ? '0' + date.minute.toString()
-                        : date.minute.toString();
-                    var followUp_date_day = date.day.toInt() < 10
-                        ? '0' + date.day.toString()
-                        : date.day.toString();
-                    var followUp_date_month = date.month.toInt() < 10
-                        ? '0' + date.month.toString()
-                        : date.month.toString();
-                    setState(() {
-                      _followupDateController = date.year.toString() +
-                          '-' +
-                          followUp_date_month.toString() +
-                          '-' +
-                          followUp_date_day.toString() +
-                          ' at ' +
-                          date.hour.toString() +
-                          ':' +
-                          followup_minute.toString();
-                    });
-                  }, currentTime: DateTime.now());
-                },
-                child: Text(
-                  "Followup Date*: $_followupDateController",
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
-              child: Column(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: <Widget>[
-                  TextField(
-                    controller: _remarkController,
-                    decoration: InputDecoration(
-                      labelText: 'Remarks',
-                      labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            //SizedBox(height: 15.0),
-            // Container(
-            //     padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-            //     child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           TypeAheadFormField(
-            //             suggestionsCallback: (pattern) => sales_person.where(
-            //               (item) => item.toLowerCase().contains(
-            //                     pattern.toLowerCase(),
-            //                   ),
-            //             ),
-            //             itemBuilder: (_, String item) => ListTile(
-            //                 title: Text(
-            //               item,
-            //               overflow: TextOverflow.ellipsis,
-            //               maxLines: 2,
-            //             )),
-            //             onSuggestionSelected: (String val) {
-            //               this._salesPersonController.text = val;
-            //             },
-            //             getImmediateSuggestions: true,
-            //             hideSuggestionsOnKeyboardHide: false,
-            //             hideOnEmpty: false,
-            //             noItemsFoundBuilder: (context) => Padding(
-            //               padding: const EdgeInsets.all(8.0),
-            //               child: Text('No Suggestion'),
-            //             ),
-            //             textFieldConfiguration: TextFieldConfiguration(
-            //               decoration: InputDecoration(
-            //                   hintText: 'Type',
-            //                   labelText: 'Sales Person',
-            //                   labelStyle: TextStyle(
-            //                       color: Colors.grey,
-            //                       fontWeight: FontWeight.bold)),
-            //               controller: this._salesPersonController,
-            //             ),
-            //           ),
-            //         ])),
-            // // Container(
-            // //     padding: EdgeInsets.only(left: 20.0, right: 20.0),
-            // //     child: Column(
-            // //       mainAxisAlignment: MainAxisAlignment.start,
-            // //       crossAxisAlignment: CrossAxisAlignment.start,
-            // //       children: [
-            // //         TypeAheadFormField(
-            // //           suggestionsCallback: (pattern) => stepNoList.where(
-            // //             (item) => item.toLowerCase().contains(
-            // //                   pattern.toLowerCase(),
-            // //                 ),
-            // //           ),
-            // //           itemBuilder: (_, String item) => ListTile(
-            // //               title: Text(
-            // //             item,
-            // //             overflow: TextOverflow.ellipsis,
-            // //             maxLines: 2,
-            // //           )),
-            // //           onSuggestionSelected: (String val) {
-            // //             this._stepController.text = val;
-            // //           },
-            // //           getImmediateSuggestions: true,
-            // //           hideSuggestionsOnKeyboardHide: false,
-            // //           hideOnEmpty: false,
-            // //           noItemsFoundBuilder: (context) => Padding(
-            // //             padding: const EdgeInsets.all(8.0),
-            // //             child: Text('No Suggestion'),
-            // //           ),
-            // //           textFieldConfiguration: TextFieldConfiguration(
-            // //             decoration: InputDecoration(
-            // //                 hintText: 'Type', labelText: 'Step No'),
-            // //             controller: this._stepController,
-            // //           ),
-            // //         )
-            // //       ],
-            // //     )),
-
-            Container(
-                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Enquiry Step Type*",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    Row(
-                      // ignore: pre
-                      //fer_const_literals_to_create_immutables
+                            itemBuilder: (_, String item) => ListTile(
+                                title: Text(
+                              item,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            )),
+                            onSuggestionSelected: (String val) {
+                              this._leadNoController.text = val;
+                              leadNoControllerMiddle =
+                                  _leadNoController.text.split('-');
+                              setState(() {
+                                _personNameController.text =
+                                    leadNoControllerMiddle[1];
+                                _personContactController.text =
+                                    leadNoControllerMiddle[2];
+                                customerDOB = leadNoControllerMiddle[3];
+                                if (customerDOB == 'null') {
+                                  customerDOB = '2022-01-01';
+                                }
+                                String leadCategoryControllerMiddle =
+                                    leadNoControllerMiddle[4];
+                                if (leadCategoryControllerMiddle == 'null') {
+                                  _leadProspectController.text = '';
+                                } else {
+                                  _leadProspectController.text =
+                                      leadCategoryControllerMiddle;
+                                }
+                              });
+                              print(_leadNoController.text);
+                            },
+                            getImmediateSuggestions: true,
+                            hideSuggestionsOnKeyboardHide: false,
+                            hideOnEmpty: false,
+                            noItemsFoundBuilder: (context) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('No Suggestion'),
+                            ),
+                            textFieldConfiguration: TextFieldConfiguration(
+                              decoration: InputDecoration(
+                                  errorText: _leadNoValidate
+                                      ? 'Value Can\'t Be Empty'
+                                      : null,
+                                  hintText: 'Type',
+                                  labelText: 'Lead No*',
+                                  labelStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold)),
+                              controller: this._leadNoController,
+                            ),
+                          )
+                        ],
+                      )),
+                  Container(
+                    padding:
+                        EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                    child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
                       children: <Widget>[
-                        DropdownButton<String>(
-                          //isExpanded: true,
-                          value: _stepController.text,
-                          icon: const Icon(Icons.arrow_downward),
-                          iconSize: icnSize,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.blue),
-                          underline: Container(
-                            height: 2,
-                            color: dropColor,
-                          ),
-                          onChanged: (String? newValue_stepType) {
-                            setState(() {
-                              _stepController.text = newValue_stepType!;
-                              _cancelReasonController.text = '';
-                              _lostToController.text = '';
-                              //print(_stepController.text.toString());
-                            });
-                            // setState(() {});
-                          },
-                          items: stepNoList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    //fontWeight: FontWeight.bold,
-                                    fontSize: 17),
-                              ),
-                            );
-                          }).toList(),
+                        // TextField(
+                        //   controller: _personNameController,
+                        //   decoration: InputDecoration(
+                        //     errorText:
+                        //         _personNameValidate ? 'Value Can\'t Be Empty' : null,
+                        //     labelText: 'Person Name*',
+                        //     labelStyle: TextStyle(
+                        //         fontWeight: FontWeight.bold, color: Colors.grey),
+                        //     focusedBorder: UnderlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.blue),
+                        //     ),
+                        //   ),
+                        // )
+                        Text(
+                          "Customer Name: " + _personNameController.text,
+                          style: TextStyle(color: Colors.grey, fontSize: 20.0),
                         ),
-                        // SizedBox(
-                        //   width: 10.0,
-                        // ),
                       ],
                     ),
-                  ],
-                )),
-
-            (_stepController.text.toString() == 'CANCEL')
-                ? Container(
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.only(top: 15.0, left: 20.0, right: 18.0),
+                    child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        // TextField(
+                        //   controller: _personContactController,
+                        //   decoration: InputDecoration(
+                        //     errorText: _personContactValidate
+                        //         ? 'Value Can\'t Be Empty'
+                        //         : null,
+                        //     labelText: 'Person Contact*',
+                        //     labelStyle: TextStyle(
+                        //         fontWeight: FontWeight.bold, color: Colors.grey),
+                        //     focusedBorder: UnderlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.blue),
+                        //     ),
+                        //   ),
+                        // )
+                        Text(
+                          "Customer Contact: " + _personContactController.text,
+                          style: TextStyle(color: Colors.grey, fontSize: 20.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 0.0, left: 13.0, right: 20.0),
+                    child: TextButton(
+                      onPressed: () {
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            //     onChanged: (date) {
+                            //   print('change $date in time zone ' +
+                            //       date.timeZoneOffset.inHours.toString());
+                            // },
+                            onConfirm: (date) {
+                          print('confirm $date');
+                          customerDOB = date.toString();
+                          var customerDOB_date_day = date.day.toInt() < 10
+                              ? '0' + date.day.toString()
+                              : date.day.toString();
+                          var customerDOB_date_month = date.month.toInt() < 10
+                              ? '0' + date.month.toString()
+                              : date.month.toString();
+                          setState(() {
+                            customerDOB = date.year.toString() +
+                                '-' +
+                                customerDOB_date_month.toString() +
+                                '-' +
+                                customerDOB_date_day.toString();
+                          });
+                        }, currentTime: DateTime.now());
+                      },
+                      child: Text(
+                        "Customer DOB: $customerDOB",
+                        style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                  // Container(
+                  //     padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.start,
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Text("Enquiry Step Type*",
+                  //             style: TextStyle(
+                  //               fontSize: 17,
+                  //               color: Colors.grey,
+                  //               fontWeight: FontWeight.bold,
+                  //             )),
+                  //         Row(
+                  //           // ignore: pre
+                  //           //fer_const_literals_to_create_immutables
+                  //           children: <Widget>[
+                  //             DropdownButton<String>(
+                  //               //isExpanded: true,
+                  //               value: _leadProspectController.text,
+                  //               icon: const Icon(Icons.arrow_downward),
+                  //               iconSize: icnSize,
+                  //               elevation: 15,
+                  //               style: const TextStyle(color: Colors.blue),
+                  //               underline: Container(
+                  //                 height: 2,
+                  //                 color: dropColor,
+                  //               ),
+                  //               onChanged: (String? newValue_prospectType) {
+                  //                 setState(() {
+                  //                   _leadProspectController.text =
+                  //                       newValue_prospectType!;
+                  //                   // _cancelReasonController.text = '';
+                  //                   // _lostToController.text = '';
+                  //                   //print(_stepController.text.toString());
+                  //                 });
+                  //                 // setState(() {});
+                  //               },
+                  //               items: leadProspectTypeList
+                  //                   .map<DropdownMenuItem<String>>((String value) {
+                  //                 return DropdownMenuItem<String>(
+                  //                   value: value,
+                  //                   child: Text(
+                  //                     value,
+                  //                     style: TextStyle(
+                  //                         color: Colors.grey,
+                  //                         //fontWeight: FontWeight.bold,
+                  //                         fontSize: 16),
+                  //                   ),
+                  //                 );
+                  //               }).toList(),
+                  //             ),
+                  //             // SizedBox(
+                  //             //   width: 10.0,
+                  //             // ),
+                  //           ],
+                  //         ),
+                  //       ],
+                  //     )),
+                  // // Container(
+                  //     padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                  //     child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           TypeAheadFormField(
+                  //             suggestionsCallback: (pattern) => todoTypeList.where(
+                  //               (item) => item.toLowerCase().contains(
+                  //                     pattern.toLowerCase(),
+                  //                   ),
+                  //             ),
+                  //             itemBuilder: (_, String item) => ListTile(
+                  //                 title: Text(
+                  //               item,
+                  //               overflow: TextOverflow.ellipsis,
+                  //               maxLines: 2,
+                  //             )),
+                  //             onSuggestionSelected: (String val) {
+                  //               this._todoController.text = val;
+                  //             },
+                  //             getImmediateSuggestions: true,
+                  //             hideSuggestionsOnKeyboardHide: false,
+                  //             hideOnEmpty: false,
+                  //             noItemsFoundBuilder: (context) => Padding(
+                  //               padding: const EdgeInsets.all(8.0),
+                  //               child: Text('No Suggestion'),
+                  //             ),
+                  //             textFieldConfiguration: TextFieldConfiguration(
+                  //               decoration: InputDecoration(
+                  //                   hintText: 'Type',
+                  //                   labelText: 'Mode Of Follow Up*',
+                  //                   labelStyle: TextStyle(
+                  //                       color: Colors.grey,
+                  //                       fontWeight: FontWeight.bold)),
+                  //               controller: this._todoController,
+                  //             ),
+                  //           ),
+                  //         ])),
+                  Container(
                     padding:
                         EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Cancel Reason",
+                        Text("Mode of Follow Up*",
                             style: TextStyle(
                               fontSize: 17,
                               color: Colors.grey,
@@ -1009,7 +692,7 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                           children: <Widget>[
                             DropdownButton<String>(
                               //isExpanded: true,
-                              value: _cancelReasonController.text,
+                              value: _todoController.text,
                               icon: const Icon(Icons.arrow_downward),
                               iconSize: icnSize,
                               elevation: 16,
@@ -1018,15 +701,17 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                                 height: 2,
                                 color: dropColor,
                               ),
-                              onChanged: (String? newValue_cancelReason) {
+                              onChanged: (String? newValue_stepType) {
                                 setState(() {
-                                  _cancelReasonController.text =
-                                      newValue_cancelReason!;
+                                  _todoController.text = newValue_stepType!;
+                                  // _cancelReasonController.text = '';
+                                  // _lostToController.text = '';
+                                  //print(_stepController.text.toString());
                                 });
+                                // setState(() {});
                               },
-                              items: cancelReasonList
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
+                              items: todoTypeList.map<DropdownMenuItem<String>>(
+                                  (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(
@@ -1034,29 +719,29 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                                     style: TextStyle(
                                         color: Colors.grey,
                                         //fontWeight: FontWeight.bold,
-                                        fontSize: 17.0),
+                                        fontSize: 17),
                                   ),
                                 );
                               }).toList(),
                             ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
+                            // SizedBox(
+                            //   width: 10.0,
+                            // ),
                           ],
                         ),
                       ],
-                    ))
-                : Container(),
-            (_cancelReasonController.text.toString() == 'Lost to Competitor')
-                ? Container(
+                    ),
+                  ),
+
+                  Container(
                     padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                     child: Column(
                       // ignore: prefer_const_literals_to_create_immutables
                       children: <Widget>[
                         TextField(
-                          controller: _lostToController,
+                          controller: _todoDescriptionController,
                           decoration: InputDecoration(
-                            labelText: 'Lost To Whom',
+                            labelText: 'Todo Description',
                             labelStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey),
@@ -1067,66 +752,706 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                         )
                       ],
                     ),
-                  )
-                : Container(),
-            SizedBox(height: 20.0),
-            Container(
-              child: Center(
-                child: GestureDetector(
-                  onTap: () async {
-                    final DateTime dateTimeNow = DateTime.now();
-                    final dateTimeCreatedAt = DateTime.parse(followUp_date);
-                    final differenceInDays =
-                        dateTimeCreatedAt.difference(dateTimeNow).inDays;
-                    int dateDiff = int.parse(differenceInDays.toString());
-                    print(differenceInDays);
-                    if (differenceInDays < 0) {
-                      Fluttertoast.showToast(
-                          msg: "Previous Date Can't Be\nNext Follow-Up Date",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    } else if (differenceInDays > 30) {
-                      Fluttertoast.showToast(
-                          msg:
-                              "Next Follow-Up Date Can't\nBe More Than One Month",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    } else {
-                      if (_todoController.toString() == '') {
-                        Fluttertoast.showToast(
-                            msg: "Mode of FollowUp missing..",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.TOP,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      } else {
-                        if (_stepController.text == '') {
-                          Fluttertoast.showToast(
-                              msg: "Enquiry Step Type Missing..",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        } else {
-                          if (followUp_date == '' &&
-                              _stepController.text != 'INVOICED' &&
-                              _stepController.text != 'CANCEL' &&
-                              _stepController.text != 'LOST' &&
-                              _stepController.text != 'INVALID') {
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
+                    child: TextButton(
+                      onPressed: () {
+                        DatePicker.showTimePicker(context,
+                            showTitleActions: true,
+                            //     onChanged: (date) {
+                            //   print('change $date in time zone ' +
+                            //       date.timeZoneOffset.inHours.toString());
+                            // },
+                            onConfirm: (date) {
+                          print('confirm meating date $date');
+                          meet_date = date.toString();
+                          var meet_minute = date.minute.toInt() < 10
+                              ? '0' + date.minute.toString()
+                              : date.minute.toString();
+                          var meet_date_day = date.day.toInt() < 10
+                              ? '0' + date.day.toString()
+                              : date.day.toString();
+                          var meet_date_month = date.month.toInt() < 10
+                              ? '0' + date.month.toString()
+                              : date.month.toString();
+
+                          setState(() {
+                            _meetDateController = date.year.toString() +
+                                '-' +
+                                meet_date_month.toString() +
+                                '-' +
+                                meet_date_day.toString() +
+                                ' at ' +
+                                date.hour.toString() +
+                                ':' +
+                                meet_minute.toString();
+                          });
+                        }, currentTime: DateTime.now());
+                      },
+                      child: Text(
+                        "Start Time* : $_meetDateController",
+                        style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
+                    child: TextButton(
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(context,
+                            showTitleActions: true,
+                            //     onChanged: (date) {
+                            //   print('change $date in time zone ' +
+                            //       date.timeZoneOffset.inHours.toString());
+                            // },
+                            onConfirm: (date) {
+                          print('confirm $date');
+                          execution_date = date.toString();
+
+                          var execution_minute = date.minute.toInt() < 10
+                              ? '0' + date.minute.toString()
+                              : date.minute.toString();
+                          var execution_date_day = date.day.toInt() < 10
+                              ? '0' + date.day.toString()
+                              : date.day.toString();
+                          var execution_date_month = date.month.toInt() < 10
+                              ? '0' + date.month.toString()
+                              : date.month.toString();
+
+                          setState(() {
+                            _executionDateController = date.year.toString() +
+                                '-' +
+                                execution_date_month.toString() +
+                                '-' +
+                                execution_date_day.toString() +
+                                ' at ' +
+                                date.hour.toString() +
+                                ':' +
+                                execution_minute.toString();
+                          });
+                        }, currentTime: DateTime.now());
+                      },
+                      child: Text(
+                        "End Time: $_executionDateController",
+                        style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
+                    child: TextButton(
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(context,
+                            showTitleActions: true,
+                            //     onChanged: (date) {
+                            //   print('change $date in time zone ' +
+                            //       date.timeZoneOffset.inHours.toString());
+                            // },
+
+                            onConfirm: (date) {
+                          print('confirm $date');
+                          followUp_date = date.toString();
+
+                          var followup_minute = date.minute.toInt() < 10
+                              ? '0' + date.minute.toString()
+                              : date.minute.toString();
+                          var followUp_date_day = date.day.toInt() < 10
+                              ? '0' + date.day.toString()
+                              : date.day.toString();
+                          var followUp_date_month = date.month.toInt() < 10
+                              ? '0' + date.month.toString()
+                              : date.month.toString();
+                          setState(() {
+                            _followupDateController = date.year.toString() +
+                                '-' +
+                                followUp_date_month.toString() +
+                                '-' +
+                                followUp_date_day.toString() +
+                                ' at ' +
+                                date.hour.toString() +
+                                ':' +
+                                followup_minute.toString();
+                          });
+                        }, currentTime: DateTime.now());
+                      },
+                      child: Text(
+                        "Follow-Up Date*: $_followupDateController",
+                        style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+                    child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: <Widget>[
+                        TextField(
+                          controller: _remarkController,
+                          decoration: InputDecoration(
+                            labelText: 'Remarks',
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  //SizedBox(height: 15.0),
+                  // Container(
+                  //     padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                  //     child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           TypeAheadFormField(
+                  //             suggestionsCallback: (pattern) => sales_person.where(
+                  //               (item) => item.toLowerCase().contains(
+                  //                     pattern.toLowerCase(),
+                  //                   ),
+                  //             ),
+                  //             itemBuilder: (_, String item) => ListTile(
+                  //                 title: Text(
+                  //               item,
+                  //               overflow: TextOverflow.ellipsis,
+                  //               maxLines: 2,
+                  //             )),
+                  //             onSuggestionSelected: (String val) {
+                  //               this._salesPersonController.text = val;
+                  //             },
+                  //             getImmediateSuggestions: true,
+                  //             hideSuggestionsOnKeyboardHide: false,
+                  //             hideOnEmpty: false,
+                  //             noItemsFoundBuilder: (context) => Padding(
+                  //               padding: const EdgeInsets.all(8.0),
+                  //               child: Text('No Suggestion'),
+                  //             ),
+                  //             textFieldConfiguration: TextFieldConfiguration(
+                  //               decoration: InputDecoration(
+                  //                   hintText: 'Type',
+                  //                   labelText: 'Sales Person',
+                  //                   labelStyle: TextStyle(
+                  //                       color: Colors.grey,
+                  //                       fontWeight: FontWeight.bold)),
+                  //               controller: this._salesPersonController,
+                  //             ),
+                  //           ),
+                  //         ])),
+                  // // Container(
+                  // //     padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                  // //     child: Column(
+                  // //       mainAxisAlignment: MainAxisAlignment.start,
+                  // //       crossAxisAlignment: CrossAxisAlignment.start,
+                  // //       children: [
+                  // //         TypeAheadFormField(
+                  // //           suggestionsCallback: (pattern) => stepNoList.where(
+                  // //             (item) => item.toLowerCase().contains(
+                  // //                   pattern.toLowerCase(),
+                  // //                 ),
+                  // //           ),
+                  // //           itemBuilder: (_, String item) => ListTile(
+                  // //               title: Text(
+                  // //             item,
+                  // //             overflow: TextOverflow.ellipsis,
+                  // //             maxLines: 2,
+                  // //           )),
+                  // //           onSuggestionSelected: (String val) {
+                  // //             this._stepController.text = val;
+                  // //           },
+                  // //           getImmediateSuggestions: true,
+                  // //           hideSuggestionsOnKeyboardHide: false,
+                  // //           hideOnEmpty: false,
+                  // //           noItemsFoundBuilder: (context) => Padding(
+                  // //             padding: const EdgeInsets.all(8.0),
+                  // //             child: Text('No Suggestion'),
+                  // //           ),
+                  // //           textFieldConfiguration: TextFieldConfiguration(
+                  // //             decoration: InputDecoration(
+                  // //                 hintText: 'Type', labelText: 'Step No'),
+                  // //             controller: this._stepController,
+                  // //           ),
+                  // //         )
+                  // //       ],
+                  // //     )),
+
+                  Container(
+                      padding:
+                          EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Enquiry Step Type*",
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          Row(
+                            // ignore: pre
+                            //fer_const_literals_to_create_immutables
+                            children: <Widget>[
+                              DropdownButton<String>(
+                                //isExpanded: true,
+                                value: _stepController.text,
+                                icon: const Icon(Icons.arrow_downward),
+                                iconSize: icnSize,
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.blue),
+                                underline: Container(
+                                  height: 2,
+                                  color: dropColor,
+                                ),
+                                onChanged: (String? newValue_stepType) {
+                                  setState(() {
+                                    _stepController.text = newValue_stepType!;
+                                    _cancelReasonController.text = '';
+                                    _lostToController.text = '';
+                                    //print(_stepController.text.toString());
+                                  });
+                                  // setState(() {});
+                                },
+                                items: stepNoList.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          //fontWeight: FontWeight.bold,
+                                          fontSize: 17),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              // SizedBox(
+                              //   width: 10.0,
+                              // ),
+                            ],
+                          ),
+                        ],
+                      )),
+
+                  (_stepController.text.toString() == 'CANCEL')
+                      ? Container(
+                          padding: EdgeInsets.only(
+                              top: 15.0, left: 20.0, right: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Cancel Reason",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Row(
+                                // ignore: pre
+                                //fer_const_literals_to_create_immutables
+                                children: <Widget>[
+                                  DropdownButton<String>(
+                                    //isExpanded: true,
+                                    value: _cancelReasonController.text,
+                                    icon: const Icon(Icons.arrow_downward),
+                                    iconSize: icnSize,
+                                    elevation: 16,
+                                    style: const TextStyle(color: Colors.blue),
+                                    underline: Container(
+                                      height: 2,
+                                      color: dropColor,
+                                    ),
+                                    onChanged: (String? newValue_cancelReason) {
+                                      setState(() {
+                                        _cancelReasonController.text =
+                                            newValue_cancelReason!;
+                                      });
+                                    },
+                                    items: cancelReasonList
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              //fontWeight: FontWeight.bold,
+                                              fontSize: 17.0),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ))
+                      : Container(),
+                  (_cancelReasonController.text.toString() ==
+                          'Lost to Competitor')
+                      ? Container(
+                          padding: EdgeInsets.only(
+                              top: 0.0, left: 20.0, right: 20.0),
+                          child: Column(
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: <Widget>[
+                              TextField(
+                                controller: _lostToController,
+                                decoration: InputDecoration(
+                                  labelText: 'Lost To Whom',
+                                  labelStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      : Container(),
+                  (_stepController.text.toString() == 'TEST-DRIVE')
+                      ? Container(
+                          padding: EdgeInsets.only(
+                              top: 10.0, left: 20.0, right: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Which Model : ",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Row(
+                                // ignore: pre
+                                //fer_const_literals_to_create_immutables
+                                children: <Widget>[
+                                  DropdownButton<String>(
+                                    //isExpanded: true,
+                                    value: _modelNameController.text,
+                                    icon: const Icon(Icons.arrow_downward),
+                                    iconSize: icnSize,
+                                    elevation: 16,
+                                    style: const TextStyle(color: Colors.blue),
+                                    underline: Container(
+                                      height: 2,
+                                      color: dropColor,
+                                    ),
+                                    onChanged: (String? newValue_modelName) {
+                                      setState(() {
+                                        _modelNameController.text =
+                                            newValue_modelName!;
+
+                                        print(_modelNameController.text.length);
+                                      });
+                                    },
+                                    items: modelList
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              //fontWeight: FontWeight.bold,
+                                              fontSize: 17.0),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  // SizedBox(
+                                  //   height: 25.0,
+                                  // ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              modelNameAddFunction();
+                                            },
+                                            child: Container(
+                                              height: 40.0,
+                                              width: 60.0,
+                                              child: Material(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                //shadowColor: Colors.lightBlueAccent,
+                                                color: Colors.blue[800],
+                                                elevation: 7.0,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Add Model",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.normal),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 50.0,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              setState(() {
+                                                _modelNameControllerFinal.text =
+                                                    '';
+                                                _modelNameController.text = '';
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 40.0,
+                                              width: 60.0,
+                                              child: Material(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                //shadowColor: Colors.lightBlueAccent,
+                                                color: Colors.blue[800],
+                                                elevation: 7.0,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Cancel All\nModel",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.normal),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 25.0,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(top: 00.0, right: 20.0),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        DatePicker.showDateTimePicker(context,
+                                            showTitleActions: true,
+                                            //     onChanged: (date) {
+                                            //   print('change $date in time zone ' +
+                                            //       date.timeZoneOffset.inHours.toString());
+                                            // },
+
+                                            onConfirm: (date) {
+                                          print('confirm $date');
+                                          requestedTD_date = date.toString();
+
+                                          var requestedTD_date_minute =
+                                              date.minute.toInt() < 10
+                                                  ? '0' + date.minute.toString()
+                                                  : date.minute.toString();
+                                          var requestedTD_date_day =
+                                              date.day.toInt() < 10
+                                                  ? '0' + date.day.toString()
+                                                  : date.day.toString();
+                                          var requestedTD_date_month =
+                                              date.month.toInt() < 10
+                                                  ? '0' + date.month.toString()
+                                                  : date.month.toString();
+                                          setState(() {
+                                            _testDriveDateController =
+                                                date.year.toString() +
+                                                    '-' +
+                                                    requestedTD_date_month
+                                                        .toString() +
+                                                    '-' +
+                                                    requestedTD_date_day
+                                                        .toString() +
+                                                    ' at ' +
+                                                    date.hour.toString() +
+                                                    ':' +
+                                                    requestedTD_date_minute
+                                                        .toString();
+                                          });
+                                        }, currentTime: DateTime.now());
+                                      },
+                                      child: Text(
+                                        "Requested Test-Drive Time*:\n" +
+                                            _testDriveDateController,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                // ignore: pre
+                                //fer_const_literals_to_create_immutables
+                                children: <Widget>[
+                                  Flexible(
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                          left: 7.0, right: 5.0),
+                                      child: Text(
+                                        "Model Name: " +
+                                            _modelNameControllerFinal.text,
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 20.0),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 0.0,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                padding:
+                                    EdgeInsets.only(left: 8.0, right: 20.0),
+                                child: Text("Finance : ",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
+                              Row(
+                                // ignore: pre
+                                //fer_const_literals_to_create_immutables
+                                children: <Widget>[
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(left: 8.0, right: 20.0),
+                                    child: DropdownButton<String>(
+                                      //isExpanded: true,
+                                      value: _financeContoller.text,
+                                      icon: const Icon(Icons.arrow_downward),
+                                      iconSize: icnSize,
+                                      elevation: 16,
+                                      style:
+                                          const TextStyle(color: Colors.blue),
+                                      underline: Container(
+                                        height: 2,
+                                        color: dropColor,
+                                      ),
+                                      onChanged: (String? newValue_modelName) {
+                                        setState(() {
+                                          _financeContoller.text =
+                                              newValue_modelName!;
+
+                                          print(_financeContoller.text.length);
+                                        });
+                                      },
+                                      items: financeList
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                //fontWeight: FontWeight.bold,
+                                                fontSize: 17.0),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                  // SizedBox(
+                                  //   height: 25.0,
+                                  // ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                            ],
+                          ))
+                      : Container(),
+                  SizedBox(height: 30.0),
+                  Container(
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () async {
+                          final DateTime dateTimeNow = DateTime.now();
+                          final dateTimeCreatedAt =
+                              DateTime.parse(followUp_date);
+                          final differenceInDays =
+                              dateTimeCreatedAt.difference(dateTimeNow).inDays;
+                          int dateDiff = int.parse(differenceInDays.toString());
+                          print(differenceInDays);
+                          if (_stepController.text.toString() != 'TEST-DRIVE') {
+                            _modelNameControllerFinal.text = '';
+                            _testDriveDateController = '';
+                          } else if (_stepController.text.toString() ==
+                                  'TEST-DRIVE' &&
+                              _modelNameControllerFinal.text == '') {
+                            modelNameAddFunction();
+                          }
+                          if (_stepController.text.toString() == 'TEST-DRIVE' &&
+                              _financeContoller.text == '') {
                             Fluttertoast.showToast(
-                                msg: "Follow-Up Date Missing..",
+                                msg: "Please Add a Finance Option!!",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.TOP,
                                 timeInSecForIosWeb: 1,
@@ -1134,115 +1459,267 @@ class _NewLeadTransactionState extends State<NewLeadTransaction> {
                                 textColor: Colors.white,
                                 fontSize: 16.0);
                           } else {
-                            if (isLoad) {
-                              //isLoad = true;
-                              print("before validation");
-                              bool isValid = formValidator();
-                              print(isValid);
-                              if (isValid) {
+                            if (_stepController.text.toString() ==
+                                    'TEST-DRIVE' &&
+                                _modelNameControllerFinal.text == '') {
+                              Fluttertoast.showToast(
+                                  msg: "Please Add a Model First!!",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            } else {
+                              if (_stepController.text.toString() ==
+                                      'TEST-DRIVE' &&
+                                  _testDriveDateController == '') {
                                 Fluttertoast.showToast(
-                                    msg: "Saving..",
+                                    msg: "Please Add a Test Date First!!",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.TOP,
                                     timeInSecForIosWeb: 1,
                                     backgroundColor: Colors.red,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
+                              } else {
+                                {
+                                  if (differenceInDays < 0) {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Previous Date Can't Be\nNext Follow-Up Date",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else if (differenceInDays > 30) {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Next Follow-Up Date Can't\nBe More Than One Month",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else {
+                                    if (_todoController.toString() == '') {
+                                      Fluttertoast.showToast(
+                                          msg: "Mode of FollowUp missing..",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    } else {
+                                      if (_stepController.text == '') {
+                                        Fluttertoast.showToast(
+                                            msg: "Enquiry Step Type Missing..",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.TOP,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.red,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      } else {
+                                        if (followUp_date == '' &&
+                                            _stepController.text !=
+                                                'INVOICED' &&
+                                            _stepController.text != 'BOOKED' &&
+                                            _stepController.text != 'LOST') {
+                                          Fluttertoast.showToast(
+                                              msg: "Follow-Up Date Missing..",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.TOP,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.red,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+                                        } else {
+                                          if (isLoad) {
+                                            //isLoad = true;
+                                            print("before validation");
+                                            bool isValid = formValidator();
+                                            print(isValid);
+                                            if (isValid) {
+                                              Fluttertoast.showToast(
+                                                  msg: "Saving..",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.TOP,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: Colors.red,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0);
 
-                                setState(() {
-                                  isLoad = false;
-                                });
-                                List<String> salesPersonControllerMiddle =
-                                    _salesPersonController.text.split(' ');
-                                String _salesPersonControllerFinal =
-                                    salesPersonControllerMiddle[0];
-                                leadNoControllerMiddle =
-                                    _leadNoController.text.split('-');
-                                String _leadNoControllerFinal =
-                                    leadNoControllerMiddle[0];
-                                leadinfo = _leadNoControllerFinal;
-                                personName = _personNameController.text;
-                                personContact = _personContactController.text;
-                                todoType = _todoController.text;
-                                leadProspectType = _leadProspectController.text;
-                                todoDescription =
-                                    _todoDescriptionController.text;
-                                // have to set meet date
-                                remarks = _remarkController.text;
-                                salesPerson = employID;
-                                stepNo = _stepController.text;
-                                cancelReason =
-                                    _cancelReasonController.text.toString();
+                                              setState(() {
+                                                isLoad = false;
+                                              });
+                                              if (_stepController.text == '') {}
+                                              switch (_stepController.text) {
+                                                case 'ENQUIRY':
+                                                  _leadProspectController.text =
+                                                      'IN-PROGRESS';
+                                                  break;
+                                                case 'FOLLOW-UP':
+                                                  _leadProspectController.text =
+                                                      'LEAD';
+                                                  break;
+                                                case 'CANCEL':
+                                                  _leadProspectController.text =
+                                                      'LEAD';
+                                                  break;
+                                                case 'DEMONSTRATION':
+                                                  _leadProspectController.text =
+                                                      'WARM';
+                                                  break;
+                                                case 'TEST-DRIVE':
+                                                  _leadProspectController.text =
+                                                      'HOT-LEAD';
+                                                  break;
+                                                case 'NEGOTITAION (B2B)':
+                                                  _leadProspectController.text =
+                                                      'HOT-LEAD';
+                                                  break;
+                                              }
+                                              if (_stepController.text ==
+                                                  'TEST-DRIVE') {
+                                                tdApprovalStatus = 'OPEN';
+                                                tdStatus = 'PENDING';
+                                                modelName =
+                                                    _modelNameControllerFinal
+                                                        .text;
+                                                finance =
+                                                    _financeContoller.text;
+                                                requestedtdTime =
+                                                    _testDriveDateController;
+                                              } else {
+                                                tdApprovalStatus = '';
+                                                tdStatus = '';
+                                                modelName = '';
+                                                finance = '';
+                                                requestedtdTime = '';
+                                              }
+                                              List<String>
+                                                  salesPersonControllerMiddle =
+                                                  _salesPersonController.text
+                                                      .split(' ');
+                                              String
+                                                  _salesPersonControllerFinal =
+                                                  salesPersonControllerMiddle[
+                                                      0];
+                                              leadNoControllerMiddle =
+                                                  _leadNoController.text
+                                                      .split('-');
+                                              String _leadNoControllerFinal =
+                                                  leadNoControllerMiddle[0];
+                                              leadinfo = _leadNoControllerFinal;
+                                              personName =
+                                                  _personNameController.text;
+                                              personContact =
+                                                  _personContactController.text;
+                                              todoType = _todoController.text;
+                                              leadProspectType =
+                                                  _leadProspectController.text;
+                                              todoDescription =
+                                                  _todoDescriptionController
+                                                      .text;
+                                              // have to set meet date
+                                              remarks = _remarkController.text;
+                                              salesPerson = employID;
+                                              stepNo = _stepController.text;
+                                              modelName =
+                                                  _modelNameControllerFinal
+                                                      .text;
+                                              cancelReason =
+                                                  _cancelReasonController.text
+                                                      .toString();
 
-                                print("after controller");
-                                lostTo = _lostToController.text;
-                                // newLeadTransactionModel = Todo_New_Lead_Transaction(
-                                //     leadinfo,
-                                //     personName,
-                                //     personContact,
-                                //     todoType,
-                                //     todoDescription,
-                                //     meetDate,
-                                //     executionDate,
-                                //     followupDate,
-                                //     remarks,
-                                //     salesPerson,
-                                //     stepNo);
-                                //newLeadTransactionSend.add(newLeadTransactionModel);
-                                var response = await createAlbum();
+                                              print("after controller");
+                                              lostTo = _lostToController.text;
+                                              // newLeadTransactionModel = Todo_New_Lead_Transaction(
+                                              //     leadinfo,
+                                              //     personName,
+                                              //     personContact,
+                                              //     todoType,
+                                              //     todoDescription,
+                                              //     meetDate,
+                                              //     executionDate,
+                                              //     followupDate,
+                                              //     remarks,
+                                              //     salesPerson,
+                                              //     stepNo);
+                                              //newLeadTransactionSend.add(newLeadTransactionModel);
+                                              var response =
+                                                  await createAlbum();
 
-                                //print(json.encode(newLeadTransactionSend));
-                                if (response.toLowerCase().trim() ==
-                                    'success') {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/summery');
-                                } else {
-                                  setState(
-                                    () {
-                                      isLoad = true;
-                                    },
-                                  );
-                                  print(response);
-                                  Fluttertoast.showToast(
-                                      msg: response,
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.TOP,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
+                                              //print(json.encode(newLeadTransactionSend));
+                                              if (response
+                                                      .toLowerCase()
+                                                      .trim() ==
+                                                  'success') {
+                                                Navigator.of(context)
+                                                    .pushReplacementNamed(
+                                                        '/summery');
+                                              } else {
+                                                setState(
+                                                  () {
+                                                    isLoad = true;
+                                                  },
+                                                );
+                                                print(response);
+                                                Fluttertoast.showToast(
+                                                    msg: response,
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity: ToastGravity.TOP,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor: Colors.red,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0);
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
                           }
-                        }
-                      }
-                    }
-                  },
-                  child: Container(
-                    height: 40.0,
-                    width: 150.0,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.lightBlueAccent,
-                      color: Colors.blue[800],
-                      elevation: 7.0,
-                      child: Center(
-                        child: Text(
-                          "Save",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                        },
+                        child: Container(
+                          height: 40.0,
+                          width: 150.0,
+                          child: Material(
+                            borderRadius: BorderRadius.circular(20.0),
+                            shadowColor: Colors.lightBlueAccent,
+                            color: Colors.blue[800],
+                            elevation: 7.0,
+                            child: Center(
+                              child: Text(
+                                "Save",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                  SizedBox(height: 100.0),
+                ],
               ),
+            )
+          : Center(
+              child: CircularProgressIndicator(),
             ),
-            SizedBox(height: 100.0),
-          ],
-        ),
-      ),
     );
   }
 }

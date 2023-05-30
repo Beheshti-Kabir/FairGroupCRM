@@ -93,7 +93,7 @@ class _SearchDateLeadState extends State<SearchDateLead> {
 
     String localURL = Constants.globalURL;
     response = await http.post(Uri.parse(localURL + '/getSummary'),
-        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getSummary'),
+        //Uri.parse('http://fairbook.fairgroupbd.com/leadInfoApi/getSummary'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'

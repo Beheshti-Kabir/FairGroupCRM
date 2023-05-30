@@ -250,8 +250,8 @@ class _NewLeadState extends State<NewLeadNew> {
   final _outletController = TextEditingController();
   late final _professionController = TextEditingController();
   late final _paymentMethodController = TextEditingController();
-  late final _leadProspectController = TextEditingController();
 
+  String _leadProspectController = '';
   String leadNo = '';
   String customerContact = '';
   String customerName = '';
@@ -1150,67 +1150,66 @@ class _NewLeadState extends State<NewLeadNew> {
                             ],
                           )),
 
-                      Container(
-                          padding: EdgeInsets.only(
-                              top: 15.0, left: 20.0, right: 20.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Enquiry Step Type*",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Row(
-                                // ignore: pre
-                                //fer_const_literals_to_create_immutables
-                                children: <Widget>[
-                                  DropdownButton<String>(
-                                    //isExpanded: true,
-                                    value: _leadProspectController.text,
-                                    icon: const Icon(Icons.arrow_downward),
-                                    iconSize: icnSize,
-                                    elevation: 15,
-                                    style: const TextStyle(color: Colors.blue),
-                                    underline: Container(
-                                      height: 2,
-                                      color: dropColor,
-                                    ),
-                                    onChanged: (String? newValue_prospectType) {
-                                      setState(() {
-                                        _leadProspectController.text =
-                                            newValue_prospectType!;
-                                        // _cancelReasonController.text = '';
-                                        // _lostToController.text = '';
-                                        //print(_stepController.text.toString());
-                                      });
-                                      // setState(() {});
-                                    },
-                                    items: leadProspectTypeList
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              //fontWeight: FontWeight.bold,
-                                              fontSize: 16),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                  // SizedBox(
-                                  //   width: 10.0,
-                                  // ),
-                                ],
-                              ),
-                            ],
-                          )),
-
+                      // Container(
+                      //     padding: EdgeInsets.only(
+                      //         top: 15.0, left: 20.0, right: 20.0),
+                      //     child: Column(
+                      //       mainAxisAlignment: MainAxisAlignment.start,
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         Text("Enquiry Step Type*",
+                      //             style: TextStyle(
+                      //               fontSize: 17,
+                      //               color: Colors.grey,
+                      //               fontWeight: FontWeight.bold,
+                      //             )),
+                      //         Row(
+                      //           // ignore: pre
+                      //           //fer_const_literals_to_create_immutables
+                      //           children: <Widget>[
+                      //             DropdownButton<String>(
+                      //               //isExpanded: true,
+                      //               value: _leadProspectController.text,
+                      //               icon: const Icon(Icons.arrow_downward),
+                      //               iconSize: icnSize,
+                      //               elevation: 15,
+                      //               style: const TextStyle(color: Colors.blue),
+                      //               underline: Container(
+                      //                 height: 2,
+                      //                 color: dropColor,
+                      //               ),
+                      //               onChanged: (String? newValue_prospectType) {
+                      //                 setState(() {
+                      //                   _leadProspectController.text =
+                      //                       newValue_prospectType!;
+                      //                   // _cancelReasonController.text = '';
+                      //                   // _lostToController.text = '';
+                      //                   //print(_stepController.text.toString());
+                      //                 });
+                      //                 // setState(() {});
+                      //               },
+                      //               items: leadProspectTypeList
+                      //                   .map<DropdownMenuItem<String>>(
+                      //                       (String value) {
+                      //                 return DropdownMenuItem<String>(
+                      //                   value: value,
+                      //                   child: Text(
+                      //                     value,
+                      //                     style: TextStyle(
+                      //                         color: Colors.grey,
+                      //                         //fontWeight: FontWeight.bold,
+                      //                         fontSize: 16),
+                      //                   ),
+                      //                 );
+                      //               }).toList(),
+                      //             ),
+                      //             // SizedBox(
+                      //             //   width: 10.0,
+                      //             // ),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     )),
                       // Container(
                       //   padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                       //   child: Column(
@@ -1268,6 +1267,7 @@ class _NewLeadState extends State<NewLeadNew> {
                       //     ],
                       //   ),
                       // ),
+
                       Container(
                         padding:
                             EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
@@ -1691,9 +1691,9 @@ class _NewLeadState extends State<NewLeadNew> {
                                         textColor: Colors.white,
                                         fontSize: 16.0);
                                   } else {
-                                    if (_leadProspectController.text == '') {
+                                    if (_salesPersonController == '') {
                                       Fluttertoast.showToast(
-                                          msg: "Lead Prospect Type Missing...",
+                                          msg: "Sales Person Missing",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.TOP,
                                           timeInSecForIosWeb: 1,
@@ -1701,9 +1701,9 @@ class _NewLeadState extends State<NewLeadNew> {
                                           textColor: Colors.white,
                                           fontSize: 16.0);
                                     } else {
-                                      if (_salesPersonController == '') {
+                                      if (_bsoController == '') {
                                         Fluttertoast.showToast(
-                                            msg: "Sales Person Missing",
+                                            msg: "BSO Type Missing",
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.TOP,
                                             timeInSecForIosWeb: 1,
@@ -1711,21 +1711,98 @@ class _NewLeadState extends State<NewLeadNew> {
                                             textColor: Colors.white,
                                             fontSize: 16.0);
                                       } else {
-                                        if (_bsoController == '') {
-                                          Fluttertoast.showToast(
-                                              msg: "BSO Type Missing",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.TOP,
-                                              timeInSecForIosWeb: 1,
-                                              backgroundColor: Colors.red,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0);
-                                        } else {
-                                          if (isLoad) {
-                                            bool isValid = formValidator();
-                                            if (isValid) {
+                                        if (isLoad) {
+                                          bool isValid = formValidator();
+                                          if (isValid) {
+                                            Fluttertoast.showToast(
+                                                msg: "Saving..",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.TOP,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
+
+                                            setState(() {
+                                              isLoad = false;
+                                            });
+                                            // leadNo = _leadNoController.text;
+                                            // customerContact = _customerContactController.text;
+                                            // customerName = _customerNameController.text;
+                                            // customerAddress = _customerAddressController.text;
+                                            // customerEmail = _customerEmailController.text;
+                                            // companyName = _companyNameController.text;
+                                            // website = _websiteController.text;
+                                            // projectType = _projectTypeController.text;
+                                            // projectDescription = _projectDescriptionController.text;
+                                            // budget = _budgetController.text;
+                                            // remark = _remarkController.text;
+                                            List<String>
+                                                salesPersonControllerMiddle =
+                                                _salesPersonController
+                                                    .split(' ');
+                                            _leadProspectController =
+                                                'IN-PROGRESS';
+                                            String _salesPersonControllerFinal =
+                                                salesPersonControllerMiddle[0];
+                                            // List<String> leadSourceControllerMiddle =
+                                            //     _leadNoController.text.split('& Code:');
+                                            // String _leadSourceControllerFinal =
+                                            //     leadSourceControllerMiddle[0];
+                                            var new_lead_values = New_lead_json(
+                                                bsoType: _bsoController,
+                                                leadCategory:
+                                                    _leadCategoryController,
+                                                profession:
+                                                    _professionController.text,
+                                                customerName:
+                                                    _customerNameController
+                                                        .text,
+                                                customerContact:
+                                                    _customerContactController
+                                                        .text,
+                                                customerAddress:
+                                                    _customerAddressController
+                                                        .text,
+                                                customerEmail:
+                                                    _customerEmailController
+                                                        .text,
+                                                customerDOB:
+                                                    customerDOB.toString(),
+                                                companyName:
+                                                    _companyNameController.text,
+                                                longitude: long,
+                                                lattitude: lat,
+                                                userID: salesManID,
+                                                leadSource:
+                                                    _leadNoController.text,
+                                                leadProspectType:
+                                                    _leadProspectController,
+                                                remark: _remarkController.text,
+                                                nextFollowUpDate:
+                                                    nextFollowUpDate,
+                                                salesPerson:
+                                                    _salesPersonControllerFinal,
+                                                paymentMethod:
+                                                    _paymentMethodController
+                                                        .text,
+                                                itemDetails: detailsTable);
+                                            var response = await createAlbum(
+                                                new_lead_values);
+
+                                            if (response.toLowerCase().trim() ==
+                                                'success') {
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                      '/summery');
+                                            } else {
+                                              setState(
+                                                () {
+                                                  isLoad = true;
+                                                },
+                                              );
                                               Fluttertoast.showToast(
-                                                  msg: "Saving..",
+                                                  msg: response,
                                                   toastLength:
                                                       Toast.LENGTH_SHORT,
                                                   gravity: ToastGravity.TOP,
@@ -1733,110 +1810,15 @@ class _NewLeadState extends State<NewLeadNew> {
                                                   backgroundColor: Colors.red,
                                                   textColor: Colors.white,
                                                   fontSize: 16.0);
-
-                                              setState(() {
-                                                isLoad = false;
-                                              });
-                                              // leadNo = _leadNoController.text;
-                                              // customerContact = _customerContactController.text;
-                                              // customerName = _customerNameController.text;
-                                              // customerAddress = _customerAddressController.text;
-                                              // customerEmail = _customerEmailController.text;
-                                              // companyName = _companyNameController.text;
-                                              // website = _websiteController.text;
-                                              // projectType = _projectTypeController.text;
-                                              // projectDescription = _projectDescriptionController.text;
-                                              // budget = _budgetController.text;
-                                              // remark = _remarkController.text;
-                                              List<String>
-                                                  salesPersonControllerMiddle =
-                                                  _salesPersonController
-                                                      .split(' ');
-                                              String
-                                                  _salesPersonControllerFinal =
-                                                  salesPersonControllerMiddle[
-                                                      0];
-                                              // List<String> leadSourceControllerMiddle =
-                                              //     _leadNoController.text.split('& Code:');
-                                              // String _leadSourceControllerFinal =
-                                              //     leadSourceControllerMiddle[0];
-                                              var new_lead_values = New_lead_json(
-                                                  bsoType: _bsoController,
-                                                  leadCategory:
-                                                      _leadCategoryController,
-                                                  profession:
-                                                      _professionController
-                                                          .text,
-                                                  customerName:
-                                                      _customerNameController
-                                                          .text,
-                                                  customerContact:
-                                                      _customerContactController
-                                                          .text,
-                                                  customerAddress:
-                                                      _customerAddressController
-                                                          .text,
-                                                  customerEmail:
-                                                      _customerEmailController
-                                                          .text,
-                                                  customerDOB:
-                                                      customerDOB.toString(),
-                                                  companyName:
-                                                      _companyNameController
-                                                          .text,
-                                                  longitude: long,
-                                                  lattitude: lat,
-                                                  userID: salesManID,
-                                                  leadSource:
-                                                      _leadNoController.text,
-                                                  leadProspectType:
-                                                      _leadProspectController
-                                                          .text,
-                                                  remark:
-                                                      _remarkController.text,
-                                                  nextFollowUpDate:
-                                                      nextFollowUpDate,
-                                                  salesPerson:
-                                                      _salesPersonControllerFinal,
-                                                  paymentMethod:
-                                                      _paymentMethodController
-                                                          .text,
-                                                  itemDetails: detailsTable);
-                                              var response = await createAlbum(
-                                                  new_lead_values);
-
-                                              if (response
-                                                      .toLowerCase()
-                                                      .trim() ==
-                                                  'success') {
-                                                Navigator.of(context)
-                                                    .pushReplacementNamed(
-                                                        '/summery');
-                                              } else {
-                                                setState(
-                                                  () {
-                                                    isLoad = true;
-                                                  },
-                                                );
-                                                Fluttertoast.showToast(
-                                                    msg: response,
-                                                    toastLength:
-                                                        Toast.LENGTH_SHORT,
-                                                    gravity: ToastGravity.TOP,
-                                                    timeInSecForIosWeb: 1,
-                                                    backgroundColor: Colors.red,
-                                                    textColor: Colors.white,
-                                                    fontSize: 16.0);
-                                              }
-
-                                              print('MyResponse=>$response');
                                             }
 
-                                            // var map = json.decode(res);
-                                            // if (map["result"].toLowerCase().trim() == 'success') {
-                                            //   Navigator.of(context).pushNamed('/summery');
-                                            //}
+                                            print('MyResponse=>$response');
                                           }
+
+                                          // var map = json.decode(res);
+                                          // if (map["result"].toLowerCase().trim() == 'success') {
+                                          //   Navigator.of(context).pushNamed('/summery');
+                                          //}
                                         }
                                       }
                                     }
