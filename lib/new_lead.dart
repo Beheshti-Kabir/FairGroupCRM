@@ -1,97 +1,98 @@
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:ui';
+// import 'dart:ffi';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+////import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:login_prac/constants.dart';
-import 'package:login_prac/itemdetails.dart';
-import 'package:login_prac/todo.dart';
+// import 'package:login_prac/itemdetails.dart';
+// import 'package:login_prac/todo.dart';
 import 'package:login_prac/utils/sesssion_manager.dart';
 
 import 'new_lead_json.dart';
 
-class CustomPicker extends CommonPickerModel {
-  String digits(int value, int length) {
-    return '$value'.padLeft(length, "0");
-  }
+// class CustomPicker extends CommonPickerModel {
+//   String digits(int value, int length) {
+//     return '$value'.padLeft(length, "0");
+//   }
 
-  CustomPicker({DateTime? currentTime, LocaleType? locale})
-      : super(locale: locale) {
-    this.currentTime = currentTime ?? DateTime.now();
-    this.setLeftIndex(this.currentTime.hour);
-    this.setMiddleIndex(this.currentTime.minute);
-    this.setRightIndex(this.currentTime.second);
-  }
+//   CustomPicker({DateTime? currentTime, LocaleType? locale})
+//       : super(locale: locale) {
+//     this.currentTime = currentTime ?? DateTime.now();
+//     setLeftIndex(this.currentTime.hour);
+//     setMiddleIndex(this.currentTime.minute);
+//     setRightIndex(this.currentTime.second);
+//   }
 
-  @override
-  String? leftStringAtIndex(int index) {
-    if (index >= 0 && index < 24) {
-      return this.digits(index, 2);
-    } else {
-      return null;
-    }
-  }
+//   @override
+//   String? leftStringAtIndex(int index) {
+//     if (index >= 0 && index < 24) {
+//       return digits(index, 2);
+//     } else {
+//       return null;
+//     }
+//   }
 
-  @override
-  String? middleStringAtIndex(int index) {
-    if (index >= 0 && index < 60) {
-      return this.digits(index, 2);
-    } else {
-      return null;
-    }
-  }
+//   @override
+//   String? middleStringAtIndex(int index) {
+//     if (index >= 0 && index < 60) {
+//       return digits(index, 2);
+//     } else {
+//       return null;
+//     }
+//   }
 
-  @override
-  String? rightStringAtIndex(int index) {
-    if (index >= 0 && index < 60) {
-      return this.digits(index, 2);
-    } else {
-      return null;
-    }
-  }
+//   @override
+//   String? rightStringAtIndex(int index) {
+//     if (index >= 0 && index < 60) {
+//       return digits(index, 2);
+//     } else {
+//       return null;
+//     }
+//   }
 
-  @override
-  String leftDivider() {
-    return "|";
-  }
+//   @override
+//   String leftDivider() {
+//     return "|";
+//   }
 
-  @override
-  String rightDivider() {
-    return "|";
-  }
+//   @override
+//   String rightDivider() {
+//     return "|";
+//   }
 
-  @override
-  List<int> layoutProportions() {
-    return [1, 2, 1];
-  }
+//   @override
+//   List<int> layoutProportions() {
+//     return [1, 2, 1];
+//   }
 
-  @override
-  DateTime finalTime() {
-    return currentTime.isUtc
-        ? DateTime.utc(
-            currentTime.year,
-            currentTime.month,
-            currentTime.day,
-            this.currentLeftIndex(),
-            this.currentMiddleIndex(),
-            this.currentRightIndex())
-        : DateTime(
-            currentTime.year,
-            currentTime.month,
-            currentTime.day,
-            this.currentLeftIndex(),
-            this.currentMiddleIndex(),
-            this.currentRightIndex());
-  }
-}
+//   @override
+//   DateTime finalTime() {
+//     return currentTime.isUtc
+//         ? DateTime.utc(
+//             currentTime.year,
+//             currentTime.month,
+//             currentTime.day,
+//             currentLeftIndex(),
+//             currentMiddleIndex(),
+//             currentRightIndex())
+//         : DateTime(
+//             currentTime.year,
+//             currentTime.month,
+//             currentTime.day,
+//             currentLeftIndex(),
+//             currentMiddleIndex(),
+//             currentRightIndex());
+//   }
+// }
 
 class NewLead extends StatefulWidget {
+  const NewLead({Key? key}) : super(key: key);
+
   @override
   _NewLeadState createState() => _NewLeadState();
 }
@@ -111,7 +112,7 @@ class _NewLeadState extends State<NewLead> {
   getData() async {
     print("inside getData");
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getData'),
+    var response = await http.post(Uri.parse('$localURL/getData'),
         //Uri.parse('http://10.100.18.167:8090/rbd/leadInfoApi/getData'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -151,9 +152,8 @@ class _NewLeadState extends State<NewLead> {
     //     salesPersonJSON[4]['empName']);
     // print("leaving getData");
     for (var i = 0; i < salesPersonNumber; i++) {
-      String salesPersonMiddle = salesPersonJSON[i]['empCode'].toString() +
-          ' ' +
-          salesPersonJSON[i]['empName'];
+      String salesPersonMiddle =
+          '${salesPersonJSON[i]['empCode']} ' + salesPersonJSON[i]['empName'];
       sales_person.insert(0, salesPersonMiddle);
     }
     for (var j = 0; j < leadSourceNumber; j++) {
@@ -187,13 +187,13 @@ class _NewLeadState extends State<NewLead> {
   final _customerAddressController = TextEditingController();
   final _customerEmailController = TextEditingController();
   final _companyNameController = TextEditingController();
-  final _websiteController = TextEditingController();
-  final _projectTypeController = TextEditingController();
-  final _projectDescriptionController = TextEditingController();
-  final _budgetController = TextEditingController();
+  // final _websiteController = TextEditingController();
+  // final _projectTypeController = TextEditingController();
+  // final _projectDescriptionController = TextEditingController();
+  // final _budgetController = TextEditingController();
   final _remarkController = TextEditingController();
   //final _salesPersonController = TextEditingController();
-  final _outletController = TextEditingController();
+  // final _outletController = TextEditingController();
   late final _professionController = TextEditingController();
   late final _paymentMethodController = TextEditingController();
 
@@ -226,11 +226,11 @@ class _NewLeadState extends State<NewLead> {
   List<String> paymentMethodList = [''];
   List<String> leadCategoryList = ['', 'B2B', 'GRT', 'HP', 'CASH'];
 
-  String _leadSourceController = '';
+  // String _leadSourceController = '';
   String _salesPersonController = '';
   String _leadCategoryController = '';
 
-  bool _leadNoValidate = false;
+  // bool _leadNoValidate = false;
   bool _customerContactValidate = false;
   bool _customerAddressValidate = false;
   bool _customerEmailValidate = false;
@@ -240,16 +240,16 @@ class _NewLeadState extends State<NewLead> {
   bool _employIDValidate = false;
   bool isLoad = true;
 
-  Future<String> createAlbum(New_lead_json new_lead_values) async {
-    print('json value=' + new_lead_values.toJson().toString());
+  Future<String> createAlbum(New_lead_json newLeadValues) async {
+    print('json value=${newLeadValues.toJson()}');
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/saveLeadInfo'),
+    var response = await http.post(Uri.parse('$localURL/saveLeadInfo'),
         //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/saveLeadInfo'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: json.encode(new_lead_values)
+        body: json.encode(newLeadValues)
         //jsonEncode(
         //<String, dynamic>{'new_lead': json.encode(new_lead_values)})
         //   jsonEncode(<String, String>{
@@ -297,41 +297,39 @@ class _NewLeadState extends State<NewLead> {
     String salesPersonn = _salesPersonController;
 
     setState(() {
-      if (customerContact == null || customerContact.isEmpty) {
+      if (customerContact.isEmpty) {
         _customerContactValidate = true;
       } else {
         _customerContactValidate = false;
       }
-      if (salesPersonn == null || salesPersonn.isEmpty) {
+      if (salesPersonn.isEmpty) {
         _salesPersonValidate = true;
       } else {
         _salesPersonValidate = false;
       }
 
-      if (customerCompany == null || customerCompany.isEmpty) {
+      if (customerCompany.isEmpty) {
         _customerComapnyValidate = true;
       } else {
         _customerEmailValidate = false;
       }
-      if (customerAddress == null || customerAddress.isEmpty) {
+      if (customerAddress.isEmpty) {
         _customerAddressValidate = true;
       } else {
         _customerAddressValidate = false;
       }
-      if (customerName == null || customerName.isEmpty) {
+      if (customerName.isEmpty) {
         _customerNameValidate = true;
       } else {
         _customerNameValidate = false;
       }
-      if (customerEmail == null || customerEmail.isEmpty) {
+      if (customerEmail.isEmpty) {
         _customerEmailValidate = true;
       } else {
         _customerEmailValidate = false;
       }
 
-      if (Constants.employeeId == '' ||
-          Constants.employeeId == null ||
-          Constants.employeeId.isEmpty) {
+      if (Constants.employeeId == '' || Constants.employeeId.isEmpty) {
         _employIDValidate = true;
       } else {
         _employIDValidate = false;
@@ -357,7 +355,7 @@ class _NewLeadState extends State<NewLead> {
     return Scaffold(
       //  resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('New Lead'),
+        title: const Text('New Lead'),
       ),
       body: SingleChildScrollView(
         child: (Column(
@@ -384,7 +382,7 @@ class _NewLeadState extends State<NewLead> {
             //     ],
             //   ),
             // ),
-            SizedBox(
+            const SizedBox(
               height: 15.0,
             ),
             // Container(
@@ -427,7 +425,7 @@ class _NewLeadState extends State<NewLead> {
             // //   height: 10.0,
             // // ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -438,9 +436,9 @@ class _NewLeadState extends State<NewLead> {
                           ? 'Value Can\'t Be Empty'
                           : null,
                       labelText: 'Customer Contact*',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
@@ -451,7 +449,7 @@ class _NewLeadState extends State<NewLead> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -462,9 +460,9 @@ class _NewLeadState extends State<NewLead> {
                           ? 'Value Can\'t Be Empty'
                           : null,
                       labelText: 'Customer Name*',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
@@ -474,7 +472,7 @@ class _NewLeadState extends State<NewLead> {
             ),
 
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -485,9 +483,9 @@ class _NewLeadState extends State<NewLead> {
                           ? 'Value Can\'t Be Empty'
                           : null,
                       labelText: 'Customer Email*',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
@@ -496,7 +494,7 @@ class _NewLeadState extends State<NewLead> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -507,9 +505,9 @@ class _NewLeadState extends State<NewLead> {
                           ? 'Value Can\'t Be Empty'
                           : null,
                       labelText: 'Customer Address*',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
@@ -517,50 +515,46 @@ class _NewLeadState extends State<NewLead> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15.0,
             ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
               child: TextButton(
                 onPressed: () {
-                  DatePicker.showDatePicker(context, showTitleActions: true,
-                      //     onChanged: (date) {
-                      //   print('change $date in time zone ' +
-                      //       date.timeZoneOffset.inHours.toString());
-                      // },
-                      onConfirm: (date) {
-                    print('confirm $date');
-                    customerDOB = date.toString();
-                    var customerDOB_date_day = date.day.toInt() < 10
-                        ? '0' + date.day.toString()
-                        : date.day.toString();
-                    var customerDOB_date_month = date.month.toInt() < 10
-                        ? '0' + date.month.toString()
-                        : date.month.toString();
-                    setState(() {
-                      customerDOB = date.year.toString() +
-                          '-' +
-                          customerDOB_date_month.toString() +
-                          '-' +
-                          customerDOB_date_day.toString();
-                    });
-                  }, currentTime: DateTime.now());
+                  // DatePicker.showDatePicker(context, showTitleActions: true,
+                  //     //     onChanged: (date) {
+                  //     //   print('change $date in time zone ' +
+                  //     //       date.timeZoneOffset.inHours.toString());
+                  //     // },
+                  //     onConfirm: (date) {
+                  //   print('confirm $date');
+                  //   customerDOB = date.toString();
+                  //   var customerdobDateDay = date.day.toInt() < 10
+                  //       ? '0${date.day}'
+                  //       : date.day.toString();
+                  //   var customerdobDateMonth = date.month.toInt() < 10
+                  //       ? '0${date.month}'
+                  //       : date.month.toString();
+                  //   setState(() {
+                  //     customerDOB = '${date.year}-$customerdobDateMonth-$customerdobDateDay';
+                  //   });
+                  // }, currentTime: DateTime.now());
                 },
                 child: Text(
                   "Customer DOB: $customerDOB",
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 17,
                       color: Colors.grey,
                       fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -571,9 +565,9 @@ class _NewLeadState extends State<NewLead> {
                           ? 'Value Can\'t Be Empty'
                           : null,
                       labelText: 'Company Name*',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
@@ -736,12 +730,13 @@ class _NewLeadState extends State<NewLead> {
             //       ],
             //     )),
             Container(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                padding:
+                    const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Lead Category",
+                    const Text("Lead Category",
                         style: TextStyle(
                           fontSize: 17,
                           color: Colors.grey,
@@ -761,9 +756,9 @@ class _NewLeadState extends State<NewLead> {
                             height: 2,
                             color: dropColor,
                           ),
-                          onChanged: (String? newValue_sales) {
+                          onChanged: (String? newvalueSales) {
                             setState(() {
-                              _leadCategoryController = newValue_sales!;
+                              _leadCategoryController = newvalueSales!;
                               // List<String> salesPersonControllerMiddle =
                               //     _salesPersonController.split(' ');
                               // _salesPersonController =
@@ -778,7 +773,7 @@ class _NewLeadState extends State<NewLead> {
                             );
                           }).toList(),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10.0,
                         ),
                       ],
@@ -787,7 +782,8 @@ class _NewLeadState extends State<NewLead> {
                 )),
 
             Container(
-                padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+                padding:
+                    const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -802,30 +798,31 @@ class _NewLeadState extends State<NewLead> {
                           title: Text(item,
                               overflow: TextOverflow.ellipsis, maxLines: 2)),
                       onSuggestionSelected: (String val) {
-                        this._professionController.text = val;
+                        _professionController.text = val;
                       },
                       getImmediateSuggestions: true,
                       hideSuggestionsOnKeyboardHide: false,
                       hideOnEmpty: false,
-                      noItemsFoundBuilder: (context) => Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      noItemsFoundBuilder: (context) => const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Text('No Suggestion'),
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             hintText: 'Search',
                             labelText: 'Profession*',
                             labelStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),
-                        controller: this._professionController,
+                        controller: _professionController,
                       ),
                     )
                   ],
                 )),
 
             Container(
-                padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+                padding:
+                    const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -840,23 +837,23 @@ class _NewLeadState extends State<NewLead> {
                           title: Text(item,
                               overflow: TextOverflow.ellipsis, maxLines: 2)),
                       onSuggestionSelected: (String val) {
-                        this._paymentMethodController.text = val;
+                        _paymentMethodController.text = val;
                       },
                       getImmediateSuggestions: true,
                       hideSuggestionsOnKeyboardHide: false,
                       hideOnEmpty: false,
-                      noItemsFoundBuilder: (context) => Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      noItemsFoundBuilder: (context) => const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Text('No Suggestion'),
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             hintText: 'Search',
                             labelText: 'Payment Method',
                             labelStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),
-                        controller: this._paymentMethodController,
+                        controller: _paymentMethodController,
                       ),
                     )
                   ],
@@ -920,13 +917,13 @@ class _NewLeadState extends State<NewLead> {
             //   ),
             // ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
                   TextField(
                     controller: _remarkController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Remarks',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
@@ -957,10 +954,11 @@ class _NewLeadState extends State<NewLead> {
             //     ],
             //   ),
             // ),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
 
             Container(
-                padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+                padding:
+                    const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -975,37 +973,37 @@ class _NewLeadState extends State<NewLead> {
                           title: Text(item,
                               overflow: TextOverflow.ellipsis, maxLines: 2)),
                       onSuggestionSelected: (String val) {
-                        this._leadNoController.text = val;
+                        _leadNoController.text = val;
                       },
                       getImmediateSuggestions: true,
                       hideSuggestionsOnKeyboardHide: false,
                       hideOnEmpty: false,
-                      noItemsFoundBuilder: (context) => Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      noItemsFoundBuilder: (context) => const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Text('No Suggestion'),
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             labelText: 'Lead Source*',
                             labelStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),
-                        controller: this._leadNoController,
+                        controller: _leadNoController,
                       ),
                     )
                   ],
                 )),
-            SizedBox(
+            const SizedBox(
               height: 15.0,
             ),
 
             Container(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Sales Person",
+                    const Text("Sales Person",
                         style: TextStyle(
                           fontSize: 17,
                           color: Colors.grey,
@@ -1025,9 +1023,9 @@ class _NewLeadState extends State<NewLead> {
                             height: 2,
                             color: dropColor,
                           ),
-                          onChanged: (String? newValue_sales) {
+                          onChanged: (String? newvalueSales) {
                             setState(() {
-                              _salesPersonController = newValue_sales!;
+                              _salesPersonController = newvalueSales!;
                               // List<String> salesPersonControllerMiddle =
                               //     _salesPersonController.split(' ');
                               // _salesPersonController =
@@ -1042,7 +1040,7 @@ class _NewLeadState extends State<NewLead> {
                             );
                           }).toList(),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10.0,
                         ),
                       ],
@@ -1084,39 +1082,35 @@ class _NewLeadState extends State<NewLead> {
                     // )
                   ],
                 )),
-            SizedBox(
+            const SizedBox(
               height: 15.0,
             ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 15.0, right: 20.0),
               child: TextButton(
                 onPressed: () {
-                  DatePicker.showDatePicker(context, showTitleActions: true,
-                      //     onChanged: (date) {
-                      //   print('change $date in time zone ' +
-                      //       date.timeZoneOffset.inHours.toString());
-                      // },
-                      onConfirm: (date) {
-                    print('confirm $date');
-                    nextFollowUpDate = date.toString();
-                    var nextFollowUpDate_date_day = date.day.toInt() < 10
-                        ? '0' + date.day.toString()
-                        : date.day.toString();
-                    var nextFollowUpDate_date_month = date.month.toInt() < 10
-                        ? '0' + date.month.toString()
-                        : date.month.toString();
-                    setState(() {
-                      nextFollowUpDate = date.year.toString() +
-                          '-' +
-                          nextFollowUpDate_date_month.toString() +
-                          '-' +
-                          nextFollowUpDate_date_day.toString();
-                    });
-                  }, currentTime: DateTime.now());
+                  // DatePicker.showDatePicker(context, showTitleActions: true,
+                  //     //     onChanged: (date) {
+                  //     //   print('change $date in time zone ' +
+                  //     //       date.timeZoneOffset.inHours.toString());
+                  //     // },
+                  //     onConfirm: (date) {
+                  //   print('confirm $date');
+                  //   nextFollowUpDate = date.toString();
+                  //   var nextfollowupdateDateDay = date.day.toInt() < 10
+                  //       ? '0${date.day}'
+                  //       : date.day.toString();
+                  //   var nextfollowupdateDateMonth = date.month.toInt() < 10
+                  //       ? '0${date.month}'
+                  //       : date.month.toString();
+                  //   setState(() {
+                  //     nextFollowUpDate = '${date.year}-$nextfollowupdateDateMonth-$nextfollowupdateDateDay';
+                  //   });
+                  // }, currentTime: DateTime.now());
                 },
                 child: Text(
                   "Next Follow-Up Date*: $nextFollowUpDate",
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 17,
                       color: Colors.grey,
                       fontWeight: FontWeight.bold),
@@ -1192,10 +1186,10 @@ class _NewLeadState extends State<NewLead> {
             //         )
             //       ],
             //     )),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             // add item details
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: GestureDetector(
                 onTap: () async {
                   var response = await Navigator.pushNamed(
@@ -1208,7 +1202,7 @@ class _NewLeadState extends State<NewLead> {
                     detailsTable = response as List<Todo>;
                   });
                 },
-                child: Container(
+                child: SizedBox(
                   height: 40.0,
                   width: 90.0,
                   child: Material(
@@ -1216,7 +1210,7 @@ class _NewLeadState extends State<NewLead> {
                     shadowColor: Colors.lightBlueAccent,
                     color: Colors.blue[800],
                     elevation: 7.0,
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Add Item Details",
                         style: TextStyle(color: Colors.white, fontSize: 10.0),
@@ -1226,17 +1220,18 @@ class _NewLeadState extends State<NewLead> {
                 ),
               ),
             ),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
             Container(
-                padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+                padding:
+                    const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                 child: Text('Items added: ${detailsTable.length}')),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
             // save
             Container(
               child: Center(
                 child: GestureDetector(
                   onTap: () async {
-                    if (detailsTable.length == 0) {
+                    if (detailsTable.isEmpty) {
                       Fluttertoast.showToast(
                           msg: "Product Missing!!\nADD ITEM DETAILS",
                           toastLength: Toast.LENGTH_SHORT,
@@ -1295,13 +1290,13 @@ class _NewLeadState extends State<NewLead> {
                               // remark = _remarkController.text;
                               List<String> salesPersonControllerMiddle =
                                   _salesPersonController.split(' ');
-                              String _salesPersonControllerFinal =
+                              String salesPersonControllerFinal =
                                   salesPersonControllerMiddle[0];
                               // List<String> leadSourceControllerMiddle =
                               //     _leadNoController.text.split('& Code:');
                               // String _leadSourceControllerFinal =
                               //     leadSourceControllerMiddle[0];
-                              var new_lead_values = New_lead_json(
+                              var newLeadValues = New_lead_json(
                                   leadCategory: _leadCategoryController,
                                   profession: _professionController.text,
                                   customerName: _customerNameController.text,
@@ -1318,10 +1313,10 @@ class _NewLeadState extends State<NewLead> {
                                   leadSource: _leadNoController.text,
                                   remark: _remarkController.text,
                                   nextFollowUpDate: nextFollowUpDate,
-                                  salesPerson: _salesPersonControllerFinal,
+                                  salesPerson: salesPersonControllerFinal,
                                   paymentMethod: _paymentMethodController.text,
                                   itemDetails: detailsTable);
-                              var response = await createAlbum(new_lead_values);
+                              var response = await createAlbum(newLeadValues);
 
                               if (response.toLowerCase().trim() == 'success') {
                                 Navigator.of(context)
@@ -1354,7 +1349,7 @@ class _NewLeadState extends State<NewLead> {
                       }
                     }
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 40.0,
                     width: 150.0,
                     child: Material(
@@ -1362,7 +1357,7 @@ class _NewLeadState extends State<NewLead> {
                       shadowColor: Colors.lightBlueAccent,
                       color: Colors.blue[800],
                       elevation: 7.0,
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Save",
                           style: TextStyle(
@@ -1374,7 +1369,7 @@ class _NewLeadState extends State<NewLead> {
                 ),
               ),
             ),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
           ],
         )),
       ),

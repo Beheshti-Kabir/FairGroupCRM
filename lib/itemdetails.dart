@@ -1,13 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:login_prac/constants.dart';
-
-import 'package:login_prac/todo.dart';
 
 import 'new_lead_json.dart';
 
@@ -53,7 +49,6 @@ class _ItemDetailsState extends State<ItemDetails> {
 
   final _totalPriceController = TextEditingController();
   final _prospectController = TextEditingController();
-  final _productListController = '';
   var count = 0;
 
   String productModel = '';
@@ -70,7 +65,6 @@ class _ItemDetailsState extends State<ItemDetails> {
   late Todo detailsModel;
 
   bool _quantityValidate = false;
-  bool _productNameValidate = false;
 
   void clearController() {
     _productNameController.clear();
@@ -109,7 +103,6 @@ class _ItemDetailsState extends State<ItemDetails> {
   }
 
   formValidator() {
-    String productNameValidation = _productNameController.text;
     String quantityValidation = _quantityController.text;
     setState(() {
       // if (productNameValidation == null || productNameValidation.isEmpty) {
@@ -117,7 +110,7 @@ class _ItemDetailsState extends State<ItemDetails> {
       // } else {
       //   _productNameValidate = false;
       // }
-      if (quantityValidation == null || quantityValidation.isEmpty) {
+      if (quantityValidation.isEmpty) {
         _quantityValidate = true;
       } else {
         _quantityValidate = false;
@@ -130,14 +123,13 @@ class _ItemDetailsState extends State<ItemDetails> {
     } else {
       return false;
     }
-    ;
   }
 
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments as List<Todo>;
     detailsTable = arguments;
-    print('value:' + arguments.length.toString());
+    print('value:${arguments.length}');
     setState(() {
       //count = arguments;
     });
@@ -223,7 +215,8 @@ class _ItemDetailsState extends State<ItemDetails> {
             //     )),
             //
             Container(
-              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+              padding:
+                  const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
               child: Row(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -242,8 +235,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                   // )
                   Expanded(
                     child: Text(
-                      "Product Name: " + _productNameController.text,
-                      style: TextStyle(color: Colors.grey, fontSize: 18.0),
+                      "Product Name: ${_productNameController.text}",
+                      style:
+                          const TextStyle(color: Colors.grey, fontSize: 18.0),
                     ),
                   ),
                   IconButton(
@@ -266,7 +260,8 @@ class _ItemDetailsState extends State<ItemDetails> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+              padding:
+                  const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
               child: Row(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -285,8 +280,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                   // )
                   Expanded(
                     child: Text(
-                      "Product Model: " + _productModelController.text,
-                      style: TextStyle(color: Colors.grey, fontSize: 18.0),
+                      "Product Model: ${_productModelController.text}",
+                      style:
+                          const TextStyle(color: Colors.grey, fontSize: 18.0),
                     ),
                   ),
                 ],
@@ -294,8 +290,8 @@ class _ItemDetailsState extends State<ItemDetails> {
             ),
             (Constants.companyCode == '2000')
                 ? Container(
-                    padding:
-                        EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                    padding: const EdgeInsets.only(
+                        top: 20.0, left: 20.0, right: 20.0),
                     child: Row(
                       // ignore: prefer_const_literals_to_create_immutables
                       children: <Widget>[
@@ -314,9 +310,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                         // )
                         Expanded(
                           child: Text(
-                            "Product Stock: " + _stockController.text,
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 18.0),
+                            "Product Stock: ${_stockController.text}",
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 18.0),
                           ),
                         ),
                       ],
@@ -380,13 +376,13 @@ class _ItemDetailsState extends State<ItemDetails> {
             //   height: 15.0,
             // ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
                   TextField(
                     controller: _remarksController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Remarks',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
@@ -399,7 +395,7 @@ class _ItemDetailsState extends State<ItemDetails> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -409,9 +405,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                       errorText:
                           _quantityValidate ? 'Value Can\'t Be Empty' : null,
                       labelText: 'Quantity*',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
@@ -440,14 +436,14 @@ class _ItemDetailsState extends State<ItemDetails> {
             //   ),
             // ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
                   TextField(
                     controller: _unitPriceController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Unit Price',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
@@ -460,12 +456,13 @@ class _ItemDetailsState extends State<ItemDetails> {
               ),
             ),
             Container(
-                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                padding:
+                    const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Enquiry Step Type*",
+                    const Text("Enquiry Step Type*",
                         style: TextStyle(
                           fontSize: 17,
                           color: Colors.grey,
@@ -486,9 +483,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                             height: 2,
                             color: dropColor,
                           ),
-                          onChanged: (String? newValue_prospectType) {
+                          onChanged: (String? newvalueProspecttype) {
                             setState(() {
-                              _prospectController.text = newValue_prospectType!;
+                              _prospectController.text = newvalueProspecttype!;
                               // _cancelReasonController.text = '';
                               // _lostToController.text = '';
                               //print(_stepController.text.toString());
@@ -501,7 +498,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                               value: value,
                               child: Text(
                                 value,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.grey,
                                     //fontWeight: FontWeight.bold,
                                     fontSize: 16),
@@ -535,17 +532,17 @@ class _ItemDetailsState extends State<ItemDetails> {
             //     ],
             //   ),
             // ),
-            SizedBox(
+            const SizedBox(
               height: 15.0,
             ),
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+                  padding:
+                      const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      if (_productNameController.text.toString() == null ||
-                          _productNameController.text.toString().isEmpty) {
+                      if (_productNameController.text.toString().isEmpty) {
                         Fluttertoast.showToast(
                             msg: "Product Name Missing..",
                             toastLength: Toast.LENGTH_SHORT,
@@ -555,8 +552,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                             textColor: Colors.white,
                             fontSize: 16.0);
                       } else {
-                        if (_prospectController.text.toString() == null ||
-                            _prospectController.text.toString().isEmpty) {
+                        if (_prospectController.text.toString().isEmpty) {
                           Fluttertoast.showToast(
                               msg: "Enquiry Stem Type Missing..",
                               toastLength: Toast.LENGTH_SHORT,
@@ -570,7 +566,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         }
                       }
                     },
-                    child: Container(
+                    child: SizedBox(
                       height: 30.0,
                       width: 100.0,
                       child: Material(
@@ -578,7 +574,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         shadowColor: Colors.lightBlueAccent,
                         color: Colors.blue[800],
                         elevation: 7.0,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Add more items",
                             style:
@@ -590,16 +586,15 @@ class _ItemDetailsState extends State<ItemDetails> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+                  padding:
+                      const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      if (_productNameController.text.toString() == null ||
-                          _productNameController.text.toString().isEmpty) {
-                        print('count:' + count.toString());
+                      if (_productNameController.text.toString().isEmpty) {
+                        print('count:$count');
                         Navigator.of(context).pop(detailsTable);
                       } else {
-                        if (_prospectController.text.toString() == null ||
-                            _prospectController.text.toString().isEmpty) {
+                        if (_prospectController.text.toString().isEmpty) {
                           Fluttertoast.showToast(
                               msg: "Enquiry Stem Type Missing..",
                               toastLength: Toast.LENGTH_SHORT,
@@ -611,11 +606,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                         } else {
                           addProduct();
                         }
-                        print('count:' + count.toString());
+                        print('count:$count');
                         Navigator.of(context).pop(detailsTable);
                       }
                     },
-                    child: Container(
+                    child: SizedBox(
                       height: 30.0,
                       width: 100.0,
                       child: Material(
@@ -623,7 +618,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         shadowColor: Colors.lightBlueAccent,
                         color: Colors.blue[800],
                         elevation: 7.0,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Done",
                             style:
@@ -636,42 +631,42 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ),
               ],
             ),
-            SizedBox(height: 25.0),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
+            const SizedBox(height: 25.0),
+            const Padding(
+              padding: EdgeInsets.all(15.0),
               child: Row(
                 children: [
                   Expanded(
+                    flex: 1,
                     child: Text(
                       'Sl No',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    flex: 1,
                   ),
                   Expanded(
+                    flex: 1,
                     child: Text(
                       'Product Name',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    flex: 1,
                   ),
                   Expanded(
+                    flex: 1,
                     child: Text(
                       "Product Model",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    flex: 1,
                   ),
                   Expanded(
+                    flex: 1,
                     child: Text(
                       'Quantity',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    flex: 1,
                   ),
 
                   // Expanded(
@@ -683,20 +678,20 @@ class _ItemDetailsState extends State<ItemDetails> {
                   //   flex: 1,
                   // ),
                   Expanded(
+                    flex: 1,
                     child: Text(
                       'Unit Price',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    flex: 1,
                   ),
                   Expanded(
+                    flex: 1,
                     child: Text(
                       'Prospect Type',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    flex: 1,
                   ),
                   // Expanded(
                   //   child: Text(
@@ -721,32 +716,32 @@ class _ItemDetailsState extends State<ItemDetails> {
                     child: Row(
                       children: [
                         Expanded(
+                          flex: 1,
                           child: Text(
                             (index + 1).toString(),
                             textAlign: TextAlign.center,
                           ),
-                          flex: 1,
                         ),
                         Expanded(
+                          flex: 1,
                           child: Text(
                             model.productName.toString(),
                             textAlign: TextAlign.center,
                           ),
-                          flex: 1,
                         ),
                         Expanded(
+                          flex: 1,
                           child: Text(
                             model.productModel.toString(),
                             textAlign: TextAlign.center,
                           ),
-                          flex: 1,
                         ),
                         Expanded(
+                          flex: 1,
                           child: Text(
                             model.quantity.toString(),
                             textAlign: TextAlign.center,
                           ),
-                          flex: 1,
                         ),
                         // Expanded(
                         //   child: Text(
@@ -756,18 +751,18 @@ class _ItemDetailsState extends State<ItemDetails> {
                         //   flex: 1,
                         // ),
                         Expanded(
+                          flex: 1,
                           child: Text(
                             model.unitPrice.toString(),
                             textAlign: TextAlign.center,
                           ),
-                          flex: 1,
                         ),
                         Expanded(
+                          flex: 1,
                           child: Text(
                             model.prospectType.toString(),
                             textAlign: TextAlign.center,
                           ),
-                          flex: 1,
                         ),
                         // Expanded(
                         //   child: Text(
@@ -804,8 +799,6 @@ class _ShowDialogState extends State<ShowDialog> {
     super.initState();
   }
 
-  bool _productValidator = false;
-
   preGetPorduct() async {
     setState(() {});
     if (_productNameSearchController.text.length > 1) {
@@ -830,7 +823,7 @@ class _ShowDialogState extends State<ShowDialog> {
     print("inside getProduct");
 
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getProductList'),
+    var response = await http.post(Uri.parse('$localURL/getProductList'),
         //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getProductList'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -843,7 +836,7 @@ class _ShowDialogState extends State<ShowDialog> {
     productListJSON = json.decode(response.body);
 
     productListNumber = productListJSON.length;
-    print('getProduct value=' + productListJSON.toString());
+    print('getProduct value=$productListJSON');
 
     // // print(salesPersonJSON[4]['empCode'].toString() +
     // //     ' ' +
@@ -887,8 +880,8 @@ class _ShowDialogState extends State<ShowDialog> {
 
     String localURL = Constants.globalURL;
     String companyCode = Constants.companyCode;
-    print('product Code ====' + companyCode.toString());
-    var response = await http.post(Uri.parse(localURL + '/getProductListStock'),
+    print('product Code ====$companyCode');
+    var response = await http.post(Uri.parse('$localURL/getProductListStock'),
         // Uri.parse(
         //     'http://10.100.17.125:8090/rbd/leadInfoApi/getProductListStock'),
         headers: <String, String>{
@@ -902,7 +895,7 @@ class _ShowDialogState extends State<ShowDialog> {
 
     var productStockJSON = json.decode(response.body);
 
-    print('getProduct value=' + productStockJSON.toString());
+    print('getProduct value=$productStockJSON');
 
     _stockController.text = productStockJSON[0]['productStock'].toString();
     print(_stockController.text);
@@ -915,10 +908,10 @@ class _ShowDialogState extends State<ShowDialog> {
     return Container(
       height: 450,
       width: 150,
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             height: 50,
             child: TextField(
               controller: _productNameSearchController,
@@ -935,17 +928,17 @@ class _ShowDialogState extends State<ShowDialog> {
               },
               decoration: InputDecoration(
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: preGetPorduct,
                 ),
                 labelText: 'Search',
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                     //         fontWeight:FontWeight.bold,
                     color: Colors.grey),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20.0,
           ),
           (_productNameSearchController.text.length > 1)
@@ -993,9 +986,9 @@ class _ShowDialogState extends State<ShowDialog> {
                                     }
                                   },
                                   child: Padding(
-                                    padding: EdgeInsets.only(bottom: 5.0),
+                                    padding: const EdgeInsets.only(bottom: 5.0),
                                     child: Container(
-                                      padding: EdgeInsets.all(5.0),
+                                      padding: const EdgeInsets.all(5.0),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(5),
@@ -1009,9 +1002,8 @@ class _ShowDialogState extends State<ShowDialog> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  'Product Name : ' +
-                                                      productNameList[index],
-                                                  style: TextStyle(
+                                                  'Product Name : ${productNameList[index]}',
+                                                  style: const TextStyle(
                                                       color: Colors.grey,
                                                       fontSize: 15),
                                                 ),
@@ -1022,9 +1014,8 @@ class _ShowDialogState extends State<ShowDialog> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  'Product productModel : ' +
-                                                      productModelList[index],
-                                                  style: TextStyle(
+                                                  'Product productModel : ${productModelList[index]}',
+                                                  style: const TextStyle(
                                                       color: Colors.grey,
                                                       fontSize: 15),
                                                 ),
@@ -1035,9 +1026,8 @@ class _ShowDialogState extends State<ShowDialog> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  'Product Price : ' +
-                                                      productPriceList[index],
-                                                  style: TextStyle(
+                                                  'Product Price : ${productPriceList[index]}',
+                                                  style: const TextStyle(
                                                       color: Colors.grey,
                                                       fontSize: 15),
                                                 ),
@@ -1051,14 +1041,14 @@ class _ShowDialogState extends State<ShowDialog> {
                                 );
                               }),
                         )
-                      : Center(
+                      : const Center(
                           child: Column(
                           children: [
                             Text(
                               'No Product Found!! \n\n\nPlease Search With A Different Product Name',
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(
+                            SizedBox(
                               height: 30.0,
                             ),
                             // TextField(
@@ -1112,10 +1102,10 @@ class _ShowDialogState extends State<ShowDialog> {
                             // ),
                           ],
                         ))
-                  : Center(
+                  : const Center(
                       child: CircularProgressIndicator(),
                     )
-              : Center(
+              : const Center(
                   child: Text(
                     'Type Minimum 2 Characters \nThen Press Search Button',
                     textAlign: TextAlign.center,

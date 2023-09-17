@@ -1,12 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'dart:convert';
-import 'dart:ui';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_prac/New_Lead.dart';
@@ -17,6 +14,8 @@ import 'package:login_prac/summery.dart';
 import 'package:login_prac/utils/sesssion_manager.dart';
 
 class SearchDateLead extends StatefulWidget {
+  const SearchDateLead({Key? key}) : super(key: key);
+
   @override
   _SearchDateLeadState createState() => _SearchDateLeadState();
 
@@ -24,10 +23,9 @@ class SearchDateLead extends StatefulWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
-        '/newlead': (BuildContext context) => new NewLead(),
-        '/newleadtransaction': (BuildContext context) =>
-            new NewLeadTransaction(),
-        '/logInPage': (BuildContext context) => new MyHomePage(),
+        '/newlead': (BuildContext context) => NewLead(),
+        '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
+        '/logInPage': (BuildContext context) => MyHomePage(),
       },
     );
   }
@@ -68,7 +66,7 @@ class _SearchDateLeadState extends State<SearchDateLead> {
   bool formValidator() {
     String leadModeValid = _leadMode;
 
-    if (leadModeValid == null || leadModeValid.isEmpty) {
+    if (leadModeValid.isEmpty) {
       return true;
     } else {
       return false;
@@ -77,7 +75,7 @@ class _SearchDateLeadState extends State<SearchDateLead> {
 
   getEmployID() async {
     employID = await localGetEmployeeID();
-    print('getEmployID: ' + employID);
+    print('getEmployID: $employID');
     getSummary();
   }
 
@@ -92,7 +90,7 @@ class _SearchDateLeadState extends State<SearchDateLead> {
     });
 
     String localURL = Constants.globalURL;
-    response = await http.post(Uri.parse(localURL + '/getSummary'),
+    response = await http.post(Uri.parse('$localURL/getSummary'),
         //Uri.parse('http://fairbook.fairgroupbd.com/leadInfoApi/getSummary'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -101,10 +99,9 @@ class _SearchDateLeadState extends State<SearchDateLead> {
         body: jsonEncode(<String, String>{
           'userID': employID,
         }));
-    print('toooooooooooo' + json.decode(response.body)[0][0].toString());
+    print('toooooooooooo${json.decode(response.body)[0][0]}');
     var dataJSON = json.decode(response.body);
     var number = dataJSON.length;
-    var row = (number / 2).round();
     for (int i = 0; i < number; i++) {
       leadModeList.add(dataJSON[i][0].toString());
       //stepNameValueList.add(dataJSON[i][1].toString());
@@ -162,10 +159,10 @@ class _SearchDateLeadState extends State<SearchDateLead> {
     toDate = toDateController.toString();
     fromDate = fromDateController.toString();
     phoneNumber = phoneNumberController.text;
-    print('date' + toDate.toString());
+    print('date$toDate');
 
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getDataByStatus'),
+    var response = await http.post(Uri.parse('$localURL/getDataByStatus'),
         //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -185,7 +182,7 @@ class _SearchDateLeadState extends State<SearchDateLead> {
 
     setState(() {
       print(statusValue.length.toString());
-      if (statusValue.length == 0) {
+      if (statusValue.isEmpty) {
         isSearching = false;
         Fluttertoast.showToast(
             msg: "NO DATA IN THIS LEAD MODE...",
@@ -249,31 +246,42 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                           width: 3.0,
                         ),
                         borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.topLeft,
                     child: TextButton(
-                      onPressed: () {
-                        DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            //     onChanged: (date) {
-                            //   print('change $date in time zone ' +
-                            //       date.timeZoneOffset.inHours.toString());
-                            // },
-                            onConfirm: (date) {
-                          print('confirm meating date $date');
-                          fromDate.toString();
-                          var taskDateDay = date.day.toInt() < 10
-                              ? '0' + date.day.toString()
-                              : date.day.toString();
-                          var taskDateMonth = date.month.toInt() < 10
-                              ? '0' + date.month.toString()
-                              : date.month.toString();
+                      onPressed: () async {
+                        final DateTime? fromDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2030));
+                        if (fromDate != null) {
                           setState(() {
-                            fromDateController = date.year.toString() +
-                                '-' +
-                                taskDateMonth.toString() +
-                                '-' +
-                                taskDateDay.toString();
+                            //customerDOBdate = dob;
+                            fromDateController =
+                                fromDate.toString().split(' ')[0];
+                            print(fromDateController.toString());
                           });
-                        }, currentTime: DateTime.now());
+                        }
+                        // DatePicker.showDatePicker(context,
+                        //     showTitleActions: true,
+                        //     //     onChanged: (date) {
+                        //     //   print('change $date in time zone ' +
+                        //     //       date.timeZoneOffset.inHours.toString());
+                        //     // },
+                        //     onConfirm: (date) {
+                        //   print('confirm meating date $date');
+                        //   fromDate.toString();
+                        //   var taskDateDay = date.day.toInt() < 10
+                        //       ? '0${date.day}'
+                        //       : date.day.toString();
+                        //   var taskDateMonth = date.month.toInt() < 10
+                        //       ? '0${date.month}'
+                        //       : date.month.toString();
+                        //   setState(() {
+                        //     fromDateController =
+                        //         '${date.year}-$taskDateMonth-$taskDateDay';
+                        //   });
+                        // }, currentTime: DateTime.now());
                       },
                       child: Text(
                         "From Date* : $fromDateController",
@@ -284,7 +292,6 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                         textAlign: TextAlign.left,
                       ),
                     ),
-                    alignment: Alignment.topLeft,
                   ),
                 ),
                 Padding(
@@ -299,31 +306,41 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                           width: 3.0,
                         ),
                         borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.topLeft,
                     child: TextButton(
-                      onPressed: () {
-                        DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            //     onChanged: (date) {
-                            //   print('change $date in time zone ' +
-                            //       date.timeZoneOffset.inHours.toString());
-                            // },
-                            onConfirm: (date) {
-                          print('confirm meating date $date');
-                          toDate.toString();
-                          var taskDateDay = date.day.toInt() < 10
-                              ? '0' + date.day.toString()
-                              : date.day.toString();
-                          var taskDateMonth = date.month.toInt() < 10
-                              ? '0' + date.month.toString()
-                              : date.month.toString();
+                      onPressed: () async {
+                        final DateTime? toDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2030));
+                        if (toDate != null) {
                           setState(() {
-                            toDateController = date.year.toString() +
-                                '-' +
-                                taskDateMonth.toString() +
-                                '-' +
-                                taskDateDay.toString();
+                            //customerDOBdate = dob;
+                            toDateController = toDate.toString().split(' ')[0];
+                            print(toDate.toString());
                           });
-                        }, currentTime: DateTime.now());
+                        }
+                        // DatePicker.showDatePicker(context,
+                        //     showTitleActions: true,
+                        //     //     onChanged: (date) {
+                        //     //   print('change $date in time zone ' +
+                        //     //       date.timeZoneOffset.inHours.toString());
+                        //     // },
+                        //     onConfirm: (date) {
+                        //   print('confirm meating date $date');
+                        //   toDate.toString();
+                        //   var taskDateDay = date.day.toInt() < 10
+                        //       ? '0${date.day}'
+                        //       : date.day.toString();
+                        //   var taskDateMonth = date.month.toInt() < 10
+                        //       ? '0${date.month}'
+                        //       : date.month.toString();
+                        //   setState(() {
+                        //     toDateController =
+                        //         '${date.year}-$taskDateMonth-$taskDateDay';
+                        //   });
+                        // }, currentTime: DateTime.now());
                       },
                       child: Text(
                         "To Date* : $toDateController",
@@ -334,7 +351,6 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                         textAlign: TextAlign.left,
                       ),
                     ),
-                    alignment: Alignment.topLeft,
                   ),
                 ),
                 Padding(
@@ -373,9 +389,9 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                   height: 0,
                                   color: Colors.blue,
                                 ),
-                                onChanged: (String? newValue_sales) {
+                                onChanged: (String? newvalueSales) {
                                   setState(() {
-                                    _leadMode = newValue_sales!;
+                                    _leadMode = newvalueSales!;
                                     // List<String> salesPersonControllerMiddle =
                                     //     _salesPersonController.split(' ');
                                     // _salesPersonController =
@@ -481,7 +497,7 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                               fontSize: 16.0)
                                           : getSearchData();
                         },
-                        child: Container(
+                        child: SizedBox(
                           height: 30.0,
                           width: 100.0,
                           child: Material(
@@ -607,31 +623,56 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                           padding:
                                               const EdgeInsets.only(left: 4.0),
                                           child: Text(
+                                              "${statusValue[index]['leadCreateTime'].toString().split(" ")[0]}\n at \n${statusValue[index]['leadCreateTime'].toString().split(" ")[1]}",
+                                              style: TextStyle(fontSize: 20.0)),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 4.0),
+                                            child: Text('Next Follow-up Date',
+                                                style:
+                                                    TextStyle(fontSize: 20.0))),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 4.0),
+                                          child: Text(
+                                              statusValue[index]['followupDate']
+                                                  .toString()
+                                                  .split("T")[0],
+                                              style: TextStyle(fontSize: 20.0)),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 4.0),
+                                            child: Text(
+                                                'Last Trsansaction Date',
+                                                style:
+                                                    TextStyle(fontSize: 20.0))),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 4.0),
+                                          child: Text(
                                               statusValue[index]
-                                                          ['leadCreateTime']
-                                                      .toString()
-                                                      .split(" ")[0] +
-                                                  "\n at \n" +
-                                                  statusValue[index]
-                                                          ['leadCreateTime']
-                                                      .toString()
-                                                      .split(" ")[1],
+                                                      ['lastTransactionDate']
+                                                  .toString()
+                                                  .split(" ")[0],
                                               style: TextStyle(fontSize: 20.0)),
                                         ),
                                       ]),
                                       // TableRow(children: [
                                       //   Padding(
-                                      //     padding:
-                                      //         const EdgeInsets.only(left: 4.0),
+                                      //     padding: const EdgeInsets.only(left: 4.0),
                                       //     child: Text('Customer Mail',
                                       //         style: TextStyle(fontSize: 20.0)),
                                       //   ),
                                       //   Padding(
-                                      //     padding:
-                                      //         const EdgeInsets.only(left: 4.0),
+                                      //     padding: const EdgeInsets.only(left: 4.0),
                                       //     child: Text(
-                                      //         statusValue[index]['email']
-                                      //             .toString(),
+                                      //         statusValue[index]['email'].toString(),
                                       //         style: TextStyle(fontSize: 20.0)),
                                       //   ),
                                       // ]),
@@ -670,14 +711,11 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                       ]),
                                       // TableRow(children: [
                                       //   Padding(
-                                      //       padding: const EdgeInsets.only(
-                                      //           left: 4.0),
+                                      //       padding: const EdgeInsets.only(left: 4.0),
                                       //       child: Text('Lead Source',
-                                      //           style:
-                                      //               TextStyle(fontSize: 20.0))),
+                                      //           style: TextStyle(fontSize: 20.0))),
                                       //   Padding(
-                                      //     padding:
-                                      //         const EdgeInsets.only(left: 4.0),
+                                      //     padding: const EdgeInsets.only(left: 4.0),
                                       //     child: Text(
                                       //         statusValue[index]['leadSource']
                                       //             .toString(),
@@ -718,22 +756,6 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                       ]),
                                       TableRow(children: [
                                         Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4.0),
-                                            child: Text('Next Follow-Up Date',
-                                                style:
-                                                    TextStyle(fontSize: 20.0))),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 4.0),
-                                          child: Text(
-                                              statusValue[index]['followupDate']
-                                                  .toString(),
-                                              style: TextStyle(fontSize: 20.0)),
-                                        ),
-                                      ]),
-                                      TableRow(children: [
-                                        Padding(
                                           padding:
                                               const EdgeInsets.only(left: 4.0),
                                           child: Text('Products',
@@ -755,6 +777,23 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                                               style: TextStyle(fontSize: 20.0)),
                                         ),
                                       ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 4.0),
+                                          child: Text(
+                                              'Last Transaction Remarks',
+                                              style: TextStyle(fontSize: 20.0)),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 4.0),
+                                          child: Text(
+                                              statusValue[index]['remarks']
+                                                  .toString(),
+                                              style: TextStyle(fontSize: 20.0)),
+                                        ),
+                                      ]),
                                     ],
                                   ),
                                 ),
@@ -773,10 +812,10 @@ class _SearchDateLeadState extends State<SearchDateLead> {
                         onTap: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => new SummeryPage()),
+                                  builder: (context) => SummeryPage()),
                               (Route<dynamic> route) => false);
                         },
-                        child: Container(
+                        child: SizedBox(
                           height: 40.0,
                           width: 170.0,
                           child: Material(

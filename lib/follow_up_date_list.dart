@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:login_prac/New_Lead.dart';
@@ -14,6 +13,8 @@ import 'package:login_prac/new_lead_transaction.dart';
 import 'package:login_prac/summery.dart';
 
 class FollowUpListsPage extends StatefulWidget {
+  const FollowUpListsPage({Key? key}) : super(key: key);
+
   @override
   _FollowUpListsPageState createState() => _FollowUpListsPageState();
 
@@ -21,10 +22,9 @@ class FollowUpListsPage extends StatefulWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
-        '/newlead': (BuildContext context) => new NewLead(),
-        '/newleadtransaction': (BuildContext context) =>
-            new NewLeadTransaction(),
-        '/logInPage': (BuildContext context) => new MyHomePage(),
+        '/newlead': (BuildContext context) => NewLead(),
+        '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
+        '/logInPage': (BuildContext context) => MyHomePage(),
       },
     );
   }
@@ -57,7 +57,7 @@ class _FollowUpListsPageState extends State<FollowUpListsPage> {
     String searchDate = formatter.format(now);
 
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getFollowUpInfo'),
+    var response = await http.post(Uri.parse('$localURL/getFollowUpInfo'),
         //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getFollowUpInfo'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ class _FollowUpListsPageState extends State<FollowUpListsPage> {
                                 TableRow(children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text('Company Name',
+                                    child: Text('Company name',
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                   Padding(
@@ -193,13 +193,36 @@ class _FollowUpListsPageState extends State<FollowUpListsPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
                                     child: Text(
-                                        statusValue[index]['leadCreateTime']
-                                                .toString()
-                                                .split(" ")[0] +
-                                            "\n at \n" +
-                                            statusValue[index]['leadCreateTime']
-                                                .toString()
-                                                .split(" ")[1],
+                                        "${statusValue[index]['leadCreateTime'].toString().split(" ")[0]}\n at \n${statusValue[index]['leadCreateTime'].toString().split(" ")[1]}",
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4.0),
+                                      child: Text('Next Follow-up Date',
+                                          style: TextStyle(fontSize: 20.0))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['followupDate']
+                                            .toString()
+                                            .split("T")[0],
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4.0),
+                                      child: Text('Last Trsansaction Date',
+                                          style: TextStyle(fontSize: 20.0))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]
+                                                ['lastTransactionDate']
+                                            .toString()
+                                            .split(" ")[0],
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),
@@ -288,22 +311,6 @@ class _FollowUpListsPageState extends State<FollowUpListsPage> {
                                 TableRow(children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text('Next Follow-up Date',
-                                        style: TextStyle(fontSize: 20.0)),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text(
-                                        statusValue[index]['nextFollowupDate']
-                                            .toString()
-                                            .split("T")[0],
-                                        style: TextStyle(fontSize: 20.0)),
-                                  ),
-                                ]),
-
-                                TableRow(children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
                                     child: Text('Products',
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
@@ -322,6 +329,20 @@ class _FollowUpListsPageState extends State<FollowUpListsPage> {
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),
+                                TableRow(children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Last Transaction Remarks',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['remarks']
+                                            .toString(),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
                               ],
                             ),
                           ),
@@ -337,10 +358,10 @@ class _FollowUpListsPageState extends State<FollowUpListsPage> {
                             onTap: () {
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                      builder: (context) => new SummeryPage()),
+                                      builder: (context) => SummeryPage()),
                                   (Route<dynamic> route) => false);
                             },
-                            child: Container(
+                            child: SizedBox(
                               height: 40.0,
                               width: 170.0,
                               child: Material(

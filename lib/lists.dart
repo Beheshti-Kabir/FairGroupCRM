@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/constants.dart';
@@ -13,6 +11,8 @@ import 'package:login_prac/new_lead_transaction.dart';
 import 'package:login_prac/summery.dart';
 
 class ListsPage extends StatefulWidget {
+  const ListsPage({Key? key}) : super(key: key);
+
   @override
   _ListsPageState createState() => _ListsPageState();
 
@@ -20,10 +20,9 @@ class ListsPage extends StatefulWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
-        '/newlead': (BuildContext context) => new NewLead(),
-        '/newleadtransaction': (BuildContext context) =>
-            new NewLeadTransaction(),
-        '/logInPage': (BuildContext context) => new MyHomePage(),
+        '/newlead': (BuildContext context) => NewLead(),
+        '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
+        '/logInPage': (BuildContext context) => MyHomePage(),
       },
     );
   }
@@ -61,7 +60,7 @@ class _ListsPageState extends State<ListsPage> {
     // });
 
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getDataByStatus'),
+    var response = await http.post(Uri.parse('$localURL/getDataByStatus'),
         //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -116,8 +115,7 @@ class _ListsPageState extends State<ListsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
-            "LAST " + statusValue.length.toString() + " " + stepType + " LEAD"),
+        title: Text("LAST ${statusValue.length} $stepType LEAD"),
       ),
       body: statusValue.isNotEmpty
           ? SingleChildScrollView(
@@ -219,13 +217,36 @@ class _ListsPageState extends State<ListsPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
                                     child: Text(
-                                        statusValue[index]['leadCreateTime']
-                                                .toString()
-                                                .split(" ")[0] +
-                                            "\n at \n" +
-                                            statusValue[index]['leadCreateTime']
-                                                .toString()
-                                                .split(" ")[1],
+                                        "${statusValue[index]['leadCreateTime'].toString().split(" ")[0]}\n at \n${statusValue[index]['leadCreateTime'].toString().split(" ")[1]}",
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4.0),
+                                      child: Text('Next Follow-up Date',
+                                          style: TextStyle(fontSize: 20.0))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['followupDate']
+                                            .toString()
+                                            .split("T")[0],
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 4.0),
+                                      child: Text('Last Trsansaction Date',
+                                          style: TextStyle(fontSize: 20.0))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]
+                                                ['lastTransactionDate']
+                                            .toString()
+                                            .split(" ")[0],
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),
@@ -313,20 +334,6 @@ class _ListsPageState extends State<ListsPage> {
                                 ]),
                                 TableRow(children: [
                                   Padding(
-                                      padding: const EdgeInsets.only(left: 4.0),
-                                      child: Text('Next Follow-up Date',
-                                          style: TextStyle(fontSize: 20.0))),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text(
-                                        statusValue[index]['followupDate']
-                                            .toString()
-                                            .split("T")[0],
-                                        style: TextStyle(fontSize: 20.0)),
-                                  ),
-                                ]),
-                                TableRow(children: [
-                                  Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
                                     child: Text('Products',
                                         style: TextStyle(fontSize: 20.0)),
@@ -346,6 +353,20 @@ class _ListsPageState extends State<ListsPage> {
                                         style: TextStyle(fontSize: 20.0)),
                                   ),
                                 ]),
+                                TableRow(children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text('Last Transaction Remarks',
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Text(
+                                        statusValue[index]['remarks']
+                                            .toString(),
+                                        style: TextStyle(fontSize: 20.0)),
+                                  ),
+                                ]),
                               ],
                             ),
                           ),
@@ -361,10 +382,10 @@ class _ListsPageState extends State<ListsPage> {
                             onTap: () {
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                      builder: (context) => new SummeryPage()),
+                                      builder: (context) => SummeryPage()),
                                   (Route<dynamic> route) => false);
                             },
-                            child: Container(
+                            child: SizedBox(
                               height: 40.0,
                               width: 170.0,
                               child: Material(

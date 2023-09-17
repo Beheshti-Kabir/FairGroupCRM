@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:login_prac/New_Lead.dart';
 import 'package:login_prac/constants.dart';
 import 'package:login_prac/main.dart';
-import 'package:login_prac/new_lead_transaction.dart';
-import 'package:login_prac/summery.dart';
 
 class ChangePasswordPage extends StatefulWidget {
+  const ChangePasswordPage({Key? key}) : super(key: key);
+
   @override
   _changePassword createState() {
     return _changePassword();
@@ -43,22 +41,22 @@ class _changePassword extends State<ChangePasswordPage> {
     String newPasswordVal = _newPassword.toString();
     String reNewpasswordVal = _reNewPassword.toString();
     setState(() {
-      if (employIDVal == null || employIDVal.isEmpty) {
+      if (employIDVal.isEmpty) {
         _employIDValidate = true;
       } else {
         _employIDValidate = false;
       }
-      if (oldPasswordVal == null || oldPasswordVal.isEmpty) {
+      if (oldPasswordVal.isEmpty) {
         _oldPasswordValidate = true;
       } else {
         _oldPasswordValidate = false;
       }
-      if (newPasswordVal == null || newPasswordVal.isEmpty) {
+      if (newPasswordVal.isEmpty) {
         _newPasswordValidate = true;
       } else {
         _newPasswordValidate = false;
       }
-      if (reNewpasswordVal == null || reNewpasswordVal.isEmpty) {
+      if (reNewpasswordVal.isEmpty) {
         _reNewPasswordValidate = true;
       } else {
         _reNewPasswordValidate = false;
@@ -81,7 +79,7 @@ class _changePassword extends State<ChangePasswordPage> {
 
   Future<String> createAlbum() async {
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/changePwd'),
+    var response = await http.post(Uri.parse('$localURL/changePwd'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -115,52 +113,52 @@ class _changePassword extends State<ChangePasswordPage> {
       ),
       body: Column(children: <Widget>[
         Container(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
           child: TextField(
             controller: _employID,
             decoration: InputDecoration(
               errorText: _employIDValidate ? 'Value Can\'t Be Empty' : null,
               labelText: 'Employ ID*',
               labelStyle:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
+                  const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              focusedBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
             ),
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
           child: TextField(
             controller: _oldPassword,
             decoration: InputDecoration(
               errorText: _oldPasswordValidate ? 'Value Can\'t Be Empty' : null,
               labelText: 'Old Password*',
               labelStyle:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
+                  const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              focusedBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
             ),
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
           child: TextField(
             controller: _newPassword,
             decoration: InputDecoration(
               errorText: _newPasswordValidate ? 'Value Can\'t Be Empty' : null,
               labelText: 'New Password*',
               labelStyle:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
+                  const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              focusedBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
             ),
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
           child: TextField(
             controller: _reNewPassword,
             decoration: InputDecoration(
@@ -168,14 +166,14 @@ class _changePassword extends State<ChangePasswordPage> {
                   _reNewPasswordValidate ? 'Value Can\'t Be Empty' : null,
               labelText: 'Re-Type New Password*',
               labelStyle:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
+                  const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              focusedBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
             ),
           ),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         // save
         Container(
           child: Center(
@@ -222,7 +220,7 @@ class _changePassword extends State<ChangePasswordPage> {
                       if (response.toLowerCase().trim() == 'success') {
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (context) => new MyHomePage()),
+                                builder: (context) => const MyHomePage()),
                             (Route<dynamic> route) => false);
                       } else {
                         setState(
@@ -245,7 +243,7 @@ class _changePassword extends State<ChangePasswordPage> {
                   }
                 }
               },
-              child: Container(
+              child: SizedBox(
                 height: 40.0,
                 width: 150.0,
                 child: Material(
@@ -253,7 +251,7 @@ class _changePassword extends State<ChangePasswordPage> {
                   shadowColor: Colors.lightBlueAccent,
                   color: Colors.blue[800],
                   elevation: 7.0,
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "Save Change",
                       style: TextStyle(

@@ -60,6 +60,7 @@ class New_lead_json {
       String? nextFollowUpDate,
       String? salesPerson,
       String? paymentMethod,
+      String? isAutoFinance,
       List<Todo>? itemDetails}) {
     _profession = profession;
     _leadCategory = leadCategory;
@@ -79,6 +80,7 @@ class New_lead_json {
     _nextFollowUpDate = nextFollowUpDate;
     _salesPerson = salesPerson;
     _paymentMethod = paymentMethod;
+    _isAutoFinance = isAutoFinance;
     _itemDetails = itemDetails;
   }
 
@@ -101,6 +103,7 @@ class New_lead_json {
     _nextFollowUpDate = json['nextFollowUpDate'];
     _salesPerson = json['salesPerson'];
     _paymentMethod = json['paymentMethod'];
+    _isAutoFinance = json['isAutoFinance'];
     if (json['itemDetails'] != null) {
       _itemDetails = [];
       json['itemDetails'].forEach((v) {
@@ -126,6 +129,7 @@ class New_lead_json {
   String? _nextFollowUpDate;
   String? _salesPerson;
   String? _paymentMethod;
+  String? _isAutoFinance;
   List<Todo>? _itemDetails;
 
   String? get profession => _profession;
@@ -146,6 +150,7 @@ class New_lead_json {
   String? get nextFollowUpDate => _nextFollowUpDate;
   String? get salesPerson => _salesPerson;
   String? get paymentMethod => _paymentMethod;
+  String? get isAutoFinance => _isAutoFinance;
   List<Todo>? get itemDetails => _itemDetails;
 
   Map<String, dynamic> toJson() {
@@ -168,6 +173,7 @@ class New_lead_json {
     map['followUpDate'] = _nextFollowUpDate;
     map['salesPerson'] = _salesPerson;
     map['paymentMethod'] = _paymentMethod;
+    map['isAutoFinance'] = _isAutoFinance;
     if (_itemDetails != null) {
       map['itemDetails'] = _itemDetails?.map((v) => v.toJson()).toList();
     }

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
@@ -17,6 +16,8 @@ import 'package:login_prac/new_lead_transaction.dart';
 import 'package:login_prac/utils/sesssion_manager.dart';
 
 class SummeryPage extends StatefulWidget {
+  const SummeryPage({Key? key}) : super(key: key);
+
   @override
   _SummeryPageState createState() => _SummeryPageState();
 
@@ -24,11 +25,10 @@ class SummeryPage extends StatefulWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
-        '/newlead': (BuildContext context) => new NewLead(),
-        '/newleadtransaction': (BuildContext context) =>
-            new NewLeadTransaction(),
-        '/listsPage': (BuildContext context) => new ListsPage(),
-        '/logInPage': (BuildContext context) => new MyHomePage(),
+        '/newlead': (BuildContext context) => NewLead(),
+        '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
+        '/listsPage': (BuildContext context) => ListsPage(),
+        '/logInPage': (BuildContext context) => MyHomePage(),
       },
     );
   }
@@ -55,9 +55,9 @@ class _SummeryPageState extends State<SummeryPage> {
   int next = 1;
   int row = 0;
   int totalLead = 0;
+
   int followUpDateCount = 0;
   late var dataJSON;
-
   @override
   initState() {
     super.initState();
@@ -66,7 +66,7 @@ class _SummeryPageState extends State<SummeryPage> {
 
   getEmployID() async {
     employID = await localGetEmployeeID();
-    print('getEmployID: ' + employID);
+    print('getEmployID: $employID');
     getFollowUpData();
     getSummary();
   }
@@ -77,7 +77,7 @@ class _SummeryPageState extends State<SummeryPage> {
     String searchDate = formatter.format(now);
 
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getFollowUpInfo'),
+    var response = await http.post(Uri.parse('$localURL/getFollowUpInfo'),
         //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getFollowUpInfo'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -88,12 +88,13 @@ class _SummeryPageState extends State<SummeryPage> {
           'searchDate': searchDate,
           'allSearch': 'FALSE'
         }));
-    var statusValue = jsonDecode(response.body)['leadList'];
-    print('VJGJGV' + statusValue.toString());
-    followUpDateCount = statusValue.length;
-    print(searchDate);
-    print('===============================' + followUpDateCount.toString());
-    setState(() {});
+    setState(() {
+      var statusValue = jsonDecode(response.body)['leadList'];
+      print('VJGJGV$statusValue');
+      followUpDateCount = statusValue.length;
+      print(searchDate);
+      print('===============================$followUpDateCount');
+    });
   }
 
   getSummary() async {
@@ -101,7 +102,7 @@ class _SummeryPageState extends State<SummeryPage> {
 
     print('obj=$employID');
     String localURL = Constants.globalURL;
-    response = await http.post(Uri.parse(localURL + '/getSummary'),
+    response = await http.post(Uri.parse('$localURL/getSummary'),
         //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getSummary'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -135,7 +136,7 @@ class _SummeryPageState extends State<SummeryPage> {
         }
       }
     }
-    print('total LEAD ============' + totalLead.toString());
+    print('total LEAD ============$totalLead');
     print(stepNameValueList.toString());
     setState(() {
       if (response.statusCode == 200) {
@@ -157,6 +158,7 @@ class _SummeryPageState extends State<SummeryPage> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     if (!gotData) {
       //getSummary();
@@ -223,7 +225,7 @@ class _SummeryPageState extends State<SummeryPage> {
                               onTap: () {
                                 Navigator.of(context).pushNamed('/newlead');
                               },
-                              child: Container(
+                              child: SizedBox(
                                 height: 60.0,
                                 // width: 110.0,
                                 child: Material(
@@ -364,10 +366,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                     elevation: 7.0,
                                     child: Center(
                                       child: Text(
-                                        'TOTAL ' +
-                                            'LEAD' +
-                                            '\n' +
-                                            totalLead.toString(),
+                                        'TOTAL LEAD\n$totalLead',
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -513,11 +512,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                                                 .toString() ==
                                                             'IN-PROGRESS')
                                                         ? Text(
-                                                            'TOTAL ZERO ACTIVITY LEAD\n' +
-                                                                stepNameValueList[
-                                                                        index *
-                                                                            2]
-                                                                    .toString(),
+                                                            'TOTAL ZERO ACTIVITY LEAD\n${stepNameValueList[index * 2]}',
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -529,16 +524,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                                                 .center,
                                                           )
                                                         : Text(
-                                                            'TOTAL ' +
-                                                                stepNameList[
-                                                                        index *
-                                                                            2]
-                                                                    .toString() +
-                                                                '\n' +
-                                                                stepNameValueList[
-                                                                        index *
-                                                                            2]
-                                                                    .toString(),
+                                                            'TOTAL ${stepNameList[index * 2]}\n${stepNameValueList[index * 2]}',
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -621,18 +607,7 @@ class _SummeryPageState extends State<SummeryPage> {
                                                         elevation: 7.0,
                                                         child: Center(
                                                           child: Text(
-                                                            'TOTAL ' +
-                                                                stepNameList[
-                                                                        (index *
-                                                                                2) +
-                                                                            1]
-                                                                    .toString() +
-                                                                '\n' +
-                                                                stepNameValueList[
-                                                                        (index *
-                                                                                2) +
-                                                                            1]
-                                                                    .toString(),
+                                                            'TOTAL ${stepNameList[(index * 2) + 1]}\n${stepNameValueList[(index * 2) + 1]}',
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -1236,10 +1211,10 @@ class _SummeryPageState extends State<SummeryPage> {
                               //Navigator.of(context).pushReplacementNamed('/logInPage');
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                      builder: (context) => new LogInPage()),
+                                      builder: (context) => LogInPage()),
                                   (Route<dynamic> route) => false);
                             },
-                            child: Container(
+                            child: SizedBox(
                               height: 40.0,
                               width: 170.0,
                               child: Material(

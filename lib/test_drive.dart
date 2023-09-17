@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'dart:convert';
-import 'dart:ui';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_prac/New_Lead.dart';
@@ -17,7 +15,11 @@ import 'package:login_prac/summery.dart';
 import 'package:login_prac/test_drive_constants.dart';
 import 'package:login_prac/utils/sesssion_manager.dart';
 
+String resultOfUpdateStatus = '';
+
 class TestDrivePage extends StatefulWidget {
+  const TestDrivePage({Key? key}) : super(key: key);
+
   @override
   _TestDrivePageState createState() => _TestDrivePageState();
 
@@ -25,10 +27,9 @@ class TestDrivePage extends StatefulWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
-        '/newlead': (BuildContext context) => new NewLead(),
-        '/newleadtransaction': (BuildContext context) =>
-            new NewLeadTransaction(),
-        '/logInPage': (BuildContext context) => new MyHomePage(),
+        '/newlead': (BuildContext context) => NewLead(),
+        '/newleadtransaction': (BuildContext context) => NewLeadTransaction(),
+        '/logInPage': (BuildContext context) => MyHomePage(),
       },
     );
   }
@@ -43,7 +44,7 @@ class _TestDrivePageState extends State<TestDrivePage> {
   var fromDate = '';
   var toDate = '';
   var phoneNumber = '';
-  final phoneNumberController = TextEditingController();
+  final leadNoController = TextEditingController();
 
   late dynamic response;
   // late var totalInvoice = '';
@@ -58,6 +59,7 @@ class _TestDrivePageState extends State<TestDrivePage> {
   List<String> testDriveStatusList = ['', 'OPEN', 'APPROVED', 'DENIED'];
   String _testDriveStatus = '';
   String employID = '';
+  String leadNo = '';
 
   @override
   initState() {
@@ -69,7 +71,7 @@ class _TestDrivePageState extends State<TestDrivePage> {
   bool formValidator() {
     String leadModeValid = _testDriveStatus;
 
-    if (leadModeValid == null || leadModeValid.isEmpty) {
+    if (leadModeValid.isEmpty) {
       return true;
     } else {
       return false;
@@ -78,13 +80,40 @@ class _TestDrivePageState extends State<TestDrivePage> {
 
   getEmployID() async {
     employID = await localGetEmployeeID();
-    print('getEmployID: ' + employID);
+    print('getEmployID: $employID');
+  }
+
+  Future<String> chnageTDApprovalStatus(String leadNo, String status) async {
+    String localURL = Constants.globalURL;
+    resultOfUpdateStatus = '';
+
+    var responsed = await http.post(Uri.parse('$localURL/approveLead'),
+        //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/approveLeadR'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'leadNo': leadNo,
+          'approvalStatus': status,
+        }));
+
+    print(status);
+    String con = jsonDecode(responsed.body)['result'].toString();
+    print('result=== $con');
+    if (con == 'Success') {
+      return 'Done';
+    } else {
+      return 'Failed';
+    }
+    //print('aaaaaaaaaaaaaaaaaaaa' + resultOfUpdateStatus);
   }
 
   getSearchData() async {
     setState(() {
       isSearching = true;
     });
+    statusValue = [];
     // setState(() {
     //   isLoading = true;
     //   print("isLoading");
@@ -96,11 +125,12 @@ class _TestDrivePageState extends State<TestDrivePage> {
     testDriveStatus = _testDriveStatus.toString();
     toDate = toDateController.toString();
     fromDate = fromDateController.toString();
-    phoneNumber = phoneNumberController.text;
-    print('date' + toDate.toString());
+    leadNo = leadNoController.text;
+    print(leadNo.toString());
+    print('date$toDate');
 
     String localURL = Constants.globalURL;
-    var response = await http.post(Uri.parse(localURL + '/getDataByStatus'),
+    var response = await http.post(Uri.parse('$localURL/getDataByStatus'),
         //Uri.parse('http://10.100.17.125:8090/rbd/leadInfoApi/getDataByStatus'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -113,7 +143,8 @@ class _TestDrivePageState extends State<TestDrivePage> {
           'fromDate': fromDate,
           'phoneNo': phoneNumber,
           'allSearch': 'FALSE',
-          'testDriveApprovalStatus': testDriveStatus
+          'testDriveApprovalStatus': testDriveStatus,
+          'leadNo': leadNo,
         }));
 
     statusValue = jsonDecode(response.body)['leadList'];
@@ -121,7 +152,7 @@ class _TestDrivePageState extends State<TestDrivePage> {
 
     setState(() {
       print(statusValue.length.toString());
-      if (statusValue.length == 0) {
+      if (statusValue.isEmpty) {
         isSearching = false;
         Fluttertoast.showToast(
             msg: "NO DATA...",
@@ -173,6 +204,46 @@ class _TestDrivePageState extends State<TestDrivePage> {
                   height: 20.0,
                   // width: 100.0,fa
                 ),
+
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10, left: 10.0, right: 10.0),
+                  child: Container(
+                      padding: EdgeInsets.only(left: 5.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.lightBlueAccent,
+                            width: 3.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10)),
+                      alignment: Alignment.topLeft,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: leadNoController,
+                        decoration: InputDecoration(
+                          labelText: 'Lead No* ',
+                          labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.blue),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                        ),
+                      )),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  'OR',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.grey),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 10, left: 10.0, right: 10.0),
@@ -185,31 +256,40 @@ class _TestDrivePageState extends State<TestDrivePage> {
                           width: 3.0,
                         ),
                         borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.topLeft,
                     child: TextButton(
-                      onPressed: () {
-                        DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            //     onChanged: (date) {
-                            //   print('change $date in time zone ' +
-                            //       date.timeZoneOffset.inHours.toString());
-                            // },
-                            onConfirm: (date) {
-                          print('confirm meating date $date');
-                          fromDate.toString();
-                          var taskDateDay = date.day.toInt() < 10
-                              ? '0' + date.day.toString()
-                              : date.day.toString();
-                          var taskDateMonth = date.month.toInt() < 10
-                              ? '0' + date.month.toString()
-                              : date.month.toString();
+                      onPressed: () async {
+                        final DateTime? from = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2030));
+                        if (from != null) {
                           setState(() {
-                            fromDateController = date.year.toString() +
-                                '-' +
-                                taskDateMonth.toString() +
-                                '-' +
-                                taskDateDay.toString();
+                            //customerDOBdate = dob;
+                            fromDateController = from.toString().split(' ')[0];
+                            print(fromDateController.toString());
                           });
-                        }, currentTime: DateTime.now());
+                        }
+                        // DatePicker.showDatePicker(context,
+                        //     showTitleActions: true,
+                        //     //     onChanged: (date) {
+                        //     //   print('change $date in time zone ' +
+                        //     //       date.timeZoneOffset.inHours.toString());
+                        //     // },
+                        //     onConfirm: (date) {
+                        //   print('confirm meating date $date');
+                        //   fromDate.toString();
+                        //   var taskDateDay = date.day.toInt() < 10
+                        //       ? '0${date.day}'
+                        //       : date.day.toString();
+                        //   var taskDateMonth = date.month.toInt() < 10
+                        //       ? '0${date.month}'
+                        //       : date.month.toString();
+                        //   setState(() {
+                        //     fromDateController = '${date.year}-$taskDateMonth-$taskDateDay';
+                        //   });
+                        // }, currentTime: DateTime.now());
                       },
                       child: Text(
                         "From Date* : $fromDateController",
@@ -220,7 +300,6 @@ class _TestDrivePageState extends State<TestDrivePage> {
                         textAlign: TextAlign.left,
                       ),
                     ),
-                    alignment: Alignment.topLeft,
                   ),
                 ),
                 Padding(
@@ -235,31 +314,40 @@ class _TestDrivePageState extends State<TestDrivePage> {
                           width: 3.0,
                         ),
                         borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.topLeft,
                     child: TextButton(
-                      onPressed: () {
-                        DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            //     onChanged: (date) {
-                            //   print('change $date in time zone ' +
-                            //       date.timeZoneOffset.inHours.toString());
-                            // },
-                            onConfirm: (date) {
-                          print('confirm meating date $date');
-                          toDate.toString();
-                          var taskDateDay = date.day.toInt() < 10
-                              ? '0' + date.day.toString()
-                              : date.day.toString();
-                          var taskDateMonth = date.month.toInt() < 10
-                              ? '0' + date.month.toString()
-                              : date.month.toString();
+                      onPressed: () async {
+                        final DateTime? to = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2030));
+                        if (to != null) {
                           setState(() {
-                            toDateController = date.year.toString() +
-                                '-' +
-                                taskDateMonth.toString() +
-                                '-' +
-                                taskDateDay.toString();
+                            //customerDOBdate = dob;
+                            toDateController = to.toString().split(' ')[0];
+                            print(toDateController.toString());
                           });
-                        }, currentTime: DateTime.now());
+                        }
+                        // DatePicker.showDatePicker(context,
+                        //     showTitleActions: true,
+                        //     //     onChanged: (date) {
+                        //     //   print('change $date in time zone ' +
+                        //     //       date.timeZoneOffset.inHours.toString());
+                        //     // },
+                        //     onConfirm: (date) {
+                        //   print('confirm meating date $date');
+                        //   toDate.toString();
+                        //   var taskDateDay = date.day.toInt() < 10
+                        //       ? '0${date.day}'
+                        //       : date.day.toString();
+                        //   var taskDateMonth = date.month.toInt() < 10
+                        //       ? '0${date.month}'
+                        //       : date.month.toString();
+                        //   setState(() {
+                        //     toDateController = '${date.year}-$taskDateMonth-$taskDateDay';
+                        //   });
+                        // }, currentTime: DateTime.now());
                       },
                       child: Text(
                         "To Date* : $toDateController",
@@ -270,7 +358,6 @@ class _TestDrivePageState extends State<TestDrivePage> {
                         textAlign: TextAlign.left,
                       ),
                     ),
-                    alignment: Alignment.topLeft,
                   ),
                 ),
                 Padding(
@@ -309,9 +396,9 @@ class _TestDrivePageState extends State<TestDrivePage> {
                                   height: 0,
                                   color: Colors.blue,
                                 ),
-                                onChanged: (String? newValue_sales) {
+                                onChanged: (String? newvalueSales) {
                                   setState(() {
-                                    _testDriveStatus = newValue_sales!;
+                                    _testDriveStatus = newvalueSales!;
                                     // List<String> salesPersonControllerMiddle =
                                     //     _salesPersonController.split(' ');
                                     // _salesPersonController =
@@ -342,7 +429,7 @@ class _TestDrivePageState extends State<TestDrivePage> {
                       GestureDetector(
                         onTap: () {
                           bool isValid = formValidator();
-                          phoneNumberController.text.isNotEmpty
+                          leadNoController.text.isNotEmpty
                               ? getDateSearchNumber()
                               : isValid == true
                                   ? Fluttertoast.showToast(
@@ -373,7 +460,7 @@ class _TestDrivePageState extends State<TestDrivePage> {
                                               fontSize: 16.0)
                                           : getSearchData();
                         },
-                        child: Container(
+                        child: SizedBox(
                           height: 30.0,
                           width: 100.0,
                           child: Material(
@@ -444,8 +531,7 @@ class _TestDrivePageState extends State<TestDrivePage> {
                                                       ['isAutoFinance']
                                                   .toString(),
                                           Navigator.of(context)
-                                              .pushReplacementNamed(
-                                                  '/test-driveUpdate')
+                                              .pushNamed('/test-driveUpdate')
                                         }
                                       else
                                         {
@@ -562,15 +648,7 @@ class _TestDrivePageState extends State<TestDrivePage> {
                                               padding: const EdgeInsets.only(
                                                   left: 4.0),
                                               child: Text(
-                                                  statusValue[index]
-                                                              ['leadCreateTime']
-                                                          .toString()
-                                                          .split(" ")[0] +
-                                                      "\n at \n" +
-                                                      statusValue[index]
-                                                              ['leadCreateTime']
-                                                          .toString()
-                                                          .split(" ")[1],
+                                                  "${statusValue[index]['leadCreateTime'].toString().split(" ")[0]}\n at \n${statusValue[index]['leadCreateTime'].toString().split(" ")[1]}",
                                                   style: TextStyle(
                                                       fontSize: 20.0)),
                                             ),
@@ -642,25 +720,258 @@ class _TestDrivePageState extends State<TestDrivePage> {
                                                       fontSize: 20.0)),
                                             ),
                                           ]),
-                                          TableRow(children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 4.0),
-                                              child: Text('Approval Status',
-                                                  style: TextStyle(
-                                                      fontSize: 20.0)),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 4.0),
-                                              child: Text(
-                                                  statusValue[index]
-                                                          ['tdApprovalStatus']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 20.0)),
-                                            ),
-                                          ]),
+                                          (statusValue[index]['tdApprovalStatus']
+                                                          .toString() ==
+                                                      'OPEN' &&
+                                                  (Constants.employeeId ==
+                                                          'T00100' ||
+                                                      Constants.employeeId ==
+                                                          'M00129'))
+                                              ? TableRow(children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4.0),
+                                                    child: Text(
+                                                        'Change Approval Status',
+                                                        style: TextStyle(
+                                                            fontSize: 20.0)),
+                                                  ),
+                                                  Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 4.0),
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                AlertDialog(
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              elevation: 24,
+                                                              shadowColor:
+                                                                  Colors.black,
+                                                              title: Text(
+                                                                'Status Change',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    fontSize:
+                                                                        25),
+                                                              ),
+                                                              content: Text(
+                                                                'What status do you want for the Lead No: ${statusValue[index]['leadNo']} ?',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    fontSize:
+                                                                        18),
+                                                              ),
+                                                              actions: [
+                                                                CupertinoDialogAction(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    Fluttertoast.showToast(
+                                                                        msg:
+                                                                            "Saving..",
+                                                                        toastLength:
+                                                                            Toast
+                                                                                .LENGTH_SHORT,
+                                                                        gravity:
+                                                                            ToastGravity
+                                                                                .TOP,
+                                                                        timeInSecForIosWeb:
+                                                                            1,
+                                                                        backgroundColor:
+                                                                            Colors
+                                                                                .red,
+                                                                        textColor:
+                                                                            Colors
+                                                                                .white,
+                                                                        fontSize:
+                                                                            16.0);
+                                                                    var respon = await chnageTDApprovalStatus(
+                                                                        statusValue[index]['leadNo']
+                                                                            .toString(),
+                                                                        'APPROVED');
+                                                                    // print('asdasdasdasd=====' +
+                                                                    //     respon
+                                                                    //         .toString());
+                                                                    if (respon
+                                                                            .toString() ==
+                                                                        'Done') {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "Status Change to APPROVED..",
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          gravity: ToastGravity
+                                                                              .TOP,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .red,
+                                                                          textColor: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16.0);
+                                                                      setState(
+                                                                          () {
+                                                                        statusValue[index]['tdApprovalStatus'] =
+                                                                            'APPROVED';
+                                                                      });
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    } else {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "There might be some issue.\nPlease try again..",
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          gravity: ToastGravity
+                                                                              .TOP,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .red,
+                                                                          textColor: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16.0);
+                                                                    }
+                                                                  },
+                                                                  child: Text(
+                                                                    'Approved',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                                CupertinoDialogAction(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    Fluttertoast.showToast(
+                                                                        msg:
+                                                                            "Saving..",
+                                                                        toastLength:
+                                                                            Toast
+                                                                                .LENGTH_SHORT,
+                                                                        gravity:
+                                                                            ToastGravity
+                                                                                .TOP,
+                                                                        timeInSecForIosWeb:
+                                                                            1,
+                                                                        backgroundColor:
+                                                                            Colors
+                                                                                .red,
+                                                                        textColor:
+                                                                            Colors
+                                                                                .white,
+                                                                        fontSize:
+                                                                            16.0);
+                                                                    var respon = await chnageTDApprovalStatus(
+                                                                        statusValue[index]['leadNo']
+                                                                            .toString(),
+                                                                        'DENIED');
+                                                                    print('asdasdasdasd=====$resultOfUpdateStatus');
+                                                                    if (respon ==
+                                                                        'Done') {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "Status Change to DENIED..",
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          gravity: ToastGravity
+                                                                              .TOP,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .red,
+                                                                          textColor: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16.0);
+                                                                      setState(
+                                                                          () {
+                                                                        statusValue[index]['tdApprovalStatus'] =
+                                                                            'DENIED';
+                                                                      });
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    } else {
+                                                                      Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "There might be some issue.\nPlease try again..",
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          gravity: ToastGravity
+                                                                              .TOP,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Colors
+                                                                              .red,
+                                                                          textColor: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16.0);
+                                                                    }
+                                                                  },
+                                                                  child: Text(
+                                                                    'Denied',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        },
+                                                        style: TextButton.styleFrom(
+                                                            backgroundColor:
+                                                                Colors.lightBlue[
+                                                                    100]),
+                                                        child: Text(
+                                                            statusValue[index][
+                                                                    'tdApprovalStatus']
+                                                                .toString(),
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontSize: 20.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                                color: Colors
+                                                                    .black)),
+                                                      )),
+                                                ])
+                                              : TableRow(children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4.0),
+                                                    child: Text(
+                                                        'Approval Status',
+                                                        style: TextStyle(
+                                                            fontSize: 20.0)),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4.0),
+                                                    child: Text(
+                                                        statusValue[index][
+                                                                'tdApprovalStatus']
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 20.0)),
+                                                  ),
+                                                ]),
                                           TableRow(children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -752,10 +1063,10 @@ class _TestDrivePageState extends State<TestDrivePage> {
                         onTap: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => new SummeryPage()),
+                                  builder: (context) => SummeryPage()),
                               (Route<dynamic> route) => false);
                         },
-                        child: Container(
+                        child: SizedBox(
                           height: 40.0,
                           width: 170.0,
                           child: Material(

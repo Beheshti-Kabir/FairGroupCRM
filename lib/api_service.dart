@@ -8,7 +8,7 @@ class ApiService {
   static Future<LogInResponse> login(LogInRequest controllerRequest) async {
     String localURL = Constants.globalURL;
 
-    final response = await http.post(Uri.parse(localURL + '/apiLogin'),
+    final response = await http.post(Uri.parse('$localURL/apiLogin'),
         body: json.encode(controllerRequest.ToJson()));
     if ((response.statusCode == 200)) {
       return LogInResponse.fromJson(json.decode(response.body));

@@ -9,8 +9,8 @@ class LogInResponse {
 
   factory LogInResponse.fromJson(Map<String, dynamic> json) {
     return LogInResponse(
-        accessToken: json["accessToken"] != null ? json["accessToken"] : "",
-        result: json["result"] != null ? json["result"] : "");
+        accessToken: json["accessToken"] ?? "",
+        result: json["result"] ?? "");
   }
 }
 

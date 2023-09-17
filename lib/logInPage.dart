@@ -24,12 +24,12 @@ class _LogInPageState extends State<LogInPage> {
     String employID = _employIDController.text;
     String password = _passwordController.text;
     setState(() {
-      if (employID == null || employID.isEmpty) {
+      if (employID.isEmpty) {
         _employIDValidate = true;
       } else {
         _employIDValidate = false;
       }
-      if (password == null || password.isEmpty) {
+      if (password.isEmpty) {
         _passwordValidate = true;
       } else {
         _passwordValidate = false;
@@ -54,7 +54,7 @@ class _LogInPageState extends State<LogInPage> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
                     child: Text(
                       'Fair',
                       style: TextStyle(
@@ -64,7 +64,7 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(15.0, 175.0, 0.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(15.0, 175.0, 0.0, 0.0),
                     child: Text(
                       'Group',
                       style: TextStyle(
@@ -74,7 +74,7 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(20.0, 260.0, 0.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(20.0, 260.0, 0.0, 0.0),
                     child: Text(
                       'CRM',
                       style: TextStyle(
@@ -87,7 +87,7 @@ class _LogInPageState extends State<LogInPage> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 105.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 105.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -97,9 +97,9 @@ class _LogInPageState extends State<LogInPage> {
                       errorText:
                           _employIDValidate ? 'Value Can\'t Be Empty' : null,
                       labelText: 'Employee ID',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
@@ -108,7 +108,7 @@ class _LogInPageState extends State<LogInPage> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0),
               child: Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
@@ -118,9 +118,9 @@ class _LogInPageState extends State<LogInPage> {
                       errorText:
                           _passwordValidate ? 'Value Can\'t Be Empty' : null,
                       labelText: 'Password',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
@@ -129,7 +129,7 @@ class _LogInPageState extends State<LogInPage> {
                 ],
               ),
             ),
-            SizedBox(height: 40.0),
+            const SizedBox(height: 40.0),
             Container(
               child: Center(
                 child: GestureDetector(
@@ -191,7 +191,7 @@ class _LogInPageState extends State<LogInPage> {
 
                     //Navigator.of(context).pushNamed('/summery');
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 40.0,
                     width: 150.0,
                     child: Material(
@@ -199,7 +199,7 @@ class _LogInPageState extends State<LogInPage> {
                       shadowColor: Colors.lightBlueAccent,
                       color: Colors.blue[800],
                       elevation: 7.0,
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Log In",
                           style: TextStyle(
@@ -215,7 +215,7 @@ class _LogInPageState extends State<LogInPage> {
             //   height: 300.0,
             // )
             Container(
-              padding: EdgeInsets.only(top: 20.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: GestureDetector(
                 onTap: () async {
                   Fluttertoast.showToast(
@@ -260,11 +260,11 @@ class _LogInPageState extends State<LogInPage> {
             // )
             Container(
               alignment: Alignment.bottomRight,
-              padding: EdgeInsets.only(top: 50.0, right: 10.0),
+              padding: const EdgeInsets.only(top: 50.0, right: 10.0),
               child: Text(
                 'Version $version\nDeveloped By Fair Group,\nIT Software Team',
                 textAlign: TextAlign.right,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
             )
           ],

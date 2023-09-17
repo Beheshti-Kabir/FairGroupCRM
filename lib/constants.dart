@@ -2,7 +2,7 @@ class Constants {
   static String employeeId = '';
   static String companyCode = '';
 
-  static String version = '1.0.23';
+  static String version = '1.0.24';
 
   static String employeeIDKey = 'EmployeeID';
   static String logInStatusKey = 'logInStatus';
